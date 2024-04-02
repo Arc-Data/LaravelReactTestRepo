@@ -5,7 +5,6 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 
 function App() {
-  console.log("App initialized")  
   return (
     <BrowserRouter>
       <Routes>

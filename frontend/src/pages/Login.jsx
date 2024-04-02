@@ -9,15 +9,35 @@ const Login = () => {
     return (
         <>
             <UserNav />
-            <div className="grid h-screen mx-auto text-black place-items-center ">
-                <form className="p-4 bg-blue-900 rounded shadow-xl" method="POST" onSubmit={handleSubmit}>
-                    <p className="text-center text-white">Login</p>
-                    <label htmlFor="username" className="block">Username</label>
-                    <input type="text" name="username"/>
-                    <label htmlFor="password" className="block">Password</label>
-                    <input type="password" name="password"/>
-                    <button type="submit">Button</button>
-                </form>
+            <div className="grid w-screen h-screen md:grid-cols-[1fr_800px] overflow-hidden">
+                <div></div>
+                <div className="bg-white shadow-xl">
+                    <form action="" method="POST" className="px-20 py-40" onSubmit={handleSubmit}>
+                        <h1 className="mb-12 text-5xl font-bold text-blue-600">Login</h1>
+                        <div className="my-2">
+                            <label htmlFor="username" className="text-gray-700">Username</label>
+                            <input 
+                                type="text" 
+                                name="username"
+                                placeholder="Enter username"
+                                className="w-full px-2 py-1 mt-2 mb-4 text-black bg-transparent border border-gray-500 rounded "/>
+                        </div>
+                        <div className="my-2">
+                            <label htmlFor="password" className="text-gray-700">Password</label>
+                            <input 
+                                type="password" 
+                                name="username"
+                                placeholder="*************"
+                                className="w-full px-2 py-1 mt-2 mb-4 text-black bg-transparent border border-gray-500 rounded "/>
+                        </div>
+                        <div className="flex gap-2 text-gray-700">
+                                <input type="checkbox" />
+                                <p>Remember my password</p>
+                        </div>
+
+                        <button className="px-2 py-3 mt-20 rounded shadow bg-slate-900 w-60">Login</button>
+                    </form>
+                </div>
             </div>
         </>
     )
