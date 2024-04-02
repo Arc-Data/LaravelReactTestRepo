@@ -28,6 +28,19 @@ const Home = () => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
+        const testFunction = async () => {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/test');
+                console.log(response);
+                const data = await response.json();
+                console.log(data)
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+        testFunction()
         setPosts(userPosts)
     }, [])
 
@@ -37,7 +50,7 @@ const Home = () => {
             <div className='flex flex-col gap-4 mt-12'>
                 { userPosts && userPosts.map(post => {
                     return (
-                        <div className='border border-transparent bg-gray-700 w-2/3 bg-opacity-20 p-4 rounded shadow hover:border-blue-800 hover:cursor-pointer'>
+                        <div className='w-2/3 p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
                             <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
                             <p className='mt-4'>{post.description}</p>
                         </div>
@@ -45,7 +58,7 @@ const Home = () => {
                 })}
                 { userPosts && userPosts.map(post => {
                     return (
-                        <div className='border border-transparent bg-gray-700 w-2/3 bg-opacity-20 p-4 rounded shadow hover:border-blue-800 hover:cursor-pointer'>
+                        <div className='w-2/3 p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
                             <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
                             <p className='mt-4'>{post.description}</p>
                         </div>
