@@ -7,40 +7,42 @@ use App\Models\User;
 use App\Http\Requests\RegistrationRequest;
 use App\Http\Requests\LoginRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = JWTAuth::fromUser($user);
-            
-            return $this->responseWithToken($token);
-        } else {
-            return $this->response()->json([
-                'status' => 'failed',
-                'message' => 'Invalid login credentials'
-            ], 500);
+        $token = JWTAuth::attempt($request->validated());
+        
+        if (!$token) {
+            return response()->json([
+                "status" => "failed",
+                "message" => "An error occured while logging in"
+            ], 401);
         }
+
+        return $this->responseWithToken($token);
     }
 
     public function register(RegistrationRequest $request)
     {   
-        $user = User::create($request->validated());
+        $user = User::create([
+            "name"=> $request->name,
+            "email"=> $request->email,
+            "password"=> Hash::make($request->password),
+        ]);
     
-        if ($user) {
+        if (!$user) {
             // $token = auth()->login($user);
-            $token = JWTAuth::fromUser($user);
-            return $this->responseWithToken($token);
-        } else {
             return response()->json([
                 'status'=> 'failed',
                 'message' => 'An error occured while trying to create user', 
             ], 500);
-        }
+        } 
+
+        $token = JWTAuth::fromUser($user);
+        return $this->responseWithToken($token);
     }
 
     public function responseWithToken($token) 
