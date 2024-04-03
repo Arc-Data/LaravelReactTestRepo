@@ -13,8 +13,20 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $token = JWTAuth::attempt($request->validated());
+        $credentials = $request->validated();
         
+        if (filter_var($credentials["email_or_username"], FILTER_VALIDATE_EMAIL)) {
+            $token = JWTAuth::attempt([
+                'email' => $credentials['email_or_username'],
+                'password' => $credentials['password'],
+            ]);
+        } else {
+            $token = JWTAuth::attempt([
+                'name' => $credentials['email_or_username'],
+                'password' => $credentials['password'],
+            ]);
+        }
+
         if (!$token) {
             return response()->json([
                 "status" => "failed",
