@@ -1,6 +1,21 @@
+import { useState } from "react"
 import UserNav from "../components/UserNav"
 
 const Login = () => {
+    const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL
+    const [formData, setFormData] = useState({
+        'email_or_username': '',
+        'password': '',
+    })
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }))
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("Data Submitted")
@@ -15,19 +30,23 @@ const Login = () => {
                     <form action="" method="POST" className="px-20 py-40" onSubmit={handleSubmit}>
                         <h1 className="mb-12 text-5xl font-bold text-blue-600">Login</h1>
                         <div className="my-2">
-                            <label htmlFor="username" className="text-gray-700">Username</label>
+                            <label htmlFor="username" className="text-gray-700">Enter Email or Username</label>
                             <input 
                                 type="text" 
-                                name="username"
+                                name="email_or_username"
                                 placeholder="Enter username"
+                                value={formData.email_or_username}
+                                onChange={handleInputChange}
                                 className="w-full px-2 py-1 mt-2 mb-4 text-black bg-transparent border border-gray-500 rounded "/>
                         </div>
                         <div className="my-2">
                             <label htmlFor="password" className="text-gray-700">Password</label>
                             <input 
                                 type="password" 
-                                name="username"
+                                name="password"
                                 placeholder="*************"
+                                value={formData.password}
+                                onChange={handleInputChange}
                                 className="w-full px-2 py-1 mt-2 mb-4 text-black bg-transparent border border-gray-500 rounded "/>
                         </div>
                         <div className="flex gap-2 text-gray-700">

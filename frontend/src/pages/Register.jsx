@@ -25,7 +25,6 @@ const Register = () => {
         }
         
         console.log(data)
-        // insert register process
     }
 
     return (
