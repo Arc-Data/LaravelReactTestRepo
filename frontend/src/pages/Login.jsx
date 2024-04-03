@@ -1,12 +1,19 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import UserNav from "../components/UserNav"
+import AuthContext from "../context/AuthContext"
 
 const Login = () => {
     const backendUrl = import.meta.env.VITE_BACKEND_BASE_URL
+    const { loginUser, updateToken } = useContext(AuthContext)
+    
     const [formData, setFormData] = useState({
         'email_or_username': '',
         'password': '',
     })
+
+    const handleClick = () => {
+        updateToken()
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -19,6 +26,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("Data Submitted")
+        loginUser(formData);
     }
 
     return (
@@ -27,6 +35,10 @@ const Login = () => {
             <div className="grid w-screen h-screen md:grid-cols-[1fr_800px] overflow-hidden">
                 <div></div>
                 <div className="bg-white shadow-xl">
+                    <button 
+                        onClick={updateToken}
+                        className="px-2 py-3 mt-20 rounded shadow bg-slate-900 w-60">Login</button>
+                    
                     <form action="" method="POST" className="px-20 py-40" onSubmit={handleSubmit}>
                         <h1 className="mb-12 text-5xl font-bold text-blue-600">Login</h1>
                         <div className="my-2">
@@ -53,9 +65,9 @@ const Login = () => {
                                 <input type="checkbox" />
                                 <p>Remember my password</p>
                         </div>
-
                         <button className="px-2 py-3 mt-20 rounded shadow bg-slate-900 w-60">Login</button>
                     </form>
+
                 </div>
             </div>
         </>

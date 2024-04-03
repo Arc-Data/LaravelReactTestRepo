@@ -3,10 +3,12 @@ import MainLayout from "./layouts/MainLayout"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import { AuthProvider } from "./context/AuthContext"
 
 function App() {
-  return (
-    <BrowserRouter>
+return (
+  <BrowserRouter>
+    <AuthProvider>
       <Routes>
         <Route path="/login/" element={<Login />} />
         <Route path="/register/" element={<Register />} />
@@ -14,8 +16,9 @@ function App() {
           <Route path="/" element={<Home />} />
         </Route>
       </Routes>
-    </BrowserRouter>
-  )
+    </AuthProvider>
+  </BrowserRouter>
+)
 }
 
 export default App

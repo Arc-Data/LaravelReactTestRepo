@@ -57,6 +57,12 @@ class AuthController extends Controller
         return $this->responseWithToken($token);
     }
 
+    public function refresh()
+    {
+        $token = JWTAuth::parseToken()->refresh();
+        return $this->responseWithToken($token);
+    }
+
     public function responseWithToken($token) 
     {
         return response()->json([
