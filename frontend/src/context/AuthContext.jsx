@@ -67,8 +67,22 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem('authToken')
     }
 
-    const registerUser = (data) => {
+    const registerUser = async (data) => {
+        try {
+            const response = await axios.post('/api/auth/register/', data)
+            const token = response.data.access_token 
+            const tokenData = jwtDecode(token)
 
+            setUser (tokenData.user)
+            setAuthToken(token)
+            
+            localStorage.setItem('authToken', token)
+
+            navigate('/')
+        }
+        catch (error) {
+            console.log("An error occured while registering user: ", error)
+        }
     }
 
     const contextData = {

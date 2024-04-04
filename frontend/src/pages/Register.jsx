@@ -1,7 +1,11 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import UserNav from "../components/UserNav"
+import AuthContext from "../context/AuthContext"
+import Spinner from '../components/Spinner'
 
 const Register = () => {
+    const { registerUser } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false)
     const [data, setData] = useState({
         'username': '',
         'email': '',
@@ -17,14 +21,20 @@ const Register = () => {
         }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault()
         if (data.password !== data.confirm) {
             alert('Passwords do not match')
             return
         }
         
-        console.log(data)
+        await registerUser({
+            name: data.username,
+            email: data.email,
+            password: data.password
+        })
+        setLoading(false)
     }
 
     return (
@@ -75,9 +85,11 @@ const Register = () => {
                                 placeholder="*************"
                                 className="w-full px-2 py-1 mt-2 mb-4 text-black bg-transparent border border-gray-500 rounded "/>
                         </div>
-                        
-
+                        {loading ? 
+                        <Spinner /> 
+                        : 
                         <button className="px-2 py-3 mt-20 text-white rounded shadow bg-slate-900 w-60">Login</button>
+                        }
                     </form>
                 </div>
             </div>

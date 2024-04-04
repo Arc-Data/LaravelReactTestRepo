@@ -35,11 +35,11 @@ const Login = () => {
                     <form action="" method="POST" className="px-20 py-40" onSubmit={handleSubmit}>
                         <h1 className="mb-12 text-5xl font-bold text-blue-600">Login</h1>
                         <div className="my-2">
-                            <label htmlFor="username" className="text-gray-700">Enter Email or Username</label>
+                            <label htmlFor="username" className="text-gray-700">Email or Username</label>
                             <input 
                                 type="text" 
                                 name="email_or_username"
-                                placeholder="Enter username"
+                                placeholder="Enter email or username"
                                 value={formData.email_or_username}
                                 onChange={handleInputChange}
                                 className="w-full px-2 py-1 mt-2 mb-4 text-black bg-transparent border border-gray-500 rounded "/>
