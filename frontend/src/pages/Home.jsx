@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import AuthContext from '../context/AuthContext'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 const userPosts = [
     {
@@ -35,15 +37,22 @@ const Home = () => {
 
     return (
         <div className='px-12'>
-            <div className='flex gap-8'>
+            <div className='gap-8 md:flex '>
+                <div className='flex flex-col md:order-2'>
+                    <div className='p-8 bg-black border rounded-md shadow md:sticky md:top-28 border-slate-500'>
+                        <p className='mb-4'>Hello {user.username}!!</p>
+                        <Link to="/post" className='px-3 py-2 hover:bg-blue-400'>
+                            <FontAwesomeIcon icon={faPencil} /> Write a Post
+                        </Link>
+                    </div> 
+                </div>
                 <div className='flex-1'>
-                    <h1 className='text-4xl font-bold text-slate-300'>Home Page</h1>
                     <div className='flex flex-col gap-4 mt-12'>
                         { userPosts && userPosts.map(post => {
                             return (
                                 <div 
-                                    key={post.id}
-                                    className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
+                                key={post.id}
+                                className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
                                     <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
                                     <p className='mt-4'>{post.description}</p>
                                 </div>
@@ -60,11 +69,6 @@ const Home = () => {
                             )
                         })}
                     </div>
-                </div>
-                <div className='flex flex-col basis-80'>
-                    <div className='p-8 border rounded-md shadow border-slate-500'>
-                        Hello {user.username}!!
-                    </div> 
                 </div>
             </div>
         </div>
