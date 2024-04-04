@@ -32,8 +32,8 @@ const Register = () => {
             <UserNav />
             <div className="grid w-screen h-screen md:grid-cols-[1fr_800px] overflow-x-hidden">
                 <div></div>
-                <div className="text-black bg-white shadow-xl">
-                    <form action="" method="POST" className="px-20 pt-40 pb-20 overflow-y-scroll" onSubmit={handleSubmit}>
+                <div className="text-black bg-white shadow-xl ">
+                    <form action="" method="POST" className="max-h-screen px-20 pt-40 pb-20 overflow-y-scroll" onSubmit={handleSubmit}>
                         <h1 className="mb-12 text-5xl font-bold text-blue-600">Register</h1>
                         <div className="my-2">
                             <label htmlFor="username" className="text-gray-700">Username</label>

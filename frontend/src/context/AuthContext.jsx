@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "../axios";
 import { jwtDecode } from "jwt-decode"
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext()
 
@@ -9,6 +10,9 @@ export default AuthContext;
 export const AuthProvider = ({children}) => {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken') ? localStorage.getItem('authToken') : null)
     const [user, setUser] = useState(() => localStorage.getItem('authToken') ? jwtDecode(localStorage.getItem('authToken')) : null)
+    const [loading, setLoading] = useState(true)
+
+    const navigate = useNavigate()
 
     const loginUser = async (data) => {
         try {
@@ -18,8 +22,10 @@ export const AuthProvider = ({children}) => {
 
             setUser(tokenData.user)
             setAuthToken(token)
-
+            
             localStorage.setItem('authToken', token)
+
+            navigate('/')
         } catch (error) {
             console.log("An error occured while logging in: ", error)
         }
@@ -41,6 +47,12 @@ export const AuthProvider = ({children}) => {
                 setUser(tokenData.user)
                 
                 localStorage.setItem('authToken', token)
+            } else {
+                logoutUser()
+            }
+
+            if (loading) {
+                setLoading(false)
             }
         }
         catch(error) {
@@ -48,7 +60,8 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    const logoutUser = (data) => {
+    const logoutUser = () => {
+        console.log("Logging out user")
         setAuthToken(null)
         setUser(null)
         localStorage.removeItem('authToken')
@@ -81,6 +94,8 @@ export const AuthProvider = ({children}) => {
                     }
                 }
             }
+
+            setLoading(false)
         }
 
         checkTokenExpiryAndRefresh();
@@ -92,7 +107,7 @@ export const AuthProvider = ({children}) => {
 
     return (
         <AuthContext.Provider value={contextData}>
-            {children}
+            {loading ? null : children}
         </AuthContext.Provider>
     )
 }
