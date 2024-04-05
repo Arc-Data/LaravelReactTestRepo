@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
 import AuthContext from "../context/AuthContext"
+import axios from "../axios"
 
-const usePostManager = () => {
-    const { authToken } = useContext(AuthContext)
+const usePostManager = (authToken) => {
     const [post, setPost] = useState()
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
@@ -10,7 +10,12 @@ const usePostManager = () => {
 
     const createPost = async (data) => {
         try {
-            
+            const response = await axios.post('/api/posts/', data, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            })
+            console.log(response.data)
         }
         catch (error) {
             console.log("An error occured while creating post. ", error)

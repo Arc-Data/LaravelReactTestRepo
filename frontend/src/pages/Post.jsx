@@ -1,11 +1,22 @@
+import { useContext } from "react";
 import UserNav from "../components/UserNav"
+import usePostManager from "../hooks/usePostManager";
+import AuthContext from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Post = () => {
-    const handleSubmit = (e) => {
+    const { authToken, loading } = useContext(AuthContext)
+    const { createPost } = usePostManager(authToken)
+    const navigate = useNavigate()
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        await createPost({
+            'title': e.target.title.value,
+            'description': e.target.description.value,
+        })
 
-        console.log(e.target.title)
-
+        navigate('/')
     }
 
     return (

@@ -102,8 +102,11 @@ export const AuthProvider = ({children}) => {
 
                 if (decodedToken.exp && currentTimeInSeconds + 120 > decodedToken.exp) {
                     try {
+                        console.log("Token near timeout. Updating...")
                         await updateToken()
+                        console.log("Token successfully updated.")
                     } catch (error) {
+                        console.log("Token expired. Logging out...")
                         logoutUser()
                     }
                 }
