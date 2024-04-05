@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostController extends Controller
 {
@@ -14,13 +13,22 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::latest()->paginate(10);
+        return PostResource::collection($posts);
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
+    {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
         $user = auth()->user();
         $validatedData = $request->validate([
@@ -36,14 +44,6 @@ class PostController extends Controller
         $post->save();
 
         return new PostResource($post);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
