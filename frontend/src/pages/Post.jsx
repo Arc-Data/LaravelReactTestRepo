@@ -5,9 +5,11 @@ import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Post = () => {
-    const { authToken, loading } = useContext(AuthContext)
+    const { user, authToken, loading } = useContext(AuthContext)
     const { createPost } = usePostManager(authToken)
     const navigate = useNavigate()
+
+    console.log(user, authToken)
 
     const handleSubmit = async (e) => {
         e.preventDefault();

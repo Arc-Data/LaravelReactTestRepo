@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -31,6 +32,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
+        Log::info("Authenticated User : ".$user);
+
         $validatedData = $request->validate([
             "title" => 'required|string|max:100',
             'description' => 'required|string'           
@@ -51,7 +54,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return PostResource::make($post);
     }
 
     /**

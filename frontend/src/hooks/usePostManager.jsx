@@ -26,12 +26,33 @@ const usePostManager = (authToken) => {
 
     }
 
-    const getAllPosts = async () => {
-
+    const getPosts = async () => {
+        setLoading(true)
+        try {
+            const response = await axios.get('/api/posts/', {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            })
+            console.log(response.data)
+            setPosts(response.data.data)
+        }   
+        catch (error) {
+            console.log("An error occured while retrieving posts", error)
+        }
+        setLoading(false)
     }
 
-    const getPostById = async () => {
+    const getPost = async (id) => {
+        setLoading(true)
+        try {
+            
+        }
+        catch (error) {
+            console.log("An error occured while retrieving specific post")
+        }
 
+        setLoading(false)
     }
 
     const editPost = async () => {
@@ -45,8 +66,8 @@ const usePostManager = (authToken) => {
         status,
         createPost,
         deletePost,
-        getAllPosts,
-        getPostById,
+        getPosts,
+        getPost,
         editPost
     }
 }

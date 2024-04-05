@@ -6,7 +6,7 @@ const MainLayout = () => {
     <> 
         <UserNav />
         <div className="container mx-auto mt-20 grid md:grid-cols-[200px,auto]"> 
-            <nav className="flex-col hidden gap-2 text-lg border-r md:flex md:block border-slate-900">
+            <nav className="hidden gap-2 text-lg border-r md:flex md:flex-col border-slate-900">
                 {/* <div>
                     <Link to="/" className="">Home</Link>
                 </div>
@@ -21,7 +21,9 @@ const MainLayout = () => {
                 </div> */}
 
             </nav>
-            <Outlet />
+            <div className="px-12 py-12">
+                <Outlet />
+            </div>
         </div>
     </>
   )

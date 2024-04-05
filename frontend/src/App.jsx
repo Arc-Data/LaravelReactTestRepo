@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext"
 import PrivateRoutes from "./utils/PrivateRoutes"
 import BaseRoutes from "./utils/BaseRoutes"
 import Post from "./pages/Post"
+import PostDetail from "./pages/PostDetail"
 
 function App() {
 return (
@@ -21,6 +22,7 @@ return (
           <Route element={<MainLayout />} >
             <Route path="/" element={<Home />} />
             <Route path="/post" element={<Post />} />
+            <Route path="/post/:id" element={<PostDetail />} />
           </Route>
         </Route>
       </Routes>
