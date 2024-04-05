@@ -20,7 +20,7 @@ const Home = () => {
     }, [])
 
     return (
-        <div className='gap-8 md:flex '>
+        <div className='flex flex-col gap-8 md:flex-row'>
             <div className='flex flex-col md:order-2'>
                 <div className='p-8 bg-black border rounded-md shadow md:sticky md:top-28 border-slate-500'>
                     <p className='mb-4'>Hello {user.username}!!</p>
