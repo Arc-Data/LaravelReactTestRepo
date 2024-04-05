@@ -23,7 +23,7 @@ class PostController extends Controller
      */
     public function create(Request $request)
     {
-
+        
     }
 
     /**
@@ -54,7 +54,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return PostResource::make($post);
+        Log::info('Hello');
+        $user = auth()->user();
+        Log::info('Authenticated User: '.$user);
+        return new PostResource($post);
     }
 
     /**

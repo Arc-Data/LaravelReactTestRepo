@@ -26,9 +26,10 @@ Route::prefix('auth')->group(function () {
     Route::post('/refresh', [AuthController::class,'refresh']);
 });
 
-// Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::prefix('posts')->group(function () {
         Route::get('/', [PostController::class,'index']);
         Route::post('/', [PostController::class,'store']);
+        Route::get('/{post}', [PostController::class,'show']);
     });
-// });
+});
