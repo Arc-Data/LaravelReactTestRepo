@@ -90,20 +90,35 @@ const usePostManager = (authToken) => {
         }))
     }
 
-    const cancelEditing = (e) => {
-        e.preventDefault()
+    const cancelEdit = (e) => {
         setEditedPost({
             title: post.title, 
             description: post.description
         })
     }
 
-    const editPost = async (data) => {
+    const editPost = async (id, data) => {
+        setLoading(true)
         setPost(prevData => ({
             ...prevData,
             'title': data.title,
             'description': data.description
         }))
+
+        try {
+            const response = await axios.patch(`/api/posts/${id}/`, data, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            })
+
+            console.log(response)
+        }
+        catch (error) {
+            console.log('An error occured while updating post ', error)
+        }
+
+        setLoading(false)
     }
     
     return {
@@ -118,7 +133,7 @@ const usePostManager = (authToken) => {
         editPost,
         editedPost,
         handleEditedPostChange,
-        cancelEditing,
+        cancelEdit,
     }
 }
 

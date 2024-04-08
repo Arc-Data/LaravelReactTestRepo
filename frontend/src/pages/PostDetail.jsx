@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 const PostDetail = () => {
     const { id } = useParams()
     const { authToken, user } = useContext(AuthContext)
-    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, editPost } = usePostManager(authToken)
+    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost } = usePostManager(authToken)
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
 
@@ -24,7 +24,7 @@ const PostDetail = () => {
 
     const handleEditPost = async (e) => {
         e.preventDefault();
-        await editPost({
+        await editPost(id, {
             title: e.target.title.value, 
             description: e.target.description.value
         })
@@ -41,7 +41,10 @@ const PostDetail = () => {
     }
 
     const toggleEditing = () => {
+        const prevEditState = isEditing
         setEditing(prev => !prev)
+
+        if (prevEditState) cancelEdit()
     }
 
     useEffect(() => {
