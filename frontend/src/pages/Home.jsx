@@ -5,12 +5,21 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import usePostManager from '../hooks/usePostManager'
 import Spinner from '../components/Spinner'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 const Home = () => {
     const { user, authToken } = useContext(AuthContext)
     const  { posts, getPosts, loading } = usePostManager(authToken)
 
     console.log(user, authToken)
+
+    const handleClick = (e) => {
+        console.log("What")
+        console.log("Hello")
+    }
 
     useEffect(() => {
         const retrievePosts = async () => {
@@ -36,6 +45,7 @@ const Home = () => {
                             <Link to={`/post/${post.id}`} 
                             key={post.id}
                             className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
+                                <p className='mb-2 text-sm text-slate-600 hover:text-slate-200' onClick={handleClick}>{post.user.name} &middot; {dayjs(post.created_at).fromNow(true)}</p>
                                 <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
                                 <p className='mt-4'>{post.description}</p>
                             </Link>
