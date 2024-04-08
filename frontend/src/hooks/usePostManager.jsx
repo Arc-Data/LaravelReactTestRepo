@@ -7,6 +7,7 @@ const usePostManager = (authToken) => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [status, setStatus] = useState()
+    const [editedPost, setEditedPost] = useState() 
 
     const createPost = async (data) => {
         try {
@@ -63,17 +64,46 @@ const usePostManager = (authToken) => {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
-            setPost(response.data.data)
+
+            const postData =  response.data.data
+            
+            setPost(postData)
+            setEditedPost({
+                title: postData.title,
+                description: postData.description
+            })
         }
         catch (error) {
             console.log("An error occured while retrieving specific post", error)
         }
 
+
         setLoading(false)
+        
     }
 
-    const editPost = async () => {
+    const handleEditedPostChange = (e) => {
+        const { name, value } = e.target
+        setEditedPost(prevData => ({
+            ...prevData,
+            [name]: value,
+        }))
+    }
 
+    const cancelEditing = (e) => {
+        e.preventDefault()
+        setEditedPost({
+            title: post.title, 
+            description: post.description
+        })
+    }
+
+    const editPost = async (data) => {
+        setPost(prevData => ({
+            ...prevData,
+            'title': data.title,
+            'description': data.description
+        }))
     }
     
     return {
@@ -85,7 +115,10 @@ const usePostManager = (authToken) => {
         deletePost,
         getPosts,
         getPost,
-        editPost
+        editPost,
+        editedPost,
+        handleEditedPostChange,
+        cancelEditing,
     }
 }
 
