@@ -73,7 +73,17 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validatedData = $request->validate([
+            "title" => 'required|string|max:100',
+            'description' => 'required|string'           
+        ]);
+
+        $validatedData['title'] = strip_tags($validatedData['title']);
+        $validatedData['description'] = strip_tags($validatedData['description']);
+
+        $post->update($validatedData);
+
+        return response()->json(['message' => 'Post Updated Successfully'], 201);
     }
 
     /**
