@@ -46,7 +46,7 @@ const Home = () => {
                             key={post.id}
                             onClick={() => navigate(`/post/${post.id}`)}
                             className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
-                                <p className='mb-2 text-sm text-slate-600 '>
+                                <p className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
                                     <span 
                                         className='hover:text-slate-200 user-name' 
                                         onClick={(e) => {
@@ -55,7 +55,8 @@ const Home = () => {
                                         }}>
                                         {post.user.name}
                                     </span> 
-                                    &middot; {dayjs(post.created_at).fromNow(true)}
+                                    <span className="text-2xl font-bold">&middot;</span> 
+                                    <span>{dayjs(post.created_at).fromNow()}</span>
                                 </p>
                                 <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
                                 <p className='mt-4'>{post.description}</p>

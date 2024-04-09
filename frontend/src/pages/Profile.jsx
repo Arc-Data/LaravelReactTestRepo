@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react"
-import { useParams, useNavigate } from 'react-router-dom'
+import { useContext, useEffect, useState } from "react"
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import useUserManager from "../hooks/useUserManager"
 import AuthContext from "../context/AuthContext"
 import Spinner from "../components/Spinner"
@@ -12,23 +12,18 @@ dayjs.extend(RelativeTime)
 const Profile = () => {
     const { name } = useParams()
     const { authToken, user:currentUser} = useContext(AuthContext)
-    const { loading:userLoading, status:userStatus, user, getUser } = useUserManager(authToken)
+    const { loading:userLoading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
     const { loading:postLoading, posts, status:postStatus, getUserPosts, meta, links } = usePostManager(authToken)
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchUser = async (name) => {
-            await getUser(name)
+            const tempUser = await getUser(name)
+            getUserPosts(tempUser.id) 
         }
         
         fetchUser(name)
     }, [name])
-
-    useEffect(() => {
-        if (user) {
-            getUserPosts(user.id) 
-        }
-    }, [user])
     
     if (userLoading) {
         return (
@@ -49,7 +44,7 @@ const Profile = () => {
                 </div>
                 <div className="text-right md:text-center md:col-span-2">
                     {user.id === currentUser.id ? 
-                    <div className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</div>
+                    <Link to="/settings" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
                     :
                     <div className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Connect</div>
                     }
@@ -73,7 +68,7 @@ const Profile = () => {
                                         {post.user.name}
                                     </span> 
                                     <span className="text-2xl font-bold">&middot;</span> 
-                                    <span>{dayjs(post.created_at).fromNow(true)}</span>
+                                    <span>{dayjs(post.created_at).fromNow()}</span>
                                 </p>
                                 <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
                                 <p className='mt-4'>{post.description}</p>

@@ -16,11 +16,17 @@ const useUserManager = (authToken) => {
                 }
             })
             setUser(response.data.data)
+            setLoading(false)
+            return response.data.data
         }
         catch(error) {
             console.log("An error occured while fetching user profile. ", error)
         }
         setLoading(false)
+    }
+
+    const editUser = async () => {
+        console.log("Edited User")
     }
 
     return {
@@ -29,6 +35,7 @@ const useUserManager = (authToken) => {
         loading,
         status,
         getUser,
+        editUser,
     }
 }
 

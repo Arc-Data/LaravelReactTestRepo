@@ -9,6 +9,7 @@ import BaseRoutes from "./utils/BaseRoutes"
 import Post from "./pages/Post"
 import PostDetail from "./pages/PostDetail"
 import Profile from "./pages/Profile"
+import Settings from "./pages/Settings"
 
 function App() {
 return (
@@ -25,6 +26,7 @@ return (
             <Route path="/post" element={<Post />} />
             <Route path="/post/:id" element={<PostDetail />} />
             <Route path="/profile/:name" element={<Profile/>} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Route>
       </Routes>
