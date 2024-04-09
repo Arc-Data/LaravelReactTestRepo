@@ -6,9 +6,9 @@ const UserNav = () => {
 	const { user, logoutUser } = useContext(AuthContext)
 
 	return (
-		<div className="fixed top-0 left-0 w-full p-4 bg-blue-600 shadow-xl ">
+		<div className="fixed top-0 left-0 z-10 w-full p-4 bg-blue-600 shadow-xl ">
 			<nav className="container flex justify-between mx-auto">
-				<Link to="/">UserNav</Link>
+				<Link to="/">WriteUps</Link>
 				{!user ?   
 				<div className="flex gap-8">
 					<Link to="/login">Login</Link>
@@ -16,6 +16,7 @@ const UserNav = () => {
 				</div>
 				:
 				<div className="flex gap-8">
+					<Link to={`/profile/${user.username}`}>Profile</Link>
 					<button onClick={logoutUser}>Logout</button>
 				</div>
 				}

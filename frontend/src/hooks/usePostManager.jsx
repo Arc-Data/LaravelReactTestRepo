@@ -1,5 +1,4 @@
-import { useContext, useState } from "react"
-import AuthContext from "../context/AuthContext"
+import { useState } from "react"
 import axios from "../axios"
 
 const usePostManager = (authToken) => {
@@ -8,6 +7,8 @@ const usePostManager = (authToken) => {
     const [loading, setLoading] = useState(true)
     const [status, setStatus] = useState()
     const [editedPost, setEditedPost] = useState() 
+    const [meta, setMeta] = useState()
+    const [links, setLinks] = useState()
 
     const createPost = async (data) => {
         try {
@@ -16,7 +17,6 @@ const usePostManager = (authToken) => {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
-            console.log(response.data)
         }
         catch (error) {
             console.log("An error occured while creating post. ", error)
@@ -31,7 +31,6 @@ const usePostManager = (authToken) => {
                 }
             })
 
-            console.log(response)
         }
         catch (error) {
             console.log("An error occured while deleting post. ", error)
@@ -46,7 +45,6 @@ const usePostManager = (authToken) => {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
-            console.log(response.data)
             setPosts(response.data.data)
         }   
         catch (error) {
@@ -82,6 +80,25 @@ const usePostManager = (authToken) => {
         
     }
 
+    const getUserPosts = async (id) => {
+        setLoading(true)
+        try {
+            const response = await axios.get(`/api/user/${id}/posts`, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            }) 
+
+            setPosts(response.data.data)
+            setMeta(response.data.meta)
+            setLinks(response.data.links)
+        }
+        catch (error) {
+            console.log("An error occured while fetching user posts. ", error)
+        }
+        setLoading(false)
+    }
+
     const handleEditedPostChange = (e) => {
         const { name, value } = e.target
         setEditedPost(prevData => ({
@@ -112,7 +129,6 @@ const usePostManager = (authToken) => {
                 }
             })
 
-            console.log(response)
         }
         catch (error) {
             console.log('An error occured while updating post ', error)
@@ -124,12 +140,15 @@ const usePostManager = (authToken) => {
     return {
         post,
         posts,
+        links,
+        meta,
         loading,
         status,
         createPost,
         deletePost,
         getPosts,
         getPost,
+        getUserPosts,
         editPost,
         editedPost,
         handleEditedPostChange,

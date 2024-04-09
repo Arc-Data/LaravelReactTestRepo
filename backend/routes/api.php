@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,5 +34,11 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{post}', [PostController::class,'show']);
         Route::delete('/{post}', [PostController::class,'destroy']);
         Route::patch('/{post}', [PostController::class,'update']);
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', [UserController::class,'index']);
+        Route::get('/{username}', [UserController::class,'show']);
+        Route::get('/{user}/posts', [UserController::class,'getUserPosts']);
     });
 });

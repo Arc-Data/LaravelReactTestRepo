@@ -79,7 +79,7 @@ const PostDetail = () => {
             </div>
             <div className="p-12 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 ">
                 <div className="flex justify-between">
-                    <p className='mb-2 text-sm text-slate-600 hover:text-slate-200 hover:cursor-pointer'>{post.user.name}</p>
+                    <Link to={`/profile/${post.user.name}`} className='mb-2 text-sm text-slate-600 hover:text-slate-200 hover:cursor-pointer'>{post.user.name}</Link>
                     <p className='mb-2 text-sm text-slate-600 '>{dayjs(post.created_at).format("MMM D, YYYY h:mm A")}</p>
                 </div>
                 {isEditing ?

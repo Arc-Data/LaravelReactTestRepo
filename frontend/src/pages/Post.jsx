@@ -5,7 +5,7 @@ import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Post = () => {
-    const { user, authToken, loading } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { createPost } = usePostManager(authToken)
     const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const Post = () => {
     }
 
     return (
-        <div>
+        <div className="mt-4">
             <UserNav />
             <form 
                 action="" 

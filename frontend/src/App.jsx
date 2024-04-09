@@ -8,6 +8,7 @@ import PrivateRoutes from "./utils/PrivateRoutes"
 import BaseRoutes from "./utils/BaseRoutes"
 import Post from "./pages/Post"
 import PostDetail from "./pages/PostDetail"
+import Profile from "./pages/Profile"
 
 function App() {
 return (
@@ -23,6 +24,7 @@ return (
             <Route path="/" element={<Home />} />
             <Route path="/post" element={<Post />} />
             <Route path="/post/:id" element={<PostDetail />} />
+            <Route path="/profile/:name" element={<Profile/>} />
           </Route>
         </Route>
       </Routes>
