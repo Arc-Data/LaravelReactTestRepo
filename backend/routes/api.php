@@ -40,5 +40,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [UserController::class,'index']);
         Route::get('/{username}', [UserController::class,'show']);
         Route::get('/{user}/posts', [UserController::class,'getUserPosts']);
+        Route::patch('/', [UserController::class,'update']);
     });
 });

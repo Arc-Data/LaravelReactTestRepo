@@ -1,11 +1,13 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import axios from "../axios"
+import AuthContext from "../context/AuthContext"
 
 const useUserManager = (authToken) => {
     const [ user, setUser ] = useState()
     const [ users, setUsers ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()  
+    const { updateTokenOnUserUpdate } = useContext(AuthContext)
 
     const getUser = async (name) => {
         setLoading(true)
@@ -25,8 +27,19 @@ const useUserManager = (authToken) => {
         setLoading(false)
     }
 
-    const editUser = async () => {
-        console.log("Edited User")
+    const editUser = async (data) => {
+        try {
+            const response = await axios.patch('/api/user/', data, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+            setUser(response.data.user)
+            updateTokenOnUserUpdate(response.data.token)
+        }
+        catch (error) {
+            console.log("An error occured while updating user data: ", error)
+        }
     }
 
     return {

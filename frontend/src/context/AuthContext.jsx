@@ -31,6 +31,17 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    const updateTokenOnUserUpdate = (token) => {
+        const tokenData = jwtDecode(token)
+        
+        setUser(tokenData.user)
+        setAuthToken(token)
+
+        localStorage.setItem('authToken', token)
+
+        navigate(`/profile/${tokenData.user.username}`)
+    }
+
     const updateToken = async () => {
         try {
             const response = await axios.post('/api/auth/refresh/', null, {
@@ -45,6 +56,8 @@ export const AuthProvider = ({children}) => {
 
                 setAuthToken(response.data.access_token)
                 setUser(tokenData.user)
+
+                console.log("Updated token : ", tokenData)
                 
                 localStorage.setItem('authToken', token)
             } else {
@@ -90,6 +103,7 @@ export const AuthProvider = ({children}) => {
         registerUser,
         logoutUser,
         updateToken,
+        updateTokenOnUserUpdate,
         authToken,
         user,
     }
@@ -120,7 +134,7 @@ export const AuthProvider = ({children}) => {
         const intervalId = setInterval(checkTokenExpiryAndRefresh, threeMinutes)
     
         return () => clearInterval(intervalId)
-    }, [authToken, updateToken])
+    }, [authToken, updateToken, updateTokenOnUserUpdate])
 
     return (
         <AuthContext.Provider value={contextData}>

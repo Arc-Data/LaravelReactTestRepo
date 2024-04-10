@@ -32,7 +32,6 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        Log::info("Authenticated User : ".$user);
 
         $validatedData = $request->validate([
             "title" => 'required|string|max:100',
@@ -54,9 +53,6 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        Log::info('Hello');
-        $user = auth()->user();
-        Log::info('Authenticated User: '.$user);
         return new PostResource($post);
     }
 

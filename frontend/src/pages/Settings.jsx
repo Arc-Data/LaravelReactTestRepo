@@ -1,23 +1,28 @@
 import { faImage, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Datepicker from 'react-datepicker'
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 import "react-datepicker/dist/react-datepicker.css";
 import AuthContext from "../context/AuthContext";
+import useUserManager from "../hooks/useUserManager";
+import Spinner from "../components/Spinner";
 
 const Settings = () => {
-    const { user } = useContext(AuthContext)
+    const { user, authToken, updateToken } = useContext(AuthContext)
+    const { loading, getUser, editUser } = useUserManager(authToken)
     const [ profile, setProfile ] = useState({
         name: '',
         about: '',
-        profile_image: null,
-        banner: null,
-        birthdate: '',
+        profile_image: '',
+        banner: '',
+        birthdate: null,
     })
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
+        await editUser(profile)
+        await updateToken()
     }
 
     const handleInputChange = (e) => {
@@ -37,6 +42,18 @@ const Settings = () => {
             [name]: file
         }))
     }
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const tempUser = await getUser(user.username)
+            setProfile(tempUser)
+        }
+
+        fetchUser()
+    }, [])
+
+    if (loading) return (<Spinner/>)
+    
 
     return (
         <div className="mt-20 md:mt-10">
