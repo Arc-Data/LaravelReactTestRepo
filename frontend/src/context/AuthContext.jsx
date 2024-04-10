@@ -57,8 +57,6 @@ export const AuthProvider = ({children}) => {
                 setAuthToken(response.data.access_token)
                 setUser(tokenData.user)
 
-                console.log("Updated token : ", tokenData)
-                
                 localStorage.setItem('authToken', token)
             } else {
                 logoutUser()

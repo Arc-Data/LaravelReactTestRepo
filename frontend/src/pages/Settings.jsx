@@ -9,8 +9,9 @@ import useUserManager from "../hooks/useUserManager";
 import Spinner from "../components/Spinner";
 
 const Settings = () => {
-    const { user, authToken, updateToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { loading, getUser, editUser } = useUserManager(authToken)
+    const [ origData, setOrigData ] = useState()
     const [ profile, setProfile ] = useState({
         name: '',
         about: '',
@@ -21,8 +22,7 @@ const Settings = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await editUser(profile)
-        await updateToken()
+        await editUser(profile);
     }
 
     const handleInputChange = (e) => {
@@ -36,7 +36,6 @@ const Settings = () => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         const name = e.target.name
-        console.log(name)
         setProfile(prev => ({
             ...prev,
             [name]: file
@@ -46,6 +45,7 @@ const Settings = () => {
     useEffect(() => {
         const fetchUser = async () => {
             const tempUser = await getUser(user.username)
+            setOrigData(tempUser)
             setProfile(tempUser)
         }
 
@@ -58,7 +58,10 @@ const Settings = () => {
     return (
         <div className="mt-20 md:mt-10">
             <h1 className="mb-12 text-3xl font-bold">Settings</h1>
-            <form method="POST" className="flex flex-col max-w-2xl gap-16 text-slate-400" onSubmit={handleSubmit}>
+            <form 
+                method="POST" 
+                encType="multipart/form-data"
+                className="flex flex-col max-w-2xl gap-16 text-slate-400" onSubmit={handleSubmit}>
                 <p className="pb-2 border-b border-slate-800">Profile Information</p>
                 <section className="flex flex-col gap-8">
                     <div>

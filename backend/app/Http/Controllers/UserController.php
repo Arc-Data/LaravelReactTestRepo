@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
@@ -39,39 +40,46 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
+
+        Log::info('Request data: ' . json_encode($request->all()));
         
-        $validatedData =  $request->validate([
+        $validatedData = $request->validate([
             'name' => [
-                'required',
                 'string',
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'profile_image' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', // Adjust max file size as needed (in KB)
             'about' => 'nullable|string|max:200',
-            'birthdate' => 'required|date|before_or_equal:today', // Ensure birthdate is not in the future
+            'profile_image' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', // Adjust max file size as needed (in KB)
             'banner' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', // Adjust max file size as needed (in KB)
+            'birthdate' => 'date|before_or_equal:today', // Ensure birthdate is not in the future
         ]);
 
-        $validatedData['name'] = strip_tags($validatedData['name']);
-
-        if (isset($validatedData['about'])) {
-            $validatedData['about'] = strip_tags($validatedData['about']);
+        // Update user fields only if they are provided in the request
+        if ($request->filled('name')) {
+            $user->name = strip_tags($validatedData['name']);
         }
 
-        $validatedData['birthdate'] = Carbon::parse($validatedData['birthdate'])->format('Y-m-d');
+        if ($request->filled('about')) {
+            $user->about = strip_tags($validatedData['about']);
+        }
 
-        $user->name = $validatedData['name'];
-        $user->about = $validatedData['about'];
-        $user->birthdate = $validatedData['birthdate'];
+        if ($request->filled('birthdate')) {
+            $user->birthdate = Carbon::parse($validatedData['birthdate'])->format('Y-m-d');
+        }
 
-        foreach (['profile_image', 'banner'] as $field) {
-            if ($request->hasFile($field)) {
-                $file = $request->file($field);
-                $fileName = $file->getClientOriginalName();
-                $file->storeAs('user_files', $fileName);
-                $user->$field = $fileName;
-            }
+        if ($request->hasFile('profile_image')) {
+            $file = $request->file('profile_image');
+            $fileName = $file->getClientOriginalName();
+            $file->storeAs('user_files', $fileName);
+            $user->profile_image = $fileName;
+        }
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = $file->getClientOriginalName();
+            $file->storeAs('user_files', $fileName);
+            $user->banner = $fileName;
         }
 
         $user->save();
@@ -83,6 +91,6 @@ class UserController extends Controller
             'token' => $token,
             'user' => UserDetailedResource::make($user),
         ]);
-
     }
+
 }
