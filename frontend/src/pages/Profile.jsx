@@ -16,6 +16,8 @@ const Profile = () => {
     const { loading:postLoading, posts, status:postStatus, getUserPosts, meta, links } = usePostManager(authToken)
     const navigate = useNavigate()
 
+    console.log(user)
+
     useEffect(() => {
         const fetchUser = async (name) => {
             const tempUser = await getUser(name)
@@ -34,8 +36,8 @@ const Profile = () => {
     return (
         <div>
             <div className="relative md:container md:mx-auto">
-                <div className="h-[140px] rounded shadow-md w-full bg-blue-800"></div>
-                <div className="absolute top-auto w-40 h-40 -translate-y-1/2 bg-black border rounded-full border-slate-800 md:-translate-x-1/2 left-4 md:left-1/2"></div>
+                <img src={`${user.banner}`} className="object-cover h-[140px] rounded shadow-md w-full bg-blue-800"></img>
+                <img src={`${user.profile_image}`} className="absolute top-auto object-cover w-40 h-40 -translate-y-1/2 border rounded-full border-slate-800 md:-translate-x-1/2 left-4 md:left-1/2"></img>
             </div>
             <div className="container grid items-center justify-between grid-cols-2 gap-4 px-8 pt-24 pb-20 mx-auto">
                 <div className="md:text-center md:col-span-2">

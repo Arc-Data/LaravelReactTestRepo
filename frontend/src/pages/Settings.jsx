@@ -19,6 +19,12 @@ const Settings = () => {
         banner: '',
         birthdate: null,
     })
+    const [ imagePreviews, setImagePreviews ] = useState({
+        profile_image_preview: '',
+        banner_preview: '',
+    })
+
+    console.log(imagePreviews)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -36,6 +42,14 @@ const Settings = () => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         const name = e.target.name
+
+        const previewUrl = URL.createObjectURL(file)
+
+        setImagePreviews(prev => ({
+            ...prev,
+            [`${name}_preview`]: previewUrl
+        }))
+
         setProfile(prev => ({
             ...prev,
             [name]: file
@@ -47,6 +61,11 @@ const Settings = () => {
             const tempUser = await getUser(user.username)
             setOrigData(tempUser)
             setProfile(tempUser)
+
+            setImagePreviews({
+                profile_image_preview: tempUser.profile_image ? tempUser.profile_image : '',
+                banner_preview: tempUser.banner ? tempUser.banner : '' 
+            })
         }
 
         fetchUser()
@@ -112,12 +131,14 @@ const Settings = () => {
                     <div className="flex gap-4">
                         <div className="w-2/3">
                             <label htmlFor="dropzone-banner" className="flex flex-col w-full border border-gray-300 border-dashed h-52">
-                                <div className="relative h-full" style={{
-                                        backgroundImage: `url(${profile.banner ? URL.createObjectURL(profile.banner) : ''} )`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        backgroundRepeat: 'no-repeat'
-                                    }}>
+                                <div className="relative h-full">
+                                    {imagePreviews.banner_preview && (
+                                        <img
+                                            src={imagePreviews.banner_preview}
+                                            alt="Banner Preview"
+                                            className="absolute inset-0 object-cover w-full h-full"
+                                        />
+                                    )}
                                     <div className="absolute inset-0 z-10 flex flex-col items-center justify-center w-full h-full text-white bg-black bg-opacity-60">
                                         <FontAwesomeIcon icon={faImage} className="mb-4 text-4xl"/>
                                         <p className="mb-2 text-sm">Click or drop files to upload banner</p>
@@ -128,15 +149,17 @@ const Settings = () => {
                         </div>
                         <div className="w-1/3 align-bottom">
                             <label htmlFor="dropzone-profile" className="flex flex-col w-full border border-gray-300 border-dashed h-52">
-                                <div className="relative h-full" style={{
-                                    backgroundImage: `url(${profile.profile_image ? URL.createObjectURL(profile.profile_image) : ''} )`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                    backgroundRepeat: 'no-repeat'
-                                }}>
+                                <div className="relative h-full">
+                                    {imagePreviews.profile_image_preview && (
+                                        <img
+                                            src={imagePreviews.profile_image_preview}
+                                            alt="Banner Preview"
+                                            className="absolute inset-0 object-cover w-full h-full"
+                                        />
+                                    )}
                                     <div className="absolute inset-0 z-10 flex flex-col items-center justify-center w-full h-full text-white bg-black bg-opacity-60">
-                                        <FontAwesomeIcon icon={faUser} className="mb-4 text-4xl"/>
-                                        <p className="mx-4 mb-2 text-sm text-center">Click or drop files to upload profile</p>
+                                        <FontAwesomeIcon icon={faImage} className="mb-4 text-4xl"/>
+                                        <p className="mb-2 text-sm">Click or drop files to upload banner</p>
                                     </div>
                                 </div>
                                 <input type="file" className="hidden" id="dropzone-profile" name="profile_image" onChange={handleImageChange}/>

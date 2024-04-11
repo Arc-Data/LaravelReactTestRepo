@@ -50,12 +50,11 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
             'about' => 'nullable|string|max:200',
-            'profile_image' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', // Adjust max file size as needed (in KB)
-            'banner' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', // Adjust max file size as needed (in KB)
-            'birthdate' => 'date|before_or_equal:today', // Ensure birthdate is not in the future
+            'profile_image' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', 
+            'banner' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', 
+            'birthdate' => 'date|before_or_equal:today', 
         ]);
 
-        // Update user fields only if they are provided in the request
         if ($request->filled('name')) {
             $user->name = strip_tags($validatedData['name']);
         }
@@ -71,15 +70,15 @@ class UserController extends Controller
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $fileName = $file->getClientOriginalName();
-            $file->storeAs('user_files', $fileName);
-            $user->profile_image = $fileName;
+            $file->storeAs('public/profile', $fileName);
+            $user->profile_image = asset('storage/profile/' . $fileName);
         }
 
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $fileName = $file->getClientOriginalName();
-            $file->storeAs('user_files', $fileName);
-            $user->banner = $fileName;
+            $file->storeAs('public/banner', $fileName);
+            $user->banner = asset('storage/banner/' . $fileName);
         }
 
         $user->save();
