@@ -6,6 +6,9 @@ import Spinner from "../components/Spinner"
 import usePostManager from "../hooks/usePostManager"
 import dayjs from "dayjs"
 import RelativeTime from "dayjs/plugin/relativeTime"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
+import Post from "../components/Post"
 
 dayjs.extend(RelativeTime)
 
@@ -15,8 +18,6 @@ const Profile = () => {
     const { loading:userLoading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
     const { loading:postLoading, posts, status:postStatus, getUserPosts, meta, links } = usePostManager(authToken)
     const navigate = useNavigate()
-
-    console.log(user)
 
     useEffect(() => {
         const fetchUser = async (name) => {
@@ -36,8 +37,18 @@ const Profile = () => {
     return (
         <div>
             <div className="relative md:container md:mx-auto">
-                <img src={`${user.banner}`} className="object-cover h-[140px] rounded shadow-md w-full bg-blue-800"></img>
+                {user.banner ?
+                <img src={`${user.banner}`} className="object-cover h-[140px] md:h-[260px] rounded shadow-md w-full "></img>
+                :
+                <div className="h-[140px] md:h-[240px] bg-blue-800 rounded shadow-md w-full"></div>
+                }
+                {user.profile_image ? 
                 <img src={`${user.profile_image}`} className="absolute top-auto object-cover w-40 h-40 -translate-y-1/2 border rounded-full border-slate-800 md:-translate-x-1/2 left-4 md:left-1/2"></img>
+                :
+                <div className="absolute top-auto overflow-hidden -translate-y-1/2 bg-black border rounded-full border-slate-800 md:-translate-x-1/2 left-4 md:left-1/2">
+                    <FontAwesomeIcon icon={faUser} className="w-40 h-40 rounded-full bg-slate-800"/>
+                </div>
+                }
             </div>
             <div className="container grid items-center justify-between grid-cols-2 gap-4 px-8 pt-24 pb-20 mx-auto">
                 <div className="md:text-center md:col-span-2">
@@ -55,27 +66,7 @@ const Profile = () => {
             </div>
             <div className='flex flex-col gap-4'>
                     { posts && posts.map(post => {
-                        return (
-                            <div 
-                            key={post.id}
-                            onClick={() => navigate(`/post/${post.id}`)}
-                            className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
-                                <p className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
-                                    <span 
-                                        className='hover:text-slate-200 user-name' 
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            navigate(`/profile/${post.user.name}`)
-                                        }}>
-                                        {post.user.name}
-                                    </span> 
-                                    <span className="text-2xl font-bold">&middot;</span> 
-                                    <span>{dayjs(post.created_at).fromNow()}</span>
-                                </p>
-                                <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
-                                <p className='mt-4'>{post.description}</p>
-                            </div>
-                        )
+                        return (<Post post={post} key={post.id}/>)
                     })}
                     { postLoading && <Spinner />}
                 </div>

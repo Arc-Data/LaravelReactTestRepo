@@ -4,7 +4,7 @@ import usePostManager from "../hooks/usePostManager";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Post = () => {
+const CreatePost = () => {
     const { user, authToken } = useContext(AuthContext)
     const { createPost } = usePostManager(authToken)
     const navigate = useNavigate()
@@ -53,4 +53,4 @@ const Post = () => {
     )
 }
 
-export default Post
+export default CreatePost

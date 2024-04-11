@@ -70,14 +70,14 @@ class UserController extends Controller
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $fileName = $file->getClientOriginalName();
-            $file->storeAs('public/profile', $fileName);
+            $file->storeAs('user_files', $fileName);
             $user->profile_image = asset('storage/profile/' . $fileName);
         }
 
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $fileName = $file->getClientOriginalName();
-            $file->storeAs('public/banner', $fileName);
+            $file->storeAs('user_files', $fileName);
             $user->banner = asset('storage/banner/' . $fileName);
         }
 

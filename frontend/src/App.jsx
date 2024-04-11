@@ -6,7 +6,7 @@ import Register from "./pages/Register"
 import { AuthProvider } from "./context/AuthContext"
 import PrivateRoutes from "./utils/PrivateRoutes"
 import BaseRoutes from "./utils/BaseRoutes"
-import Post from "./pages/Post"
+import CreatePost from "./pages/CreatePost"
 import PostDetail from "./pages/PostDetail"
 import Profile from "./pages/Profile"
 import Settings from "./pages/Settings"
@@ -23,7 +23,7 @@ return (
         <Route element={<PrivateRoutes/>}>
           <Route element={<MainLayout />} >
             <Route path="/" element={<Home />} />
-            <Route path="/post" element={<Post />} />
+            <Route path="/post" element={<CreatePost />} />
             <Route path="/post/:id" element={<PostDetail />} />
             <Route path="/profile/:name" element={<Profile/>} />
             <Route path="/settings" element={<Settings />} />

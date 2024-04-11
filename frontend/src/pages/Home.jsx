@@ -8,6 +8,7 @@ import usePostManager from '../hooks/usePostManager'
 import Spinner from '../components/Spinner'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import Post from '../components/Post'
 
 dayjs.extend(relativeTime)
 
@@ -15,11 +16,6 @@ const Home = () => {
     const { user, authToken } = useContext(AuthContext)
     const  { posts, getPosts, loading } = usePostManager(authToken)
     const navigate = useNavigate()
-
-    const handleClick = (e) => {
-        console.log("What")
-        console.log("Hello")
-    }
 
     useEffect(() => {
         const retrievePosts = async () => {
@@ -41,27 +37,7 @@ const Home = () => {
             <div className='flex-1'>
                 <div className='flex flex-col gap-4'>
                     { posts && posts.map(post => {
-                        return (
-                            <div 
-                            key={post.id}
-                            onClick={() => navigate(`/post/${post.id}`)}
-                            className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:border-blue-800 hover:cursor-pointer'>
-                                <p className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
-                                    <span 
-                                        className='hover:text-slate-200 user-name' 
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            navigate(`/profile/${post.user.name}`)
-                                        }}>
-                                        {post.user.name}
-                                    </span> 
-                                    <span className="text-2xl font-bold">&middot;</span> 
-                                    <span>{dayjs(post.created_at).fromNow()}</span>
-                                </p>
-                                <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
-                                <p className='mt-4'>{post.description}</p>
-                            </div>
-                        )
+                        return (<Post post={post} key={post.id}/>)
                     })}
                     { loading && <Spinner />}
                 </div>
