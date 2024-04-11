@@ -9,6 +9,7 @@ import RelativeTime from "dayjs/plugin/relativeTime"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import Post from "../components/Post"
+import FloatingNotification from "../components/FloatingNotification"
 
 dayjs.extend(RelativeTime)
 
@@ -65,12 +66,12 @@ const Profile = () => {
                 <div></div>
             </div>
             <div className='flex flex-col gap-4'>
-                    { posts && posts.map(post => {
-                        return (<Post post={post} key={post.id}/>)
-                    })}
-                    { postLoading && <Spinner />}
-                </div>
-            
+            { posts && posts.map(post => {
+                return (<Post post={post} key={post.id}/>)
+            })}
+            { postLoading && <Spinner />}
+            </div>
+            <FloatingNotification message={"Some kind of message"}/>
         </div>
     )
 }
