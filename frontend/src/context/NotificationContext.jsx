@@ -1,4 +1,4 @@
-import { createContext } from "react"
+import { createContext, useState } from "react"
 
 const NotificationContext = createContext()
 
@@ -23,8 +23,9 @@ export const NotificationProvider = ({ children }) => {
     }
 
     const contextData = {
+        notifications,
         addNotification,
-        removeNotification
+        removeNotification,
     }
 
     return (

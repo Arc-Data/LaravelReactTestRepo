@@ -1,10 +1,19 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import NotificationContext from "../context/NotificationContext"
 
-const FloatingNotification = ({ message }) => {
-    const [ visible, setVisible ] = useState(true)
+const FloatingNotification = () => {
+    const { notifications } = useContext(NotificationContext)
 
     return (
-        <div className="fixed p-4 text-white bg-blue-500 bottom-4 right-4">{message}</div>
+        <div className="fixed p-4 text-white bottom-4 right-4">
+            {notifications.map((notification, index) => {
+                return (
+                    <div key={index} className={`p-4 text-white bg-blue-500 mb-4 z-10 `}>
+                        {notification}
+                    </div>
+                )
+            })}
+        </div>
     )
 }
 

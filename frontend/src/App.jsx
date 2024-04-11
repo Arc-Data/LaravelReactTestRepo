@@ -17,24 +17,24 @@ function App() {
 return (
   <BrowserRouter>
     <AuthProvider>
-      <Routes>
-        <Route element={<BaseRoutes />} >
-          <Route path="/login/" element={<Login />} />
-          <Route path="/register/" element={<Register />} />
-        </Route>
-        <Route element={<PrivateRoutes/>}>
-          <NotificationProvider>
-            <Route element={<MainLayout />} >
-              <Route path="/" element={<Home />} />
-              <Route path="/post" element={<CreatePost />} />
-              <Route path="/post/:id" element={<PostDetail />} />
-              <Route path="/profile/:name" element={<Profile/>} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
-            <FloatingNotification />
-          </NotificationProvider>
-        </Route>
-      </Routes>
+      <NotificationProvider>
+        <Routes>
+          <Route element={<BaseRoutes />} >
+            <Route path="/login/" element={<Login />} />
+            <Route path="/register/" element={<Register />} />
+          </Route>
+          <Route element={<PrivateRoutes/>}>
+              <Route element={<MainLayout />} >
+                <Route path="/" element={<Home />} />
+                <Route path="/post" element={<CreatePost />} />
+                <Route path="/post/:id" element={<PostDetail />} />
+                <Route path="/profile/:name" element={<Profile/>} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
+          </Route>
+        </Routes>
+        <FloatingNotification />
+      </NotificationProvider>
     </AuthProvider>
   </BrowserRouter>
 )
