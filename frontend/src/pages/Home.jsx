@@ -15,7 +15,6 @@ dayjs.extend(relativeTime)
 const Home = () => {
     const { user, authToken } = useContext(AuthContext)
     const  { posts, getPosts, loading } = usePostManager(authToken)
-    const navigate = useNavigate()
 
     useEffect(() => {
         const retrievePosts = async () => {

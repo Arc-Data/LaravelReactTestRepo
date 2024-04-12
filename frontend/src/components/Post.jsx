@@ -1,9 +1,12 @@
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from "dayjs"
+import { useNavigate } from 'react-router-dom'
 
 dayjs.extend(RelativeTime)
 
 const Post = ({ post }) => {
+    const navigate = useNavigate()
+
     return (
         <div 
             onClick={() => navigate(`/post/${post.id}`)}
@@ -24,7 +27,7 @@ const Post = ({ post }) => {
                 <span>{dayjs(post.created_at).fromNow()}</span>
             </div>
             <p className='text-2xl font-bold text-blue-800'>{post.title}</p>
-            <p className='mt-4'>{post.description}</p>
+            <p className='mt-4' dangerouslySetInnerHTML={{ __html: post.description}} />
         </div>
     )
 }

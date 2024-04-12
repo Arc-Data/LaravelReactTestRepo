@@ -96,7 +96,7 @@ const PostDetail = () => {
                         <div>
                             <textarea 
                                 name="description"
-                                className="w-full px-2 py-3 bg-transparent border border-slate-800"
+                                className="w-full px-2 py-3 whitespace-pre-wrap bg-transparent border border-slate-800"
                                 rows={4} 
                                 value={editedPost.description}
                                 onChange={handleEditedPostChange}/>
@@ -110,7 +110,7 @@ const PostDetail = () => {
                     :
                     <>
                     <p className="text-4xl font-bold">{post.title}</p>
-                    <p className="mt-4">{post.description}</p>
+                    <p className="mt-4" dangerouslySetInnerHTML={{ __html: post.description}} />
                     </>
                 }
             </div>

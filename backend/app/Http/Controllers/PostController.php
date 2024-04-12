@@ -45,7 +45,9 @@ class PostController extends Controller
         $post->user()->associate($user);
         $post->save();
 
-        return new PostResource($post);
+        return response()->json([
+            'message' => 'Post successfully created'
+        ]);
     }
 
     /**
