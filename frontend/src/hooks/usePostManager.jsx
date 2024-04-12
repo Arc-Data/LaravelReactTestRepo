@@ -1,7 +1,9 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import axios from "../axios"
+import NotificationContext from "../context/NotificationContext"
 
 const usePostManager = (authToken) => {
+    const { addNotification } = useContext(NotificationContext)
     const [post, setPost] = useState()
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
@@ -17,6 +19,8 @@ const usePostManager = (authToken) => {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
+
+            addNotification(response.data.message)
         }
         catch (error) {
             console.log("An error occured while creating post. ", error)
@@ -31,6 +35,7 @@ const usePostManager = (authToken) => {
                 }
             })
 
+            addNotification(response.data.message)
         }
         catch (error) {
             console.log("An error occured while deleting post. ", error)
@@ -64,11 +69,12 @@ const usePostManager = (authToken) => {
             })
 
             const postData =  response.data.data
-            
+            const formattedDescription = postData.description.replace(/<br \/>/g, '\n')
+
             setPost(postData)
             setEditedPost({
                 title: postData.title,
-                description: postData.description
+                description: formattedDescription
             })
         }
         catch (error) {
@@ -101,6 +107,8 @@ const usePostManager = (authToken) => {
 
     const handleEditedPostChange = (e) => {
         const { name, value } = e.target
+
+        const formattedValue = value.replace('<br />', '\n')
         setEditedPost(prevData => ({
             ...prevData,
             [name]: value,
@@ -116,11 +124,17 @@ const usePostManager = (authToken) => {
 
     const editPost = async (id, data) => {
         setLoading(true)
+
         setPost(prevData => ({
             ...prevData,
             'title': data.title,
             'description': data.description
         }))
+
+        setEditedPost({
+            title: data.title,
+            description: data.description
+        })
 
         try {
             const response = await axios.patch(`/api/posts/${id}/`, data, {
@@ -129,9 +143,11 @@ const usePostManager = (authToken) => {
                 }
             })
 
+            addNotification(response.data.message)
         }
         catch (error) {
-            console.log('An error occured while updating post ', error)
+            // can i still log the details of response.data.message in here in case the fetch goes wrong?
+            console.log('An error occurede while updating post ', error)
         }
 
         setLoading(false)

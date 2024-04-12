@@ -76,9 +76,10 @@ class PostController extends Controller
             'description' => 'required|string'           
         ]);
 
+        
         $validatedData['title'] = strip_tags($validatedData['title']);
-        $validatedData['description'] = strip_tags($validatedData['description']);
-
+        $validatedData['description'] = strip_tags(nl2br($validatedData['description']), '<br>');
+        
         $post->update($validatedData);
 
         return response()->json(['message' => 'Post Updated Successfully'], 201);

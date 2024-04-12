@@ -2,6 +2,7 @@ import RelativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from "dayjs"
 import { useNavigate } from 'react-router-dom'
 
+
 dayjs.extend(RelativeTime)
 
 const Post = ({ post }) => {
