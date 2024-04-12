@@ -20,6 +20,7 @@ class PostDetailedResource extends JsonResource
             "description" => $this->description,
             "user" => new PostUserResource($this->user),
             "created_at" => $this->created_at->toIso8601String(),
+            "comments" => CommentResource::collection($this->comments),
         ];
     }
 }

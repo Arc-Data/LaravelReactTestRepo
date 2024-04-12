@@ -40,8 +40,6 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-
-        Log::info('Request data: ' . json_encode($request->all()));
         
         $validatedData = $request->validate([
             'name' => [
@@ -50,8 +48,8 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
             'about' => 'nullable|string|max:200',
-            'profile_image' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', 
-            'banner' => 'nullable|file|mimes:svg,png,jpg,jpeg|max:2048', 
+            'profile_image' => 'nullable|file|mimes:svg,png,jpg,jpeg', 
+            'banner' => 'nullable|file|mimes:svg,png,jpg,jpeg', 
             'birthdate' => 'date|before_or_equal:today', 
         ]);
 
@@ -70,14 +68,14 @@ class UserController extends Controller
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $fileName = $file->getClientOriginalName();
-            $file->storeAs('user_files', $fileName);
+            $file->storeAs('public/profile/', $fileName);
             $user->profile_image = asset('storage/profile/' . $fileName);
         }
 
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $fileName = $file->getClientOriginalName();
-            $file->storeAs('user_files', $fileName);
+            $file->storeAs('public/banner/', $fileName);
             $user->banner = asset('storage/banner/' . $fileName);
         }
 
