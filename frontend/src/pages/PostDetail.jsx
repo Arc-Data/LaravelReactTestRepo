@@ -24,9 +24,12 @@ const PostDetail = () => {
 
     const handleEditPost = async (e) => {
         e.preventDefault();
+
+        const editedDescription = e.target.description.value.replace(/\n/g, '<br />');
+        
         await editPost(id, {
             title: e.target.title.value, 
-            description: e.target.description.value
+            description: editedDescription
         })
         toggleEditing()
     }
@@ -79,7 +82,10 @@ const PostDetail = () => {
             </div>
             <div className="p-12 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 ">
                 <div className="flex justify-between">
-                    <Link to={`/profile/${post.user.name}`} className='mb-2 text-sm text-slate-600 hover:text-slate-200 hover:cursor-pointer'>{post.user.name}</Link>
+                    <Link to={`/profile/${post.user.name}`} className='flex items-center gap-2 mb-2 text-sm text-slate-600 hover:text-slate-200 hover:cursor-pointer'>
+                        <img src={post.user.profile_image} alt="" className="object-cover w-8 h-8 rounded-full"/>
+                        <span>{post.user.name}</span>
+                    </Link>
                     <p className='mb-2 text-sm text-slate-600 '>{dayjs(post.created_at).format("MMM D, YYYY h:mm A")}</p>
                 </div>
                 {isEditing ?
@@ -98,7 +104,7 @@ const PostDetail = () => {
                                 name="description"
                                 className="w-full px-2 py-3 whitespace-pre-wrap bg-transparent border border-slate-800"
                                 rows={4} 
-                                value={editedPost.description}
+                                value={editedPost.description.replace(/<br\s*\/?>/gi, '\n')} 
                                 onChange={handleEditedPostChange}/>
                         </div>
                         <div className="flex *:flex-1 *:py-2 mt-8 *:border gap-4 *:rounded-md ">

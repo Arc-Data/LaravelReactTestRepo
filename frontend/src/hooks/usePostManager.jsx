@@ -8,7 +8,10 @@ const usePostManager = (authToken) => {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [status, setStatus] = useState()
-    const [editedPost, setEditedPost] = useState() 
+    const [editedPost, setEditedPost] = useState({
+        title: '',
+        description: '',
+    }) 
     const [meta, setMeta] = useState()
     const [links, setLinks] = useState()
 
@@ -69,13 +72,9 @@ const usePostManager = (authToken) => {
             })
 
             const postData =  response.data.data
-            const formattedDescription = postData.description.replace(/<br \/>/g, '\n')
 
             setPost(postData)
-            setEditedPost({
-                title: postData.title,
-                description: formattedDescription
-            })
+            setEditedPost(postData)
         }
         catch (error) {
             console.log("An error occured while retrieving specific post", error)
@@ -108,7 +107,6 @@ const usePostManager = (authToken) => {
     const handleEditedPostChange = (e) => {
         const { name, value } = e.target
 
-        const formattedValue = value.replace('<br />', '\n')
         setEditedPost(prevData => ({
             ...prevData,
             [name]: value,
@@ -125,16 +123,8 @@ const usePostManager = (authToken) => {
     const editPost = async (id, data) => {
         setLoading(true)
 
-        setPost(prevData => ({
-            ...prevData,
-            'title': data.title,
-            'description': data.description
-        }))
-
-        setEditedPost({
-            title: data.title,
-            description: data.description
-        })
+        console.log(data.description)
+        console.log(data)
 
         try {
             const response = await axios.patch(`/api/posts/${id}/`, data, {
@@ -143,6 +133,13 @@ const usePostManager = (authToken) => {
                 }
             })
 
+            setPost(prevData => ({
+                ...prevData,
+                'title': data.title,
+                'description': data.description
+            }))
+
+            setEditedPost(data)
             addNotification(response.data.message)
         }
         catch (error) {
