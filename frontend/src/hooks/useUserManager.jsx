@@ -28,17 +28,22 @@ const useUserManager = (authToken) => {
     }
 
     const editUser = async (data) => {
+        console.log(data)
         const formData = new FormData()
 
         Object.entries(data).forEach(([key, value]) => {
             if (value !== user[key]) {
-                console.log(key, value)
+                console.log("Only changing", key, value)
                 formData.append(key, value);
             }
         });
 
+        for (let pair of formData.entries()) {
+            console.log("Added : ", pair[0], pair[1])
+        }
+
         try {
-            const response = await axios.post('/api/user/', data, {
+            const response = await axios.post('/api/user/', formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     "Authorization": `Bearer ${authToken}`

@@ -8,9 +8,9 @@ const UserNav = () => {
 	const { user, logoutUser } = useContext(AuthContext)
 
 	return (
-		<div className="fixed top-0 left-0 z-10 w-full p-4 bg-blue-600 shadow-xl ">
+		<div className="fixed top-0 left-0 z-10 w-full p-4 border-b shadow-xl border-slate-900 bg-background">
 			<nav className="container flex items-center justify-between mx-auto">
-				<Link to="/">WriteUps</Link>
+				<Link to="/" className="text-2xl font-bold text-primary">WriteUps</Link>
 				{!user ?   
 				<div className="flex gap-8">
 					<Link to="/login">Login</Link>

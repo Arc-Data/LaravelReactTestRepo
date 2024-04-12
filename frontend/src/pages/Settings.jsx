@@ -11,7 +11,6 @@ import Spinner from "../components/Spinner";
 const Settings = () => {
     const { user, authToken } = useContext(AuthContext)
     const { loading, getUser, editUser } = useUserManager(authToken)
-    const [ origData, setOrigData ] = useState()
     const [ profile, setProfile ] = useState({
         name: '',
         about: '',
@@ -23,8 +22,6 @@ const Settings = () => {
         profile_image_preview: '',
         banner_preview: '',
     })
-
-    console.log(imagePreviews)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -59,7 +56,6 @@ const Settings = () => {
     useEffect(() => {
         const fetchUser = async () => {
             const tempUser = await getUser(user.username)
-            setOrigData(tempUser)
             setProfile(tempUser)
 
             setImagePreviews({

@@ -26,9 +26,9 @@ const Home = () => {
     return (
         <div className='flex flex-col gap-8 mt-4 md:flex-row'>
             <div className='flex flex-col md:order-2'>
-                <div className='p-8 bg-black border rounded-md shadow md:sticky md:top-28 border-slate-500'>
+                <div className='p-8 border rounded-md shadow bg-secondary md:sticky md:top-28 border-slate-500'>
                     <p className='mb-4'>Hello {user.username}!!</p>
-                    <Link to="/post" className='px-3 py-2 hover:bg-blue-400'>
+                    <Link to="/post" className='px-3 py-2 hover:bg-accent'>
                         <FontAwesomeIcon icon={faPencil} /> Write a Post
                     </Link>
                 </div> 

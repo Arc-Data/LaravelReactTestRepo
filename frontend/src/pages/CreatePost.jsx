@@ -9,8 +9,6 @@ const CreatePost = () => {
     const { createPost } = usePostManager(authToken)
     const navigate = useNavigate()
 
-    console.log(user, authToken)
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         await createPost({
