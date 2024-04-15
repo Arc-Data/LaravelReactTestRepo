@@ -19,7 +19,7 @@ export const NotificationProvider = ({ children }) => {
     
         setTimeout(() => {
             removeNotification(message)
-        }, 5000)
+        }, 2000)
     }
 
     const contextData = {

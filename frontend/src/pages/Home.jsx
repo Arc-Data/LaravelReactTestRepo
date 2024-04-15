@@ -9,19 +9,27 @@ import Spinner from '../components/Spinner'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Post from '../components/Post'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 dayjs.extend(relativeTime)
 
 const Home = () => {
     const { user, authToken } = useContext(AuthContext)
-    const  { posts, getPosts, loading } = usePostManager(authToken)
+    const { posts, getPosts, hasMorePosts } = usePostManager(authToken)
 
     useEffect(() => {
-        const retrievePosts = async () => {
+        const fetchData = async () => {
             await getPosts()
         }
-        retrievePosts()
+
+        fetchData()
     }, [])
+
+    const fetchMorePosts = () => {
+        if (hasMorePosts) {
+            getPosts(true)
+        }
+    }
 
     return (
         <div className='flex flex-col gap-8 mt-4 md:flex-row'>
@@ -34,12 +42,19 @@ const Home = () => {
                 </div> 
             </div>
             <div className='flex-1'>
+                <InfiniteScroll
+                    dataLength={posts.length}
+                    next={fetchMorePosts}
+                    hasMore={hasMorePosts}
+                    loader={<Spinner />}>
+                    
                 <div className='flex flex-col gap-4'>
-                    { posts && posts.map(post => {
-                        return (<Post post={post} key={post.id}/>)
-                    })}
-                    { loading && <Spinner />}
+                        { posts && posts.map((post, index) => {
+                            return (<Post post={post} key={post.id}/>)
+                        })}
+                    
                 </div>
+                    </InfiniteScroll>
             </div>
         </div>
     )

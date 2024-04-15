@@ -8,13 +8,13 @@ const usePostManager = (authToken) => {
     const [ posts, setPosts ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()
-    const [ comments, setComments ] = useState([])
+
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [ hasMorePosts, setHasMorePosts ] = useState(true)
     const [ editedPost, setEditedPost ] = useState({
         title: '',
         description: '',
     }) 
-    const [meta, setMeta] = useState()
-    const [links, setLinks] = useState()
 
     const createPost = async (data) => {
         try {
@@ -42,24 +42,37 @@ const usePostManager = (authToken) => {
             addNotification(response.data.message)
         }
         catch (error) {
-            console.log("An error occured while deleting post. ", error)
+            addNotification("An error occured while deleting post.")
         }
     }
 
     const getPosts = async () => {
         setLoading(true)
         try {
-            const response = await axios.get('/api/posts/', {
+            const url = `/api/posts?page=${currentPage}`;
+            const response = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
-            setPosts(response.data.data)
+            setPosts(prevPosts => [...prevPosts, ...response.data.data])
+            
+            if (response.data.links && response.data.links.next) {
+                addNotification("More posts detected")
+                console.log(currentPage)
+                setHasMorePosts(true)
+                setCurrentPage(prev => prev + 1)
+            } else {
+                addNotification("No more posts detected")
+                setHasMorePosts(false)
+            }
         }   
         catch (error) {
-            console.log("An error occured while retrieving posts", error)
+            addNotification("An error occured while retrieving posts", error)
+        } finally {
+            console.log("Shouldnt it be false by now?")
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     const getPost = async (id) => {
@@ -78,7 +91,7 @@ const usePostManager = (authToken) => {
             setEditedPost(postData)
         }
         catch (error) {
-            console.log("An error occured while retrieving specific post", error)
+            addNotification("An error occured while retrieving specific post", error)
         }
 
 
@@ -96,8 +109,6 @@ const usePostManager = (authToken) => {
             }) 
 
             setPosts(response.data.data)
-            setMeta(response.data.meta)
-            setLinks(response.data.links)
         }
         catch (error) {
             console.log("An error occured while fetching user posts. ", error)
@@ -154,8 +165,6 @@ const usePostManager = (authToken) => {
     return {
         post,
         posts,
-        links,
-        meta,
         loading,
         status,
         createPost,
@@ -164,6 +173,7 @@ const usePostManager = (authToken) => {
         getPost,
         getUserPosts,
         editPost,
+        hasMorePosts,
         editedPost,
         handleEditedPostChange,
         cancelEdit,
