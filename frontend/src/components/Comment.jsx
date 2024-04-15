@@ -1,5 +1,4 @@
 const Comment = ({ comment }) => {
-    console.log(comment)
 
     return (
         <div className="flex gap-4 px-12 py-2">

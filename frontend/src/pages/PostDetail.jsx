@@ -12,9 +12,10 @@ import Comment from "../components/Comment"
 const PostDetail = () => {
     const { id } = useParams()
     const { authToken, user } = useContext(AuthContext)
-    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost } = usePostManager(authToken)
+    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, createComment } = usePostManager(authToken)
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
+    const [ comment, setComment ] = useState('')
 
     const navigate = useNavigate()
 
@@ -44,6 +45,20 @@ const PostDetail = () => {
         navigate('/')
     }
 
+    const handleCommentSubmit = async (e) => {
+        e.preventDefault();
+        const submittedComment = e.target.value.trim();
+
+        if (submittedComment !== '') {
+            await createComment(id, submittedComment)
+        }
+
+    }
+
+    const handleCommentInputChange = (e) => {
+        setComment(e.target.value)
+    }
+
     const toggleEditing = () => {
         const prevEditState = isEditing
         setEditing(prev => !prev)
@@ -62,8 +77,6 @@ const PostDetail = () => {
     if (loading) {
         return (<Spinner />)
     }
-
-    console.log(post)
 
     return (
         <div className="flex flex-col gap-8">
@@ -131,6 +144,14 @@ const PostDetail = () => {
                 <input 
                     type="text"
                     placeholder="Add a comment..." 
+                    name="comment"
+                    value={comment}
+                    onChange={handleCommentInputChange}
+                    onKeyDown={(e) => {
+                        if (e.key == "Enter") {
+                            handleCommentSubmit(e);
+                        }
+                    }}
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
             <div>

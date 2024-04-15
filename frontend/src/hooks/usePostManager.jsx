@@ -4,11 +4,12 @@ import NotificationContext from "../context/NotificationContext"
 
 const usePostManager = (authToken) => {
     const { addNotification } = useContext(NotificationContext)
-    const [post, setPost] = useState()
-    const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [status, setStatus] = useState()
-    const [editedPost, setEditedPost] = useState({
+    const [ post, setPost ] = useState()
+    const [ posts, setPosts ] = useState([])
+    const [ loading, setLoading ] = useState(true)
+    const [ status, setStatus ] = useState()
+    const [ comments, setComments ] = useState([])
+    const [ editedPost, setEditedPost ] = useState({
         title: '',
         description: '',
     }) 
@@ -144,10 +145,25 @@ const usePostManager = (authToken) => {
         }
         catch (error) {
             // can i still log the details of response.data.message in here in case the fetch goes wrong?
-            console.log('An error occurede while updating post ', error)
+            console.log('An error occured while updating post ', error)
         }
 
         setLoading(false)
+    }
+
+    const createComment = async (id, comment) => {
+        try {
+            const response = await axios.post(`api/posts/${id}/comments`, comment, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+            setComments([...comment, response.data.comment])
+            addNotification(response.data.message)
+        }
+        catch (error) {
+            addNotification("An error occured while adding a comment.")
+        }
     }
     
     return {
@@ -166,6 +182,7 @@ const usePostManager = (authToken) => {
         editedPost,
         handleEditedPostChange,
         cancelEdit,
+        createComment,
     }
 }
 

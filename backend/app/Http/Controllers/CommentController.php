@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -26,9 +29,22 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
-        //
+        $user = auth()->user();
+        $content = $request->getContent();
+
+        $comment = new Comment();
+        $comment->content = $content;
+
+        $comment->post()->associate($post);
+        $comment->user()->associate($user);
+        $comment->save();
+        
+        return response()->json([
+            "comment" => new CommentResource($comment),
+            "message" => "Comment added"
+        ]);
     }
 
     /**
@@ -52,7 +68,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        
     }
 
     /**
