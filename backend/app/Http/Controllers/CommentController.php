@@ -15,7 +15,6 @@ class CommentController extends Controller
      */
     public function index(Post $post)
     {
-        Log::info($post->comments);
         return CommentResource::collection($post->comments);
     }
 

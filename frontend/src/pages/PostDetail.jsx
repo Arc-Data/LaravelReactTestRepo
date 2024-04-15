@@ -53,6 +53,7 @@ const PostDetail = () => {
 
         if (submittedComment !== '') {
             await createComment(id, submittedComment)
+            setComment('')            
         }
 
     }
