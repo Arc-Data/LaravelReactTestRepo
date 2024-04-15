@@ -8,11 +8,13 @@ import { faArrowLeft, faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-i
 import DeleteModal from "../modals/DeleteModal"
 import dayjs from 'dayjs'
 import Comment from "../components/Comment"
+import useCommentManager from "../hooks/useCommentManager"
 
 const PostDetail = () => {
     const { id } = useParams()
     const { authToken, user } = useContext(AuthContext)
-    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, createComment } = usePostManager(authToken)
+    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost } = usePostManager(authToken)
+    const { comments, loading:commentsLoading, status, getComments, createComment } = useCommentManager(authToken) 
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
     const [ comment, setComment ] = useState('')
@@ -69,6 +71,7 @@ const PostDetail = () => {
     useEffect(() => {
         const retrievePost = async () => {
             await getPost(id) 
+            await getComments(id)
         }
 
         retrievePost()
@@ -155,9 +158,13 @@ const PostDetail = () => {
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
             <div>
-            {post.comments && post.comments.map(comment => {
+            {commentsLoading ? 
+            <Spinner /> 
+            :
+            comments && comments.map(comment => {
                 return (<Comment key={comment.id} comment={comment}/>)
-            })}
+            })
+            }
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
         </div>

@@ -13,9 +13,10 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Post $post)
     {
-        //
+        Log::info($post->comments);
+        return CommentResource::collection($post->comments);
     }
 
     /**

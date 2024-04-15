@@ -150,21 +150,6 @@ const usePostManager = (authToken) => {
 
         setLoading(false)
     }
-
-    const createComment = async (id, comment) => {
-        try {
-            const response = await axios.post(`api/posts/${id}/comments`, comment, {
-                headers: {
-                    "Authorization": `Bearer ${authToken}`
-                }
-            })
-            setComments([...comment, response.data.comment])
-            addNotification(response.data.message)
-        }
-        catch (error) {
-            addNotification("An error occured while adding a comment.")
-        }
-    }
     
     return {
         post,
@@ -182,7 +167,6 @@ const usePostManager = (authToken) => {
         editedPost,
         handleEditedPostChange,
         cancelEdit,
-        createComment,
     }
 }
 

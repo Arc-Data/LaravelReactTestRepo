@@ -37,6 +37,7 @@ Route::middleware('auth:api')->group(function () {
         Route::patch('/{post}', [PostController::class,'update']);
         
         Route::prefix('{post}/comments')->group(function () {
+            Route::get('/', [CommentController::class,'index']);
             Route::post('/', [CommentController::class,'store']);
         });
     });
