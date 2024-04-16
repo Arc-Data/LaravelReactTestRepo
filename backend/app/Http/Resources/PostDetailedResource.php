@@ -14,11 +14,16 @@ class PostDetailedResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = auth()->user();
+        $isLiked = $user ? $this->likes->contains($user->id) : false;
+
         return [
             "id"=> $this->id,
             "title" => $this->title,
             "description" => $this->description,
+            "likes" => $this->likes()->count(),
             "user" => new PostUserResource($this->user),
+            "isLiked" => $isLiked,
             "created_at" => $this->created_at->toIso8601String(),
         ];
     }
