@@ -20,11 +20,16 @@ const PostDetail = () => {
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
     const [ comment, setComment ] = useState('')
+    const [ likes, setLikes ] = useState(0)
+    const [ isLiked, setIsLiked ] = useState(false)
 
     const navigate = useNavigate()
 
     const handleSubmitLike = (e) => {
         e.stopPropagation()
+        const num = isLiked ? -1 : 1
+        setLikes(prev => prev + num)
+        setIsLiked(prev => !prev) 
         addNotification("Post liked.")        
     }
 
@@ -67,7 +72,6 @@ const PostDetail = () => {
             await createComment(id, submittedComment)
             setComment('')            
         }
-
     }
 
     const handleCommentInputChange = (e) => {
@@ -89,6 +93,13 @@ const PostDetail = () => {
 
         retrievePost()
     }, [id])
+
+    useEffect(() => {
+        if (post) {
+            setLikes(post.likes)
+            setIsLiked(post.isLiked)
+        }
+    }, [post])
 
     if (loading) {
         return (<Spinner />)
@@ -155,7 +166,7 @@ const PostDetail = () => {
                             <div className='flex gap-4 mt-2'>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>
                                     <FontAwesomeIcon icon={faThumbsUp}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
-                                    <p className='text-sm text-slate-400'>100</p>
+                                    <p className='text-sm text-slate-400'>{likes}</p>
                                 </button>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
                                     <FontAwesomeIcon icon={faMessage}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>

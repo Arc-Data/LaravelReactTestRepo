@@ -3,18 +3,22 @@ import dayjs from "dayjs"
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faRetweet, faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import NotificationContext from '../context/NotificationContext'
-
 
 dayjs.extend(RelativeTime)
 
 const Post = ({ post }) => {
     const navigate = useNavigate()
     const { addNotification } = useContext(NotificationContext)
+    const [ likes, setLikes ] = useState(post.likes)
+    const [ isLiked, setIsLiked ] = useState(post.isLiked)
 
     const handleSubmitLike = (e) => {
         e.stopPropagation()
+        const num = isLiked ? -1 : 1
+        setLikes(prev => prev + num)
+        setIsLiked(prev => !prev) 
         addNotification("Post liked.")        
     }
 
@@ -47,7 +51,7 @@ const Post = ({ post }) => {
             <div className='flex gap-4 mt-2'>
                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>
                     <FontAwesomeIcon icon={faThumbsUp}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
-                    <p className='text-sm text-slate-400'>100</p>
+                    <p className='text-sm text-slate-400'>{likes}</p>
                 </button>
                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
                     <FontAwesomeIcon icon={faMessage}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
