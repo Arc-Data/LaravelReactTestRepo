@@ -9,8 +9,8 @@ import RelativeTime from "dayjs/plugin/relativeTime"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import Post from "../components/Post"
-import FloatingNotification from "../components/FloatingNotification"
 import InfiniteScroll from "react-infinite-scroll-component"
+import PostEnd from "../components/PostEnd"
 
 dayjs.extend(RelativeTime)
 
@@ -19,7 +19,6 @@ const Profile = () => {
     const { authToken, user:currentUser} = useContext(AuthContext)
     const { loading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
     const { posts, status:postStatus, getUserPosts, hasMorePosts } = usePostManager(authToken)
-    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchUser = async (name) => {
@@ -77,6 +76,8 @@ const Profile = () => {
                 next={fetchMorePosts}
                 hasMore={hasMorePosts}
                 loader={<Spinner />}
+                endMessage={<PostEnd />}
+
                 >
             <div className='flex flex-col gap-4'>
             { posts && posts.map(post => {

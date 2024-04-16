@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Post from '../components/Post'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import PostEnd from '../components/PostEnd'
 
 dayjs.extend(relativeTime)
 
@@ -46,15 +47,14 @@ const Home = () => {
                     dataLength={posts.length}
                     next={fetchMorePosts}
                     hasMore={hasMorePosts}
-                    loader={<Spinner />}>
-                    
-                <div className='flex flex-col gap-4'>
+                    loader={<Spinner />}
+                    endMessage={<PostEnd />}>
+                    <div className='flex flex-col gap-4'>
                         { posts && posts.map((post, index) => {
                             return (<Post post={post} key={post.id}/>)
                         })}
-                    
-                </div>
-                    </InfiniteScroll>
+                    </div>
+                </InfiniteScroll>
             </div>
         </div>
     )
