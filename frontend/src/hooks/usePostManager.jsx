@@ -97,18 +97,27 @@ const usePostManager = (authToken) => {
     const getUserPosts = async (id) => {
         setLoading(true)
         try {
-            const response = await axios.get(`/api/user/${id}/posts`, {
+            const url = `/api/user/${id}/posts?page=${currentPage}`
+            const response = await axios.get(url, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
             }) 
 
-            setPosts(response.data.data)
+            setPosts(prevPosts => [...prevPosts, ...response.data.data])
+        
+            if (response.data.links && response.data.links.next) {
+                setCurrentPage(prev => prev + 1)
+                setHasMorePosts(true)
+            } else {
+                setHasMorePosts(false)
+            }
         }
         catch (error) {
-            console.log("An error occured while fetching user posts. ", error)
+            addNotification(error.response.data.message, "error")
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     const handleEditedPostChange = (e) => {

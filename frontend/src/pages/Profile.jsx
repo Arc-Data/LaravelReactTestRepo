@@ -10,14 +10,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 import Post from "../components/Post"
 import FloatingNotification from "../components/FloatingNotification"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 dayjs.extend(RelativeTime)
 
 const Profile = () => {
     const { name } = useParams()
     const { authToken, user:currentUser} = useContext(AuthContext)
-    const { loading:userLoading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
-    const { loading:postLoading, posts, status:postStatus, getUserPosts, meta, links } = usePostManager(authToken)
+    const { loading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
+    const { posts, status:postStatus, getUserPosts, hasMorePosts } = usePostManager(authToken)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -28,8 +29,14 @@ const Profile = () => {
         
         fetchUser(name)
     }, [name])
+
+    const fetchMorePosts = () => {
+        if (hasMorePosts) {
+            getUserPosts(user.id)
+        }
+    }
     
-    if (userLoading) {
+    if (loading) {
         return (
             <Spinner />
         )
@@ -65,13 +72,18 @@ const Profile = () => {
                 </div>
                 <div></div>
             </div>
+            <InfiniteScroll 
+                dataLength={posts.length}
+                next={fetchMorePosts}
+                hasMore={hasMorePosts}
+                loader={<Spinner />}
+                >
             <div className='flex flex-col gap-4'>
             { posts && posts.map(post => {
                 return (<Post post={post} key={post.id}/>)
             })}
-            { postLoading && <Spinner />}
             </div>
-            <FloatingNotification message={"Some kind of message"}/>
+            </InfiniteScroll>
         </div>
     )
 }
