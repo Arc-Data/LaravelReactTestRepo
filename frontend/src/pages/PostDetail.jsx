@@ -4,14 +4,16 @@ import AuthContext from "../context/AuthContext"
 import usePostManager from "../hooks/usePostManager"
 import Spinner from "../components/Spinner"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faMessage, faPencilAlt, faRetweet, faThumbsUp, faTrash } from "@fortawesome/free-solid-svg-icons"
 import DeleteModal from "../modals/DeleteModal"
 import dayjs from 'dayjs'
 import Comment from "../components/Comment"
 import useCommentManager from "../hooks/useCommentManager"
+import NotificationContext from "../context/NotificationContext"
 
 const PostDetail = () => {
     const { id } = useParams()
+    const { addNotification } = useContext(NotificationContext)
     const { authToken, user } = useContext(AuthContext)
     const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost } = usePostManager(authToken)
     const { comments, loading:commentsLoading, status, getComments, createComment } = useCommentManager(authToken) 
@@ -20,6 +22,16 @@ const PostDetail = () => {
     const [ comment, setComment ] = useState('')
 
     const navigate = useNavigate()
+
+    const handleSubmitLike = (e) => {
+        e.stopPropagation()
+        addNotification("Post liked.")        
+    }
+
+    const handleRepost = (e) => {
+        e.stopPropagation()
+        addNotification("Post reposted")
+    }
 
     const handleCancelEditing = (e) => {
         e.preventDefault()
@@ -140,6 +152,20 @@ const PostDetail = () => {
                             <p className="mt-4" dangerouslySetInnerHTML={{ __html: post.description}} />
                             </>
                             }
+                            <div className='flex gap-4 mt-2'>
+                                <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>
+                                    <FontAwesomeIcon icon={faThumbsUp}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
+                                    <p className='text-sm text-slate-400'>100</p>
+                                </button>
+                                <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
+                                    <FontAwesomeIcon icon={faMessage}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
+                                    <p className='text-sm text-slate-400'>100</p>
+                                </button>
+                                <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleRepost}>
+                                    <FontAwesomeIcon icon={faRetweet}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
+                                    <p className='text-sm text-slate-400'>100</p>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
