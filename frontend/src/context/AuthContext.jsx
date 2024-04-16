@@ -1,13 +1,15 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../axios";
 import { jwtDecode } from "jwt-decode"
 import { useNavigate } from "react-router-dom";
+import NotificationContext from "./NotificationContext";
 
 const AuthContext = createContext()
 
 export default AuthContext;
 
 export const AuthProvider = ({children}) => {
+    const { addNotification } = useContext(NotificationContext)
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken') ? localStorage.getItem('authToken') : null)
     const [user, setUser] = useState(() => localStorage.getItem('authToken') ? jwtDecode(localStorage.getItem('authToken')).user : null)
     const [loading, setLoading] = useState(true)
@@ -67,7 +69,7 @@ export const AuthProvider = ({children}) => {
             }
         }
         catch(error) {
-            console.log("An error occured while refreshing token data", error)
+            addNotification(error.response.data.message)
         }
     }
 

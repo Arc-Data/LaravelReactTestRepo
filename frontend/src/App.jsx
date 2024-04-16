@@ -16,8 +16,8 @@ import FloatingNotification from "./components/FloatingNotification"
 function App() {
 return (
   <BrowserRouter>
-    <AuthProvider>
-      <NotificationProvider>
+    <NotificationProvider>
+      <AuthProvider>
         <Routes>
           <Route element={<BaseRoutes />} >
             <Route path="/login/" element={<Login />} />
@@ -34,8 +34,8 @@ return (
           </Route>
         </Routes>
         <FloatingNotification />
-      </NotificationProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </NotificationProvider>
   </BrowserRouter>
 )
 }

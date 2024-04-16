@@ -1,8 +1,10 @@
 import { useContext, useState } from "react"
 import axios from "../axios"
 import AuthContext from "../context/AuthContext"
+import NotificationContext from "../context/NotificationContext"
 
 const useUserManager = (authToken) => {
+    const { addNotification } = useContext(NotificationContext)
     const [ user, setUser ] = useState()
     const [ users, setUsers ] = useState([])
     const [ loading, setLoading ] = useState(true)
@@ -22,25 +24,19 @@ const useUserManager = (authToken) => {
             return response.data.data
         }
         catch(error) {
-            console.log("An error occured while fetching user profile. ", error)
+            addNotification(error.response.data.message, "error")
         }
         setLoading(false)
     }
 
     const editUser = async (data) => {
-        console.log(data)
         const formData = new FormData()
 
         Object.entries(data).forEach(([key, value]) => {
             if (value !== user[key]) {
-                console.log("Only changing", key, value)
                 formData.append(key, value);
             }
         });
-
-        for (let pair of formData.entries()) {
-            console.log("Added : ", pair[0], pair[1])
-        }
 
         try {
             const response = await axios.post('/api/user/', formData, {
@@ -50,10 +46,11 @@ const useUserManager = (authToken) => {
                 }
             })
             setUser(response.data.user)
+            addNotification("Profile Updated.")
             updateTokenOnUserUpdate(response.data.token)
         }
         catch (error) {
-            console.log("An error occured while updating user data: ", error)
+            addNotification(error.response.data.message, "error")
         }
     }
 

@@ -46,7 +46,7 @@ class PostController extends Controller
         $post->save();
 
         return response()->json([
-            'message' => 'Post successfully created'
+            'message' => 'Post created.'
         ]);
     }
 
@@ -82,7 +82,7 @@ class PostController extends Controller
         
         $post->update($validatedData);
 
-        return response()->json(['message' => 'Post Updated Successfully'], 201);
+        return response()->json(['message' => 'Post updated.'], 201);
     }
 
     /**
@@ -95,6 +95,6 @@ class PostController extends Controller
         }
         
         $post->delete();
-        return response()->json(['message' => "Post deleted successfully"]);
+        return response()->json(['message' => "Post deleted."]);
     }
 }

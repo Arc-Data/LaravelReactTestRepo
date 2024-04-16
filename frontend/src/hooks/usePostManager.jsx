@@ -23,11 +23,10 @@ const usePostManager = (authToken) => {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
-
             addNotification(response.data.message)
         }
         catch (error) {
-            console.log("An error occured while creating post. ", error)
+            addNotification(error.response.data.message, "error")
         }   
     }
 
@@ -42,7 +41,7 @@ const usePostManager = (authToken) => {
             addNotification(response.data.message)
         }
         catch (error) {
-            addNotification("An error occured while deleting post.")
+            addNotification(error.response.data.message, "error")
         }
     }
 
@@ -58,19 +57,15 @@ const usePostManager = (authToken) => {
             setPosts(prevPosts => [...prevPosts, ...response.data.data])
             
             if (response.data.links && response.data.links.next) {
-                addNotification("More posts detected")
-                console.log(currentPage)
-                setHasMorePosts(true)
                 setCurrentPage(prev => prev + 1)
+                setHasMorePosts(true)
             } else {
-                addNotification("No more posts detected")
                 setHasMorePosts(false)
             }
         }   
         catch (error) {
-            addNotification("An error occured while retrieving posts", error)
+            addNotification(error.res, "error")
         } finally {
-            console.log("Shouldnt it be false by now?")
             setLoading(false)
         }
     }
@@ -91,7 +86,7 @@ const usePostManager = (authToken) => {
             setEditedPost(postData)
         }
         catch (error) {
-            addNotification("An error occured while retrieving specific post", error)
+            addNotification(error.response.data.message, "error")
         }
 
 
@@ -135,9 +130,6 @@ const usePostManager = (authToken) => {
     const editPost = async (id, data) => {
         setLoading(true)
 
-        console.log(data.description)
-        console.log(data)
-
         try {
             const response = await axios.patch(`/api/posts/${id}/`, data, {
                 headers: {
@@ -155,8 +147,7 @@ const usePostManager = (authToken) => {
             addNotification(response.data.message)
         }
         catch (error) {
-            // can i still log the details of response.data.message in here in case the fetch goes wrong?
-            console.log('An error occured while updating post ', error)
+            addNotification(error.response.data.message)
         }
 
         setLoading(false)

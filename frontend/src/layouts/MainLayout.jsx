@@ -21,7 +21,7 @@ const MainLayout = () => {
                 </div> */}
 
             </nav>
-            <div className="md:p-12">
+            <div className="py-12 md:px-12">
                 <Outlet />
             </div>
         </div>
