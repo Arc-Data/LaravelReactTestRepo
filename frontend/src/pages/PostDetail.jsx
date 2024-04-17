@@ -23,10 +23,9 @@ const PostDetail = () => {
     const [ likes, setLikes ] = useState(0)
     const [ isLiked, setIsLiked ] = useState(false)
 
-    const navigate = useNavigate()
+    console.log(isLiked)
 
-    // console.log(likeComment)
-    // console.log(comments)
+    const navigate = useNavigate()
 
     const handleSubmitLike = async (e) => {
         e.stopPropagation()

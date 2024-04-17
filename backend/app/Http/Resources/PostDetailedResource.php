@@ -15,7 +15,7 @@ class PostDetailedResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = auth()->user();
-        $isLiked = $user ? $this->likes->contains($user->id) : false;
+        $isLiked = $user ? $this->likes->contains('user_id', $user->id) : false;
 
         return [
             "id"=> $this->id,

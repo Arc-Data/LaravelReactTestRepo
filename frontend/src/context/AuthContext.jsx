@@ -74,7 +74,6 @@ export const AuthProvider = ({children}) => {
     }
 
     const logoutUser = () => {
-        console.log("Logging out user")
         setAuthToken(null)
         setUser(null)
         localStorage.removeItem('authToken')
@@ -134,7 +133,7 @@ export const AuthProvider = ({children}) => {
         const intervalId = setInterval(checkTokenExpiryAndRefresh, threeMinutes)
     
         return () => clearInterval(intervalId)
-    }, [authToken, updateToken, updateTokenOnUserUpdate])
+    }, [authToken, updateToken, updateTokenOnUserUpdate, logoutUser])
 
     return (
         <AuthContext.Provider value={contextData}>

@@ -47,13 +47,11 @@ const usePostManager = (authToken) => {
 
     const likePost = async (id) => {
         try {
-            const response = await axios.post(`/api/posts/${id}/like`, null, {
+            await axios.post(`/api/posts/${id}/like`, null, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
-
-            addNotification(response.data.message)
         }
         catch (error) {
             addNotification(error.response.data.message,"error")
@@ -62,16 +60,13 @@ const usePostManager = (authToken) => {
 
     const likeComment = async (id) => {
         try {
-            const response = await axios.post(`/api/comments/${id}/like`, null, {
+            await axios.post(`/api/comments/${id}/like`, null, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
-
-            addNotification(response.data.message)
         }
         catch (error) {
-            console.log(error)
             addNotification(error.response.data.message)
         }
     }
