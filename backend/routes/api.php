@@ -43,6 +43,10 @@ Route::middleware('auth:api')->group(function () {
         });
     });
 
+    Route::prefix('comments')->group(function () {
+        Route::post('/{comment}/like', [CommentController::class,'like']);
+    });
+
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class,'index']);
         Route::get('/{username}', [UserController::class,'show']);
