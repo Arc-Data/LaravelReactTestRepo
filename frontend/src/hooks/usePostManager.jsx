@@ -45,6 +45,21 @@ const usePostManager = (authToken) => {
         }
     }
 
+    const likePost = async (id) => {
+        try {
+            const response = await axios.post(`/api/posts/${id}/like`, null, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            addNotification(response.data.message)
+        }
+        catch (error) {
+            addNotification(error.response.data.message,"error")
+        }
+    }
+
     const getPosts = async () => {
         setLoading(true)
         try {
@@ -175,6 +190,7 @@ const usePostManager = (authToken) => {
         editPost,
         hasMorePosts,
         editedPost,
+        likePost,
         handleEditedPostChange,
         cancelEdit,
     }

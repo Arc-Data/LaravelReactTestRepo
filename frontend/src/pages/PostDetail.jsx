@@ -15,7 +15,7 @@ const PostDetail = () => {
     const { id } = useParams()
     const { addNotification } = useContext(NotificationContext)
     const { authToken, user } = useContext(AuthContext)
-    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost } = usePostManager(authToken)
+    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, likePost } = usePostManager(authToken)
     const { comments, loading:commentsLoading, status, getComments, createComment } = useCommentManager(authToken) 
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
@@ -25,12 +25,12 @@ const PostDetail = () => {
 
     const navigate = useNavigate()
 
-    const handleSubmitLike = (e) => {
+    const handleSubmitLike = async (e) => {
         e.stopPropagation()
         const num = isLiked ? -1 : 1
+        await likePost(id)
         setLikes(prev => prev + num)
         setIsLiked(prev => !prev) 
-        addNotification("Post liked.")        
     }
 
     const handleRepost = (e) => {
@@ -165,7 +165,7 @@ const PostDetail = () => {
                             }
                             <div className='flex gap-4 mt-2'>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>
-                                    <FontAwesomeIcon icon={faThumbsUp}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
+                                    <FontAwesomeIcon icon={faThumbsUp}  className={` group-hover/likes:text-primary ${isLiked ? 'text-primary' : 'text-black'}`}/>
                                     <p className='text-sm text-slate-400'>{likes}</p>
                                 </button>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
