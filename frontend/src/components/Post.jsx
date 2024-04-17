@@ -21,7 +21,7 @@ const Post = ({ post }) => {
     const handleSubmitLike = async (e) => {
         e.stopPropagation()
         const num = isLiked ? -1 : 1
-        await likePost(post.id)
+        likePost(post.id)
         setLikes(prev => prev + num)
         setIsLiked(prev => !prev) 
     }
@@ -62,7 +62,7 @@ const Post = ({ post }) => {
                 </button>
                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
                     <FontAwesomeIcon icon={faMessage}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
-                    <p className='text-sm text-slate-400'>100</p>
+                    <p className='text-sm text-slate-400'>{post.replies}</p>
                 </button>
                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleRepost}>
                     <FontAwesomeIcon icon={faRetweet}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>

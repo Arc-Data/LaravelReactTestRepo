@@ -15,7 +15,7 @@ const PostDetail = () => {
     const { id } = useParams()
     const { addNotification } = useContext(NotificationContext)
     const { authToken, user } = useContext(AuthContext)
-    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, likePost } = usePostManager(authToken)
+    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, likePost, likeComment } = usePostManager(authToken)
     const { comments, loading:commentsLoading, status, getComments, createComment } = useCommentManager(authToken) 
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
@@ -25,10 +25,13 @@ const PostDetail = () => {
 
     const navigate = useNavigate()
 
+    // console.log(likeComment)
+    // console.log(comments)
+
     const handleSubmitLike = async (e) => {
         e.stopPropagation()
         const num = isLiked ? -1 : 1
-        await likePost(id)
+        likePost(id)
         setLikes(prev => prev + num)
         setIsLiked(prev => !prev) 
     }
@@ -170,7 +173,7 @@ const PostDetail = () => {
                                 </button>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
                                     <FontAwesomeIcon icon={faMessage}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
-                                    <p className='text-sm text-slate-400'>100</p>
+                                    <p className='text-sm text-slate-400'>{post.replies}</p>
                                 </button>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleRepost}>
                                     <FontAwesomeIcon icon={faRetweet}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
@@ -200,7 +203,7 @@ const PostDetail = () => {
             <Spinner /> 
             :
             comments && comments.map(comment => {
-                return (<Comment key={comment.id} comment={comment}/>)
+                return (<Comment key={comment.id} comment={comment} likeComment={likeComment}/>)
             })
             }
             </div>
