@@ -35,6 +35,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{post}', [PostController::class,'show']);
         Route::delete('/{post}', [PostController::class,'destroy']);
         Route::patch('/{post}', [PostController::class,'update']);
+        Route::post('/{post}/like', [PostController::class,'like']);
         
         Route::prefix('{post}/comments')->group(function () {
             Route::get('/', [CommentController::class,'index']);

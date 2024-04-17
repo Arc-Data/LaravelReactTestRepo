@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostDetailedResource;
 use App\Http\Resources\PostResource;
+use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -96,5 +97,23 @@ class PostController extends Controller
         
         $post->delete();
         return response()->json(['message' => "Post deleted."]);
+    }
+
+    public function like(Post $post) 
+    {
+        $user = auth()->user();
+
+        $isLiked = $post->likes()->where('user_id', $user->id)->exists();
+
+        if ($isLiked) {
+            $post->likes()->where('user_id', $user->id)->delete();
+            $message = "Post unliked";
+        }
+        else {
+            $post->likes()->create(['user_id' => $user->id]);
+            $message = "Post liked";
+        }
+
+        return response()->json(['message' => $message]);
     }
 }

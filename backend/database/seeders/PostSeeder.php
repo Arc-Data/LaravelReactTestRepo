@@ -20,8 +20,8 @@ class PostSeeder extends Seeder
             $user = $users->random();
 
             $post = new Post([
-                'title' => 'Sample Post' . ($i + 1),
-                'description' => 'This is a sample post'
+                'title' => 'Writing something ' . ($i + 1),
+                'description' => 'Seeded Post.'
             ]);
 
             $user->posts()->save($post);
