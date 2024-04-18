@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useMemo, useState } from "react"
 import axios from "../axios"
 import NotificationContext from "../context/NotificationContext"
 
@@ -37,8 +37,24 @@ const useCommentManager = (authToken) => {
             setComments([...comments, response.data.comment])
             addNotification(response.data.message)
         }
-        catch (error) {
+    catch (error) {
             addNotification("An error occured while adding a comment.")
+        }
+    }
+
+    const replyComment = async (id, content) => {
+        try {
+            const response = await axios.post(`/api/comments/${id}/reply`, content, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            setComments([...comments, response.data.comment])
+            addNotification(response.data.message)
+        }
+        catch (error) {
+            addNotification(error.response.data.message, "error")
         }
     }
 
@@ -49,6 +65,7 @@ const useCommentManager = (authToken) => {
         status,
         getComments,
         createComment,
+        replyComment,
     }
 }
 

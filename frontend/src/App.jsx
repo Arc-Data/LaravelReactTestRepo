@@ -12,6 +12,8 @@ import Profile from "./pages/Profile"
 import Settings from "./pages/Settings"
 import { NotificationProvider } from "./context/NotificationContext"
 import FloatingNotification from "./components/FloatingNotification"
+import { PostProvider } from "./context/PostContext"
+import PostTest from "./pages/PostTest"
 
 function App() {
 return (
@@ -30,6 +32,11 @@ return (
                 <Route path="/post/:id" element={<PostDetail />} />
                 <Route path="/profile/:name" element={<Profile/>} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/test/post/:id" element={
+                  <PostProvider>
+                    <PostTest />
+                  </PostProvider>
+                } />
               </Route>
           </Route>
         </Routes>

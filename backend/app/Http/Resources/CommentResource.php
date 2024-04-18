@@ -17,7 +17,6 @@ class CommentResource extends JsonResource
     {
         $user = auth()->user();
         $isLiked = $user ? $this->likes->contains('user_id', $user->id) : false;
-        Log::info($this->likes->contains('user_id', $user->id));
 
         return [
             "id" => $this->id,
@@ -27,10 +26,8 @@ class CommentResource extends JsonResource
             "created_at" => $this->created_at,
             "isLiked" => $isLiked,
             "likes" => $this->likes()->count(),
-            "parent_comment" => $this->whenLoaded("parent_comment", function () {
-                return new CommentResource($this->parentComment);
-            }),
-            "replies" => CommentResource::collection($this->whenLoaded("replies")),
+            "parent_comment" => $this->parent_comment_id,
+            "replies" => CommentResource::collection($this->replies),
         ];
     }
 }

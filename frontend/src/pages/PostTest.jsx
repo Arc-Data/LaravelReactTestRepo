@@ -1,56 +1,67 @@
 import { useContext, useEffect, useState } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom"
-import AuthContext from "../context/AuthContext"
-import usePostManager from "../hooks/usePostManager"
-import Spinner from "../components/Spinner"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PostContext from "../context/PostContext"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft, faMessage, faPencilAlt, faRetweet, faThumbsUp, faTrash } from "@fortawesome/free-solid-svg-icons"
+import AuthContext from "../context/AuthContext"
+import dayjs from '../utils/dayjs'
+import Spinner from "../components/Spinner"
 import DeleteModal from "../modals/DeleteModal"
-import dayjs from 'dayjs'
-import Comment from "../components/Comment"
-import useCommentManager from "../hooks/useCommentManager"
-import NotificationContext from "../context/NotificationContext"
+import usePostManager from "../hooks/usePostManager"
 
-const PostDetail = () => {
+const PostTest = () => {
     const { id } = useParams()
-    const { addNotification } = useContext(NotificationContext)
-    const { authToken, user } = useContext(AuthContext)
-    
+    const { user, authToken } = useContext(AuthContext)
     const { 
         post, 
-        loading, 
-        getPost, 
-        deletePost, 
-        editedPost, 
-        handleEditedPostChange, 
-        cancelEdit, 
-        editPost, 
-        likePost, 
-        likeComment, 
-    } = usePostManager(authToken)
-    const { 
-        loading:commentsLoading, 
-        getComments, 
-        createComment, 
-        replyComment,
+        commentsLoading, 
         rootComments,
-        getReplies,
-    } = useCommentManager(authToken) 
-
-    const [ showDeleteModal, setShowDeleteModal ] = useState(false)
-    const [ isEditing, setEditing ] = useState(false)
-    const [ comment, setComment ] = useState('')
+        editPost,
+        addLocalComment,
+        editedPost,
+        handleEditedPostChange
+    } = useContext(PostContext)
+    const { 
+        likePost,
+        deletePost, 
+    } = usePostManager(authToken)
+    const [ isEditing, setIsEditing ] = useState(false)
     const [ likes, setLikes ] = useState(0)
     const [ isLiked, setIsLiked ] = useState(false)
+    const [ content, setContent ] = useState('') 
+    const [ showDeleteModal, setShowDeleteModal ] = useState(false)
 
     const navigate = useNavigate()
+
+    const toggleEditing = () => {
+        setIsEditing(prev => !prev)
+    }
+
+    const toggleDeleteModal = () => {
+        setShowDeleteModal(prev => !prev)
+    }
+
+    const handleDelete = () => {
+        deletePost(id)
+        navigate('/')
+    }
+
+    const handleEditPost = async (e) => {
+        e.preventDefault()
+        const editedDescription = e.target.description.value.replace(/\n/g, '<br />');
+        await editPost(id, {
+            title: e.target.title.value,
+            description: editedDescription
+        })
+        toggleEditing()
+    }
 
     const handleSubmitLike = async (e) => {
         e.stopPropagation()
         const num = isLiked ? -1 : 1
         likePost(id)
         setLikes(prev => prev + num)
-        setIsLiked(prev => !prev) 
+        setIsLiked(prev => !prev)
     }
 
     const handleRepost = (e) => {
@@ -58,72 +69,21 @@ const PostDetail = () => {
         addNotification("Post reposted")
     }
 
-    const handleCancelEditing = (e) => {
-        e.preventDefault()
-        toggleEditing()
-    }
-
-    const handleEditPost = async (e) => {
-        e.preventDefault();
-
-        const editedDescription = e.target.description.value.replace(/\n/g, '<br />');
-        
-        await editPost(id, {
-            title: e.target.title.value, 
-            description: editedDescription
-        })
-        toggleEditing()
-    }
-
-    const toggleDeleteModal = () => {
-        setShowDeleteModal(prev => !prev)
-    }
-
-    const handleDelete = async () => {
-        deletePost(id)
-        navigate('/')
+    const handleContentInputChange = (e) => {
+        setContent(e.target.value)
     }
 
     const handleCommentSubmit = async (e) => {
-        e.preventDefault();
-        const submittedComment = e.target.value.trim();
-
-        if (submittedComment !== '') {
-            await createComment(id, submittedComment)
-            setComment('')            
-        }
-    }
-
-    const handleCommentInputChange = (e) => {
-        setComment(e.target.value)
-    }
-
-    const toggleEditing = () => {
-        const prevEditState = isEditing
-        setEditing(prev => !prev)
-
-        if (prevEditState) cancelEdit()
+        e.preventDefault()
+        await addLocalComment(e.target.value)
+        setContent('')
     }
 
     useEffect(() => {
-        const retrievePost = async () => {
-            await getPost(id) 
-            await getComments(id)
-        }
-
-        retrievePost()
-    }, [id])
-
-    useEffect(() => {
-        if (post) {
-            setLikes(post.likes)
-            setIsLiked(post.isLiked)
-        }
+        if (!post) return
+        setLikes(post.likes)
+        setIsLiked(post.isLiked)
     }, [post])
-
-    if (loading) {
-        return (<Spinner />)
-    }
 
     return (
         <div className="flex flex-col gap-8">
@@ -173,7 +133,7 @@ const PostDetail = () => {
                                         onChange={handleEditedPostChange}/>
                                 </div>
                                 <div className="flex *:flex-1 *:py-2 mt-8 *:border gap-4 *:rounded-md ">
-                                    <button onClick={handleCancelEditing} className="hover:bg-white hover:text-slate-900">Cancel</button>
+                                    <button onClick={toggleEditing} className="hover:bg-white hover:text-slate-900">Cancel</button>
                                     <button type="submit" className="bg-blue-700 border-transparent bg-opacity-20 hover:bg-opacity-80">Edit</button>
                                 </div>
                             </form>
@@ -205,9 +165,9 @@ const PostDetail = () => {
                 <input 
                     type="text"
                     placeholder="Add a comment..." 
-                    name="comment"
-                    value={comment}
-                    onChange={handleCommentInputChange}
+                    name="content"
+                    value={content}
+                    onChange={handleContentInputChange}
                     onKeyDown={(e) => {
                         if (e.key == "Enter") {
                             handleCommentSubmit(e);
@@ -216,17 +176,18 @@ const PostDetail = () => {
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
             <div>
-            {commentsLoading ? 
+            {commentsLoading && <Spinner />}
+            {/* {commentsLoading ? 
             <Spinner /> 
             :
             rootComments && rootComments.map(comment => {
                 return (<Comment key={comment.id} comment={comment} likeComment={likeComment} replyComment={replyComment} getReplies={getReplies}/>)
             })
-            }
+            } */}
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
         </div>
     )
 }
 
-export default PostDetail
+export default PostTest
