@@ -95,4 +95,20 @@ class CommentController extends Controller
 
         return response()->json(['message' => $message]);
     }
+
+    public function reply(Comment $comment, Request $request)
+    {
+        $user = auth()->user();
+        $content = $request->getContent();
+        $post = $comment->post;
+
+        $reply = new Comment();
+        $reply->post()->associate($post);
+        $reply->user()->associate($user);
+        $reply->content = $content;
+        $reply->parentComment()->associate($comment);
+        $reply->save();
+
+        return response()->json(["message" => "Replied to comment"]);
+    }
 }

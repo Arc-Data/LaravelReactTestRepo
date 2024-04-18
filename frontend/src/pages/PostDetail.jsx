@@ -15,15 +15,13 @@ const PostDetail = () => {
     const { id } = useParams()
     const { addNotification } = useContext(NotificationContext)
     const { authToken, user } = useContext(AuthContext)
-    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, likePost, likeComment } = usePostManager(authToken)
+    const { post, loading, getPost, deletePost, editedPost, handleEditedPostChange, cancelEdit, editPost, likePost, likeComment, replyComment } = usePostManager(authToken)
     const { comments, loading:commentsLoading, status, getComments, createComment } = useCommentManager(authToken) 
     const [ showDeleteModal, setShowDeleteModal ] = useState(false)
     const [ isEditing, setEditing ] = useState(false)
     const [ comment, setComment ] = useState('')
     const [ likes, setLikes ] = useState(0)
     const [ isLiked, setIsLiked ] = useState(false)
-
-    console.log(isLiked)
 
     const navigate = useNavigate()
 
@@ -202,7 +200,7 @@ const PostDetail = () => {
             <Spinner /> 
             :
             comments && comments.map(comment => {
-                return (<Comment key={comment.id} comment={comment} likeComment={likeComment}/>)
+                return (<Comment key={comment.id} comment={comment} likeComment={likeComment} replyComment={replyComment}/>)
             })
             }
             </div>

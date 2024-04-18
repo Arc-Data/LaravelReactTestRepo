@@ -71,6 +71,21 @@ const usePostManager = (authToken) => {
         }
     }
 
+    const replyComment = async (id, content) => {
+        try {
+            const response = await axios.post(`/api/comments/${id}/reply`, content, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            addNotification(response.data.message)
+        }
+        catch (error) {
+            addNotification(error.response.data.message, "error")
+        }
+    }
+
     const getPosts = async () => {
         setLoading(true)
         try {
@@ -193,6 +208,7 @@ const usePostManager = (authToken) => {
         posts,
         loading,
         likeComment,
+        replyComment,
         status,
         createPost,
         deletePost,
