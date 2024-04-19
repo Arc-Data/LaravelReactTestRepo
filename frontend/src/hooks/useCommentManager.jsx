@@ -7,18 +7,28 @@ const useCommentManager = (authToken) => {
     const [ comments, setComments ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()
+    const [ hasMoreComments, setHasMoreComments ] = useState(true)
+    const [ currentPage, setCurrentPage ] = useState(1)
 
     const getComments = async (id) => {
         setLoading(true)
-
         try {
-            const response = await axios(`/api/posts/${id}/comments`, {
+            const url = `/api/posts/${id}/comments?page=${currentPage}`;
+            const response = await axios.get(url, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
 
-            setComments(response.data.data)
+            setComments(prevComments => [...prevComments, ...response.data.data])
+            
+            if (response.data.links && response.data.links.next) {
+                setCurrentPage(prev => prev + 1)
+                setHasMoreComments(true)
+            } else {
+                setHasMoreComments(false)
+            }
+        
         }
         catch (error) {
             console.log(error)
@@ -80,6 +90,7 @@ const useCommentManager = (authToken) => {
         getComments,
         likeComment,
         createComment,
+        hasMoreComments,
         replyComment,
     }
 }

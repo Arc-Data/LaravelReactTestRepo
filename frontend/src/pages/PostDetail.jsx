@@ -10,6 +10,8 @@ import DeleteModal from "../modals/DeleteModal"
 import usePostManager from "../hooks/usePostManager"
 import TestComment from "../components/Comment"
 import Comment from "../components/Comment"
+import InfiniteScroll from "react-infinite-scroll-component"
+import PostEnd from "../components/PostEnd"
 
 const PostDetail = () => {
     const { id } = useParams()
@@ -21,7 +23,9 @@ const PostDetail = () => {
         editPost,
         addLocalComment,
         editedPost,
-        handleEditedPostChange
+        handleEditedPostChange,
+        fetchMoreComments,
+        hasMoreComments
     } = useContext(PostContext)
     const { 
         likePost,
@@ -178,13 +182,23 @@ const PostDetail = () => {
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
             <div className="pl-12">
-            {commentsLoading ? 
+            <InfiniteScroll 
+                dataLength={rootComments.length}
+                next={fetchMoreComments}
+                hasMore={hasMoreComments}
+                loader={<Spinner />}
+                endMessage={<PostEnd />}>
+                {rootComments && rootComments.map(comment => {
+                    return (<Comment key={comment.id} comment={comment} />)
+                })}
+            </InfiniteScroll>
+            {/* {commentsLoading ? 
             <Spinner /> 
             :
             rootComments && rootComments.map(comment => {
                 return (<Comment key={comment.id} comment={comment} />)
             })
-            } 
+            }  */}
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
         </div>

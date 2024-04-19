@@ -15,7 +15,7 @@ class CommentController extends Controller
      */
     public function index(Post $post)
     {
-        $topLevelComments = $post->comments()->whereNull('parent_comment_id')->get();
+        $topLevelComments = $post->comments()->whereNull('parent_comment_id')->paginate(10);
         return CommentResource::collection($topLevelComments);
     }
 

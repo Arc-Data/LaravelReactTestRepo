@@ -17,7 +17,7 @@ export const PostProvider = ({children}) => {
         getPost, 
         editedPost, 
         editPost, 
-        handleEditedPostChange 
+        handleEditedPostChange
     } = usePostManager(authToken)
     const { 
         comments, 
@@ -25,15 +25,20 @@ export const PostProvider = ({children}) => {
         getComments, 
         createComment,
         replyComment,
+        hasMoreComments,
     } = useCommentManager(authToken)
     
+    const fetchMoreComments = () => {
+        if (hasMoreComments) {
+            getComments(id)
+        }
+    }
+
     const getCommentsById = useMemo(() => {
         const group = {}
 
         const addCommentsToGroup = (comments) => {
-            console.log(comments)
             comments.forEach(comment => {
-                console.log("Parent Comment : ", comment.parent_comment)
                 group[comment.parent_comment] ||= []
                 group[comment.parent_comment].push(comment)
                 if (!comment.replies) return
@@ -72,7 +77,7 @@ export const PostProvider = ({children}) => {
 
     const contextData = {
         post, 
-        rootComments: getCommentsById[null],
+        rootComments: getCommentsById[null] || [],
         getReplies,
         addLocalComment,
         commentsLoading,
@@ -80,6 +85,8 @@ export const PostProvider = ({children}) => {
         editedPost,
         handleEditedPostChange,
         replyLocalComment,
+        fetchMoreComments,
+        hasMoreComments,
     }
 
     return (
