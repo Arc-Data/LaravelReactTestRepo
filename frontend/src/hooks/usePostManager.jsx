@@ -183,7 +183,6 @@ const usePostManager = (authToken) => {
         post,
         posts,
         loading,
-        likeComment,
         status,
         createPost,
         deletePost,

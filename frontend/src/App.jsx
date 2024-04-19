@@ -7,13 +7,13 @@ import { AuthProvider } from "./context/AuthContext"
 import PrivateRoutes from "./utils/PrivateRoutes"
 import BaseRoutes from "./utils/BaseRoutes"
 import CreatePost from "./pages/CreatePost"
-import PostDetail from "./pages/PostDetail"
 import Profile from "./pages/Profile"
 import Settings from "./pages/Settings"
 import { NotificationProvider } from "./context/NotificationContext"
 import FloatingNotification from "./components/FloatingNotification"
 import { PostProvider } from "./context/PostContext"
-import PostTest from "./pages/PostTest"
+import PostTest from "./pages/PostDetail"
+import PostDetail from "./pages/PostDetail"
 
 function App() {
 return (
@@ -29,12 +29,11 @@ return (
               <Route element={<MainLayout />} >
                 <Route path="/" element={<Home />} />
                 <Route path="/post" element={<CreatePost />} />
-                <Route path="/post/:id" element={<PostDetail />} />
                 <Route path="/profile/:name" element={<Profile/>} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/test/post/:id" element={
+                <Route path="/post/:id" element={
                   <PostProvider>
-                    <PostTest />
+                    <PostDetail />
                   </PostProvider>
                 } />
               </Route>
