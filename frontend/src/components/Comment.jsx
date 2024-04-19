@@ -3,18 +3,19 @@ import PostContext from "../context/PostContext"
 import { Link } from "react-router-dom"
 import dayjs from "../utils/dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMessage, faRetweet, faThumbsUp } from "@fortawesome/free-solid-svg-icons"
+import { faEllipsis, faFlag, faMessage, faPencil, faRetweet, faThumbsUp, faTrash } from "@fortawesome/free-solid-svg-icons"
 import useCommentManager from "../hooks/useCommentManager"
 import AuthContext from "../context/AuthContext"
 
 const Comment = ({ comment }) => {
-    const { authToken } = useContext(AuthContext)
-    const { getReplies, replyLocalComment } = useContext(PostContext)
+    const { user, authToken } = useContext(AuthContext)
+    const { getReplies, replyLocalComment, deleteLocalComment } = useContext(PostContext)
     const [ isLiked, setIsLiked ] = useState(comment.isLiked)
     const [ likes, setLikes ] = useState(comment.likes)
     const [ isReplying, setIsReplying ] = useState(false)
     const [ content, setContent ] = useState('')
     const { likeComment } = useCommentManager(authToken)
+    const [ isSettingsVisible, setIsSettingsVisible ] = useState(false)
     const replies = getReplies(comment.id)
 
     const handleInputChange = (e) => {
@@ -70,6 +71,29 @@ const Comment = ({ comment }) => {
                             <FontAwesomeIcon icon={faRetweet}  className='text-text group-hover/likes:text-primary'/>
                             <p className='text-sm'>100</p>
                         </button>
+                        <div className="relative group">
+                            <button className='flex items-center gap-4 px-2 py-2 shadow-md group/retweet hover:bg-primary rounded-xl' onClick={() => setIsSettingsVisible(prev => !prev)}>
+                                <FontAwesomeIcon icon={faEllipsis}  className='text-text group-hover/likes:text-primary'/>
+                            </button>
+                            <div className={`absolute ${isSettingsVisible ? 'block' : 'hidden'} left-0 top-auto w-[140px] rounded bg-background border-primary border shadow z-10`}>
+                                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary">
+                                    <FontAwesomeIcon icon={faFlag} />
+                                    <p>Report</p>
+                                </div>
+                                {comment.user.id == user.id && 
+                                <>
+                                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary">
+                                    <FontAwesomeIcon icon={faPencil} />
+                                    <p>Edit</p>
+                                </div>
+                                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={() => deleteLocalComment(comment.id)}>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                    <p>Delete</p>
+                                </div>
+                                </>
+                                }
+                            </div>
+                        </div>
                     </div>
                     {isReplying && 
                     <div className="w-full mt-2 border rounded-lg border-slate-800">

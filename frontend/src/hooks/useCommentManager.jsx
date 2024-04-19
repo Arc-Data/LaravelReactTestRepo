@@ -81,9 +81,17 @@ const useCommentManager = (authToken) => {
         }
     }
 
-    const deleteComment = async () => {
+    const deleteComment = async (id) => {
         try {
+            const response = await axios.delete(`/api/comments/${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
 
+            const updatedComments = comments.filter(comment => comment.id !== id)
+            setComments(updatedComments)
+            addNotification("Comment deleted.")
         }
         catch (error) {
             addNotification(error.response.data.message)
@@ -100,6 +108,7 @@ const useCommentManager = (authToken) => {
         createComment,
         hasMoreComments,
         replyComment,
+        deleteComment,
     }
 }
 

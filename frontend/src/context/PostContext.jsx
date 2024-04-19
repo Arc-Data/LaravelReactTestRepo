@@ -26,6 +26,7 @@ export const PostProvider = ({children}) => {
         createComment,
         replyComment,
         hasMoreComments,
+        deleteComment,
     } = useCommentManager(authToken)
     
     const fetchMoreComments = () => {
@@ -66,6 +67,10 @@ export const PostProvider = ({children}) => {
         await replyComment(id, submittedComment)
     }
 
+    const deleteLocalComment = async (commentId) => {
+        deleteComment(commentId)
+    }
+
     useEffect(() => {
         getPost(id)
     }, [id])
@@ -87,6 +92,7 @@ export const PostProvider = ({children}) => {
         replyLocalComment,
         fetchMoreComments,
         hasMoreComments,
+        deleteLocalComment,
     }
 
     return (

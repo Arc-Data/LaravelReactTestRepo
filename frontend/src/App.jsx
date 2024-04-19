@@ -12,7 +12,6 @@ import Settings from "./pages/Settings"
 import { NotificationProvider } from "./context/NotificationContext"
 import FloatingNotification from "./components/FloatingNotification"
 import { PostProvider } from "./context/PostContext"
-import PostTest from "./pages/PostDetail"
 import PostDetail from "./pages/PostDetail"
 
 function App() {
