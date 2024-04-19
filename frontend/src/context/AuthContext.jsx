@@ -45,31 +45,26 @@ export const AuthProvider = ({children}) => {
     }
 
     const updateToken = async () => {
-        try {
-            const response = await axios.post('/api/auth/refresh/', null, {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            })
-
-            if (response.status == 200) {
-                const token = response.data.access_token
-                const tokenData = jwtDecode(token)
-
-                setAuthToken(response.data.access_token)
-                setUser(tokenData.user)
-
-                localStorage.setItem('authToken', token)
-            } else {
-                logoutUser()
+        const response = await axios.post('/api/auth/refresh/', null, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
             }
+        })
 
-            if (loading) {
-                setLoading(false)
-            }
+        if (response.status == 200) {
+            const token = response.data.access_token
+            const tokenData = jwtDecode(token)
+
+            setAuthToken(response.data.access_token)
+            setUser(tokenData.user)
+
+            localStorage.setItem('authToken', token)
+        } else {
+            logoutUser()
         }
-        catch(error) {
-            addNotification(error.response.data.message)
+
+        if (loading) {
+            setLoading(false)
         }
     }
 
