@@ -58,18 +58,7 @@ const usePostManager = (authToken) => {
         }
     }
 
-    const likeComment = async (id) => {
-        try {
-            await axios.post(`/api/comments/${id}/like`, null, {
-                headers: {
-                    "Authorization": `Bearer ${authToken}`
-                }
-            })
-        }
-        catch (error) {
-            addNotification(error.response.data.message)
-        }
-    }
+
 
     const getPosts = async () => {
         setLoading(true)
@@ -129,6 +118,8 @@ const usePostManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             }) 
+
+            console.log(response.data.data)
 
             setPosts(prevPosts => [...prevPosts, ...response.data.data])
         

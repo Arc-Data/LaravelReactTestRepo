@@ -21,6 +21,7 @@ const useCommentManager = (authToken) => {
             setComments(response.data.data)
         }
         catch (error) {
+            console.log(error)
             addNotification("An error occured while fetching comments")            
         }
 
@@ -58,12 +59,26 @@ const useCommentManager = (authToken) => {
         }
     }
 
+    const likeComment = async (id) => {
+        try {
+            await axios.post(`/api/comments/${id}/like`, null, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+        }
+        catch (error) {
+            addNotification(error.response.data.message)
+        }
+    }
+
 
     return {
         comments,
         loading,
         status,
         getComments,
+        likeComment,
         createComment,
         replyComment,
     }

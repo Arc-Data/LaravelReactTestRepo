@@ -8,6 +8,7 @@ import dayjs from '../utils/dayjs'
 import Spinner from "../components/Spinner"
 import DeleteModal from "../modals/DeleteModal"
 import usePostManager from "../hooks/usePostManager"
+import TestComment from "../components/TestComment"
 
 const PostTest = () => {
     const { id } = useParams()
@@ -175,15 +176,15 @@ const PostTest = () => {
                     }}
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
-            <div>
+            <div className="pl-12">
             {commentsLoading && <Spinner />}
-            {/* {commentsLoading ? 
+            {commentsLoading ? 
             <Spinner /> 
             :
             rootComments && rootComments.map(comment => {
-                return (<Comment key={comment.id} comment={comment} likeComment={likeComment} replyComment={replyComment} getReplies={getReplies}/>)
+                return (<TestComment key={comment.id} comment={comment} />)
             })
-            } */}
+            } 
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
         </div>

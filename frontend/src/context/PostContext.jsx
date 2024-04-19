@@ -19,14 +19,29 @@ export const PostProvider = ({children}) => {
         editPost, 
         handleEditedPostChange 
     } = usePostManager(authToken)
-    const { comments, loading:commentsLoading, getComments, createComment } = useCommentManager(authToken)
+    const { 
+        comments, 
+        loading:commentsLoading, 
+        getComments, 
+        createComment,
+        replyComment,
+    } = useCommentManager(authToken)
     
     const getCommentsById = useMemo(() => {
         const group = {}
-        comments.forEach(comment => {
-            group[comment.parent_comment] ||= []
-            group[comment.parent_comment].push(comment)
-        })
+
+        const addCommentsToGroup = (comments) => {
+            console.log(comments)
+            comments.forEach(comment => {
+                console.log("Parent Comment : ", comment.parent_comment)
+                group[comment.parent_comment] ||= []
+                group[comment.parent_comment].push(comment)
+                if (!comment.replies) return
+                addCommentsToGroup(comment.replies)
+            })
+        }
+        if (!comments) return
+        addCommentsToGroup(comments)
         return group
     }, [comments])
 
@@ -38,6 +53,12 @@ export const PostProvider = ({children}) => {
         const submittedComment = content.trim()
         if (!submittedComment) return;
         await createComment(id, submittedComment)
+    }
+
+    const replyLocalComment = async (id, content) => {
+        const submittedComment = content.trim()
+        if (!submittedComment) return;
+        await replyComment(id, submittedComment)
     }
 
     useEffect(() => {
@@ -58,6 +79,7 @@ export const PostProvider = ({children}) => {
         editPost,
         editedPost,
         handleEditedPostChange,
+        replyLocalComment,
     }
 
     return (

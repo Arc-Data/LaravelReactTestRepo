@@ -1,49 +1,56 @@
+import { useContext, useState } from "react"
+import PostContext from "../context/PostContext"
 import { Link } from "react-router-dom"
 import dayjs from "../utils/dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMessage, faRetweet, faThumbsUp } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import useCommentManager from "../hooks/useCommentManager"
+import AuthContext from "../context/AuthContext"
 
-const Comment = ({ comment, likeComment, replyComment, getReplies }) => {
+const TestComment = ({ comment }) => {
+    const { authToken } = useContext(AuthContext)
+    const { getReplies, replyLocalComment } = useContext(PostContext)
     const [ isLiked, setIsLiked ] = useState(comment.isLiked)
     const [ likes, setLikes ] = useState(comment.likes)
     const [ isReplying, setIsReplying ] = useState(false)
     const [ content, setContent ] = useState('')
+    const { likeComment } = useCommentManager(authToken)
+    const replies = getReplies(comment.id)
 
-    const handleSubmitLike = async (e) => {
+    const handleInputChange = (e) => {
+        setContent(e.target.value)
+    }
+
+    const handleSubmitLike = (e) => {
         e.stopPropagation()
         likeComment(comment.id)
         const num = isLiked ? -1 : 1
         setLikes(prev => prev + num)
-        setIsLiked(prev => !prev) 
+        setIsLiked(prev => !prev)
     }
 
     const toggleReplying = () => {
         setIsReplying(prev => !prev)
     }
 
-    const handleRepost = (e) => {
-        e.stopPropagation()
+    const handleRepost = () => {
+        
     }
 
-    const handleSubmitReply = (e) => {
+    const handleSubmitReply = async () => {
         toggleReplying()
         if (!content) return
-        replyComment(comment.id, content)
-        setContent('')
+        await replyLocalComment(comment.id, content)
     }
-
-    const handleInputChange = (e) => {
-        setContent(e.target.value)
-    }
+    
 
     return (
-        <div className="ml-12">
-            <div className="flex w-full gap-4 py-2">
+        <div className="w-full">
+            <div className="flex w-full gap-4">
                 <Link to={`/profile/${comment.user.name}`}>
-                    <img src={comment.user.profile_image} alt="" className="object-cover w-8 h-8 rounded-full" />
+                    <img src={comment.user.profile_image} className="object-cover w-8 h-8 rounded-full"/>
                 </Link>
-                <div className="flex-1 p-1">
+                <div className="flex-1">
                     <div className="flex items-center gap-2">
                         <Link to={`/profile/${comment.user.name}`} className="text-md text-slate-600 hover:text-text">{comment.user.name}</Link>
                         <span className="text-slate-800">&middot;</span>
@@ -82,11 +89,14 @@ const Comment = ({ comment, likeComment, replyComment, getReplies }) => {
                     }
                 </div>
             </div>
-            {comment.replies && comment.replies.map(reply => (
-                <Comment key={reply.id} comment={reply} likeComment={likeComment} replyComment={replyComment} />
-            ))}
+            <div className="grid grid-cols-[auto_1fr] gap-4 py-2" >
+                <div></div>
+                <div className="w-full">
+                {replies && replies.map(reply => (<TestComment comment={reply} />)) }
+                </div>
+            </div>
         </div>
     )
 }
 
-export default Comment
+export default TestComment
