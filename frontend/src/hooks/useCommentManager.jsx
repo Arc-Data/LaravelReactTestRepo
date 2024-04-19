@@ -31,8 +31,7 @@ const useCommentManager = (authToken) => {
         
         }
         catch (error) {
-            console.log(error)
-            addNotification("An error occured while fetching comments")            
+            addNotification(error.response.data.message, "error")            
         }
 
         setLoading(false)
@@ -49,7 +48,7 @@ const useCommentManager = (authToken) => {
             addNotification(response.data.message)
         }
     catch (error) {
-            addNotification("An error occured while adding a comment.")
+            addNotification(error.response.data.message, "error")
         }
     }
 
@@ -76,6 +75,15 @@ const useCommentManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
+        }
+        catch (error) {
+            addNotification(error.response.data.message, "error")
+        }
+    }
+
+    const deleteComment = async () => {
+        try {
+
         }
         catch (error) {
             addNotification(error.response.data.message)

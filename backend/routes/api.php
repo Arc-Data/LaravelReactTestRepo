@@ -46,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('comments')->group(function () {
         Route::post('/{comment}/reply', [CommentController::class,'reply']);
         Route::post('/{comment}/like', [CommentController::class,'like']);
+        Route::delete('/{comment}/', [CommentController::class,'destroy']);
     });
 
     Route::prefix('user')->group(function () {
