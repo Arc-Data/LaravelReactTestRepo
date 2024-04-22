@@ -40,6 +40,7 @@ Route::middleware('auth:api')->group(function () {
         Route::prefix('{post}/comments')->group(function () {
             Route::get('/', [CommentController::class,'index']);
             Route::post('/', [CommentController::class,'store']);
+            Route::patch('comments/{comment}/', [CommentController::class,'update']);
         });
     });
 
@@ -47,6 +48,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{comment}/reply', [CommentController::class,'reply']);
         Route::post('/{comment}/like', [CommentController::class,'like']);
         Route::delete('/{comment}/', [CommentController::class,'destroy']);
+        Route::patch('/{comment}/', [CommentController::class,'update']);
     });
 
     Route::prefix('user')->group(function () {

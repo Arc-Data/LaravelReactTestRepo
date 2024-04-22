@@ -61,7 +61,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        //
+
     }
 
     /**
@@ -69,7 +69,18 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
+        $validated_data = $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        $validated_data['content'] = strip_tags($validated_data['content']);
+        $comment->update($validated_data);
+
+        $comment = $comment->fresh();
         
+        return response()->json([
+            'comment'=> new CommentResource($comment)
+        ]);
     }
 
     /**
