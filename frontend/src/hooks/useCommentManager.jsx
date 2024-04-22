@@ -98,6 +98,27 @@ const useCommentManager = (authToken) => {
         }
     }
 
+    const editComment = async (id, content) => {
+        try {
+            const response = await axios.patch(`/api/comments/${id}/`, { content }, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`,
+                }
+            })
+
+            const updatedComment = response.data.comment
+            const newComments = comments.map(comment => {
+                return comment.id === id ? updatedComment : comment
+            })
+            setComments(newComments)
+            addNotification("Comment edited.")
+        }
+        catch (error) {
+            console.log(error)
+            addNotification(error.response.data.message, "error")
+        }
+    }
+
 
     return {
         comments,
@@ -109,6 +130,7 @@ const useCommentManager = (authToken) => {
         hasMoreComments,
         replyComment,
         deleteComment,
+        editComment,
     }
 }
 

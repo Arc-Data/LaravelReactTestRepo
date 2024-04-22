@@ -27,6 +27,7 @@ export const PostProvider = ({children}) => {
         replyComment,
         hasMoreComments,
         deleteComment,
+        editComment,
     } = useCommentManager(authToken)
     
     const fetchMoreComments = () => {
@@ -48,6 +49,7 @@ export const PostProvider = ({children}) => {
         }
         if (!comments) return
         addCommentsToGroup(comments)
+        console.log(group)
         return group
     }, [comments])
 
@@ -71,6 +73,10 @@ export const PostProvider = ({children}) => {
         deleteComment(commentId)
     }
 
+    const editLocalComment = async (id, content) => {
+        editComment(id, content)
+    }
+
     useEffect(() => {
         getPost(id)
     }, [id])
@@ -83,6 +89,7 @@ export const PostProvider = ({children}) => {
     const contextData = {
         post, 
         rootComments: getCommentsById[null] || [],
+        commentsLength: comments.length,
         getReplies,
         addLocalComment,
         commentsLoading,
@@ -93,6 +100,7 @@ export const PostProvider = ({children}) => {
         fetchMoreComments,
         hasMoreComments,
         deleteLocalComment,
+        editLocalComment,
     }
 
     return (

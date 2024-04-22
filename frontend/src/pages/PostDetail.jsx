@@ -25,7 +25,8 @@ const PostDetail = () => {
         editedPost,
         handleEditedPostChange,
         fetchMoreComments,
-        hasMoreComments
+        hasMoreComments,
+        commentsLength,
     } = useContext(PostContext)
     const { 
         likePost,
@@ -156,7 +157,7 @@ const PostDetail = () => {
                                 </button>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl'>
                                     <FontAwesomeIcon icon={faMessage}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
-                                    <p className='text-sm text-slate-400'>{post.replies}</p>
+                                    <p className='text-sm text-slate-400'>{commentsLength}</p>
                                 </button>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleRepost}>
                                     <FontAwesomeIcon icon={faRetweet}  className='text-black text-opacity-40 group-hover/likes:text-primary'/>
@@ -182,23 +183,16 @@ const PostDetail = () => {
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
             <div className="pl-12">
-            <InfiniteScroll 
-                dataLength={rootComments.length}
-                next={fetchMoreComments}
-                hasMore={hasMoreComments}
-                loader={<Spinner />}
-                endMessage={<PostEnd />}>
-                {rootComments && rootComments.map(comment => {
-                    return (<Comment key={comment.id} comment={comment} />)
-                })}
-            </InfiniteScroll>
-            {/* {commentsLoading ? 
-            <Spinner /> 
-            :
-            rootComments && rootComments.map(comment => {
-                return (<Comment key={comment.id} comment={comment} />)
-            })
-            }  */}
+                <InfiniteScroll 
+                    dataLength={rootComments.length}
+                    next={fetchMoreComments}
+                    hasMore={hasMoreComments}
+                    loader={<Spinner />}
+                    endMessage={<PostEnd />}>
+                    {rootComments && rootComments.map(comment => {
+                        return (<Comment key={comment.id} comment={comment} />)
+                    })}
+                </InfiniteScroll>
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
         </div>
