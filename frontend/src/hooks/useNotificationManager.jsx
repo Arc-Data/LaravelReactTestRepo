@@ -14,8 +14,8 @@ const useNotificationManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
-
-            setNotifications(response.data)
+            setNotifications(response.data.notifications)
+            
         }
         catch(error) {
             console.log("An error occured: ", error)
@@ -23,11 +23,26 @@ const useNotificationManager = (authToken) => {
         setLoading(false)
     }
 
+    const getUnreadNotificationsStatus = async () => {
+        try {
+            const response = await axios.get('/api/notifications/unread', {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+            setHasUnreadNotifications(response.data.unread)
+        }
+        catch (error) {
+            console.log("An error occured: ", error)
+        }
+    }
+
     return {
         notifications,
         loading,
-        hasUnreadNotifications,
         getNotifications,
+        hasUnreadNotifications,
+        getUnreadNotificationsStatus,
     }
 }
 

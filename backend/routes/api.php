@@ -63,5 +63,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [NotificationController::class,'index']);
         Route::patch('/', [NotificationController::class,'markAsRead']);
         Route::post('/test', [NotificationController::class,'test']);
+        Route::get('/unread', [NotificationController::class,'hasUnreadNotifications']);
     });
 });

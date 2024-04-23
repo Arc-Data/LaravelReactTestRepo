@@ -36,11 +36,14 @@ class NotificationController extends Controller
                     'id' => $notification->notifiable->id,
                     'name' => $notification->notifiable->name,
                     'image' => $image,
-                ]
+                ],
             ];
         }
 
-        return response()->json($notificationData);
+        return response()->json([
+            "notifications" => $notificationData,
+            "unread" => $user->unreadNotifications()->count() ? true : false
+        ]);
     }
     /**
      * Store a newly created resource in storage.
@@ -91,6 +94,14 @@ class NotificationController extends Controller
     {
         $user = auth()->user();
         $user->notify(new TestNotification("This is a sample message"));
+    }
+
+    public function hasUnreadNotifications()
+    {
+        $user = auth()->user();
+        return response()->json([
+            "unread" => $user->unreadNotifications()->exists()
+        ]);
     }
 
 }

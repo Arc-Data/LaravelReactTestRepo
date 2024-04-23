@@ -18,8 +18,8 @@ import Notifications from "./pages/Notifications"
 function App() {
 return (
   <BrowserRouter>
-    <NotificationProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <NotificationProvider>
         <Routes>
           <Route element={<BaseRoutes />} >
             <Route path="/login/" element={<Login />} />
@@ -41,8 +41,8 @@ return (
           </Route>
         </Routes>
         <FloatingNotification />
-      </AuthProvider>
-    </NotificationProvider>
+      </NotificationProvider>
+    </AuthProvider> 
   </BrowserRouter>
 )
 }

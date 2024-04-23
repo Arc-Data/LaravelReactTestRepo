@@ -1,5 +1,7 @@
-import { createContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
+import useNotificationManager from "../hooks/useNotificationManager"
+import AuthContext from "./AuthContext"
 
 const NotificationContext = createContext()
 
@@ -7,7 +9,9 @@ export default NotificationContext
 
 export const NotificationProvider = ({ children }) => {
     const [ notifications, setNotifications ] = useState([]) 
+    const { authToken } = useContext(AuthContext)
     const [ timeOutIds, setTimeoutIds ] = useState([])
+    const { hasUnreadNotifications, getUnreadNotificationsStatus } = useNotificationManager(authToken)
 
     const removeNotification = (id) => {
         setNotifications(prevNotifications => {
@@ -38,10 +42,15 @@ export const NotificationProvider = ({ children }) => {
         setTimeoutIds(prev => ({...prev, [id]: timeoutId}))
     }
 
+    useEffect(() => {
+        getUnreadNotificationsStatus()
+    }, [])
+
     const contextData = {
         notifications,
         addNotification,
         removeNotification,
+        hasUnreadNotifications,
     }
 
     return (

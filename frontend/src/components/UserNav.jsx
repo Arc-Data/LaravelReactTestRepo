@@ -3,9 +3,11 @@ import { Link } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons"
+import NotificationContext from "../context/NotificationContext"
 
 const UserNav = () => {
 	const { user, logoutUser } = useContext(AuthContext)
+	const { hasUnreadNotifications } = useContext(NotificationContext)
 
 	return (
 		<div className="fixed top-0 left-0 z-10 w-full p-4 border-b shadow-xl border-slate-900 bg-background">
@@ -20,7 +22,7 @@ const UserNav = () => {
 				<div className="flex items-center gap-8">
 					<Link to="/notifications" className="relative flex items-center justify-center w-8 h-8 p-5 rounded-full hover:bg-opacity-20 hover:cursor-pointer hover:bg-primary">
 						<FontAwesomeIcon icon={faBell} className="text-xl"/>
-						<div className="absolute top-0 right-0 z-10 w-4 h-4 rounded-full bg-primary"></div>
+						<div className={`${hasUnreadNotifications ? "absolute" : "hidden" } top-0 right-0 z-10 w-4 h-4 rounded-full bg-primary`}></div>
 					</Link>
 					<Link to={`/profile/${user.username}`}>
 						{user.profile_image ? 
