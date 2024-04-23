@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PostUserResource;
-use App\Models\Notification;
 use App\Models\User;
 use App\Notifications\TestNotification;
-use Hamcrest\Core\IsInstanceOf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -79,6 +76,15 @@ class NotificationController extends Controller
     public function destroy()
     {
         //
+    }
+
+    public function markAsRead()
+    {
+        Log::info("Hello");
+        $user = auth()->user();
+        foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
     }
 
     public function test() 
