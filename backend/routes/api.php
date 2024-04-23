@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -56,5 +57,9 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{username}', [UserController::class,'show']);
         Route::get('/{user}/posts', [UserController::class,'getUserPosts']);
         Route::post('/', [UserController::class,'update']);
+    });
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class,'index']);
     });
 });
