@@ -23,6 +23,20 @@ const useNotificationManager = (authToken) => {
         setLoading(false)
     }
 
+    const markNotificationsAsRead = async () => {
+        try {
+            const response = await axios.patch('/api/notifications/', null, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            })
+
+            setHasUnreadNotifications(false)
+        } catch(error) {
+            console.log("An error occured : ", error)
+        }
+    }
+
     const getUnreadNotificationsStatus = async () => {
         try {
             const response = await axios.get('/api/notifications/unread', {
@@ -43,6 +57,7 @@ const useNotificationManager = (authToken) => {
         getNotifications,
         hasUnreadNotifications,
         getUnreadNotificationsStatus,
+        markNotificationsAsRead,
     }
 }
 

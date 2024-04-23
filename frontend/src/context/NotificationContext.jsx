@@ -11,7 +11,7 @@ export const NotificationProvider = ({ children }) => {
     const [ notifications, setNotifications ] = useState([]) 
     const { authToken } = useContext(AuthContext)
     const [ timeOutIds, setTimeoutIds ] = useState([])
-    const { hasUnreadNotifications, getUnreadNotificationsStatus } = useNotificationManager(authToken)
+    const { hasUnreadNotifications, getUnreadNotificationsStatus, markNotificationsAsRead } = useNotificationManager(authToken)
 
     const removeNotification = (id) => {
         setNotifications(prevNotifications => {
@@ -25,7 +25,6 @@ export const NotificationProvider = ({ children }) => {
             return updatedTimeoutIds
         })
 
-        console.log("Removed notif.", new Date().toLocaleTimeString());
     }
 
     const addNotification = (message, type="success") => {
@@ -51,6 +50,7 @@ export const NotificationProvider = ({ children }) => {
         addNotification,
         removeNotification,
         hasUnreadNotifications,
+        markNotificationsAsRead,
     }
 
     return (
