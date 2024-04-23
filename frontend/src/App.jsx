@@ -13,6 +13,7 @@ import { NotificationProvider } from "./context/NotificationContext"
 import FloatingNotification from "./components/FloatingNotification"
 import { PostProvider } from "./context/PostContext"
 import PostDetail from "./pages/PostDetail"
+import Notifications from "./pages/Notifications"
 
 function App() {
 return (
@@ -35,6 +36,7 @@ return (
                     <PostDetail />
                   </PostProvider>
                 } />
+                <Route path="/notifications" element={<Notifications />}/>
               </Route>
           </Route>
         </Routes>

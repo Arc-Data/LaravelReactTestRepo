@@ -81,4 +81,10 @@ class NotificationController extends Controller
         //
     }
 
+    public function test() 
+    {
+        $user = auth()->user();
+        $user->notify(new TestNotification("This is a sample message"));
+    }
+
 }

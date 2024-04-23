@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { Link } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faUser } from "@fortawesome/free-solid-svg-icons"
 
 const UserNav = () => {
 	const { user, logoutUser } = useContext(AuthContext)
@@ -17,7 +17,11 @@ const UserNav = () => {
 					<Link to="/register">Register</Link>
 				</div>
 				:
-				<div className="flex gap-8">
+				<div className="flex items-center gap-8">
+					<Link to="/notifications" className="relative flex items-center justify-center w-8 h-8 p-5 rounded-full hover:bg-opacity-20 hover:cursor-pointer hover:bg-primary">
+						<FontAwesomeIcon icon={faBell} className="text-xl"/>
+						<div className="absolute top-0 right-0 z-10 w-4 h-4 rounded-full bg-primary"></div>
+					</Link>
 					<Link to={`/profile/${user.username}`}>
 						{user.profile_image ? 
 						<img src={user.profile_image} className="object-cover w-10 h-10 border border-gray-800 rounded-full shadow" alt="" />

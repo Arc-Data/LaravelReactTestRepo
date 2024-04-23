@@ -61,5 +61,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('notifications')->group(function () {
         Route::get('/', [NotificationController::class,'index']);
+        Route::post('/test', [NotificationController::class,'test']);
     });
 });

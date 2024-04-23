@@ -11,12 +11,13 @@ class TestNotification extends Notification
 {
     use Queueable;
 
+    public $message;
     /**
      * Create a new notification instance.
      */
-    public function __construct($user)
+    public function __construct($message)
     {
-        $this->user = $user;
+        $this->message = $message;
     }
 
     /**
@@ -48,9 +49,7 @@ class TestNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            "data" => [
-                "content" => "You have sent a test notification."
-            ]
+            "message" => $this->message,
         ];
     }
 }
