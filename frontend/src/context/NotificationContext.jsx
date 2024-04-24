@@ -9,7 +9,7 @@ export default NotificationContext
 
 export const NotificationProvider = ({ children }) => {
     const { authToken } = useContext(AuthContext)
-    const { hasUnreadNotifications, getUnreadNotificationsStatus, markNotificationsAsRead } = useNotificationManager(authToken)
+    const { hasNewNotification, hasUnreadNotifications, getUnreadNotificationsStatus, markNotificationsAsRead } = useNotificationManager(authToken)
 
     useEffect(() => {
         getUnreadNotificationsStatus()
@@ -18,6 +18,7 @@ export const NotificationProvider = ({ children }) => {
     const contextData = {
         hasUnreadNotifications,
         markNotificationsAsRead,
+        hasNewNotification,
     }
 
     return (

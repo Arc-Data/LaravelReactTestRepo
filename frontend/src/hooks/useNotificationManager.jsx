@@ -37,6 +37,10 @@ const useNotificationManager = (authToken) => {
         }
     }
 
+    const hasNewNotification = () => {
+        setHasUnreadNotifications(true)
+    }
+
     const getUnreadNotificationsStatus = async () => {
         try {
             const response = await axios.get('/api/notifications/unread', {
@@ -58,6 +62,7 @@ const useNotificationManager = (authToken) => {
         hasUnreadNotifications,
         getUnreadNotificationsStatus,
         markNotificationsAsRead,
+        hasNewNotification
     }
 }
 

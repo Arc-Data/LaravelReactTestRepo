@@ -37,7 +37,7 @@ class PostReply extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'message' => "Lets try sending a random message first."
+            'message' => $this->sender->name . " replied to your post."
         ];
     }
 
