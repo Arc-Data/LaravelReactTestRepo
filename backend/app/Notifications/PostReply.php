@@ -4,10 +4,11 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PostReply extends Notification
+class PostReply extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -30,7 +31,24 @@ class PostReply extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'broadcast'];
+    }
+
+    public function toArray($notifiable)
+    {
+        return [
+            'message' => "Lets try sending a random message first."
+        ];
+    }
+
+    public function toBroadCast($notifiable)
+    {
+        return new BroadcastMessage($this->toArray($notifiable));
+    }
+
+    public function broadcastType()
+    {
+        return 'post-reply';
     }
 
     /**

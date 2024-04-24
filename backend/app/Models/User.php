@@ -80,4 +80,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Post::class, 'likes');
     }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.' . $this->id;
+    }
 }
