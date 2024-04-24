@@ -1,9 +1,9 @@
 import { useContext, useMemo, useState } from "react"
 import axios from "../axios"
-import NotificationContext from "../context/NotificationContext"
+import SystemPopupsContext from "../context/SystemPopupsContext"
 
 const useCommentManager = (authToken) => {
-    const { addNotification } = useContext(NotificationContext)
+    const { addPopup } = useContext(SystemPopupsContext)
     const [ comments, setComments ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()
@@ -31,7 +31,7 @@ const useCommentManager = (authToken) => {
         
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")            
+            addPopup(error.response.data.message, "error")            
         }
 
         setLoading(false)
@@ -45,10 +45,10 @@ const useCommentManager = (authToken) => {
                 }
             })
             setComments([...comments, response.data.comment])
-            addNotification(response.data.message)
+            addPopup(response.data.message)
         }
     catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }
     }
 
@@ -61,10 +61,10 @@ const useCommentManager = (authToken) => {
             })
 
             setComments([...comments, response.data.comment])
-            addNotification(response.data.message)
+            addPopup(response.data.message)
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }
     }
 
@@ -77,7 +77,7 @@ const useCommentManager = (authToken) => {
             })
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }
     }
 
@@ -91,10 +91,10 @@ const useCommentManager = (authToken) => {
 
             const updatedComments = comments.filter(comment => comment.id !== id)
             setComments(updatedComments)
-            addNotification("Comment deleted.")
+            addPopup("Comment deleted.")
         }
         catch (error) {
-            addNotification(error.response.data.message)
+            addPopup(error.response.data.message)
         }
     }
 
@@ -111,11 +111,9 @@ const useCommentManager = (authToken) => {
                 return comment.id === id ? updatedComment : comment
             })
             setComments(newComments)
-            addNotification("Comment edited.")
         }
         catch (error) {
-            console.log(error)
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }
     }
 

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faRetweet, faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useContext, useState } from 'react'
-import NotificationContext from '../context/NotificationContext'
 import usePostManager from '../hooks/usePostManager'
 import AuthContext from '../context/AuthContext'
 
@@ -13,7 +12,6 @@ dayjs.extend(RelativeTime)
 const Post = ({ post }) => {
     const navigate = useNavigate()
     const { authToken } = useContext(AuthContext)
-    const { addNotification } = useContext(NotificationContext)
     const { likePost } = usePostManager(authToken)
     const [ likes, setLikes ] = useState(post.likes)
     const [ isLiked, setIsLiked ] = useState(post.isLiked)
@@ -28,7 +26,6 @@ const Post = ({ post }) => {
 
     const handleRepost = (e) => {
         e.stopPropagation()
-        addNotification("Post reposted")
     }
 
     return (

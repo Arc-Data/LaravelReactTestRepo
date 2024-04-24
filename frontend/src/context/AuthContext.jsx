@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "../axios";
 import { jwtDecode } from "jwt-decode"
 import { useNavigate } from "react-router-dom";
-import NotificationContext from "./NotificationContext";
 
 const AuthContext = createContext()
 

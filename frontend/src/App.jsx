@@ -10,10 +10,11 @@ import CreatePost from "./pages/CreatePost"
 import Profile from "./pages/Profile"
 import Settings from "./pages/Settings"
 import { NotificationProvider } from "./context/NotificationContext"
-import FloatingNotification from "./components/FloatingNotification"
 import { PostProvider } from "./context/PostContext"
 import PostDetail from "./pages/PostDetail"
 import Notifications from "./pages/Notifications"
+import { SystemPopupsProvider } from "./context/SystemPopupsContext"
+import FloatingPopup from "./components/FloatingPopup"
 
 function App() {
 return (
@@ -25,7 +26,12 @@ return (
             <Route path="/login/" element={<Login />} />
             <Route path="/register/" element={<Register />} />
           </Route>
-          <Route element={<PrivateRoutes/>}>
+          <Route element={
+            <SystemPopupsProvider>
+              <PrivateRoutes/>
+              <FloatingPopup />
+            </SystemPopupsProvider>
+          }>
               <Route element={<MainLayout />} >
                 <Route path="/" element={<Home />} />
                 <Route path="/post" element={<CreatePost />} />
@@ -40,7 +46,6 @@ return (
               </Route>
           </Route>
         </Routes>
-        <FloatingNotification />
       </NotificationProvider>
     </AuthProvider> 
   </BrowserRouter>

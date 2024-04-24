@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
 import axios from "../axios"
-import NotificationContext from "../context/NotificationContext"
+import SystemPopupsContext from "../context/SystemPopupsContext"
 
 const usePostManager = (authToken) => {
-    const { addNotification } = useContext(NotificationContext)
+    const { addPopup } = useContext(SystemPopupsContext)
     const [ post, setPost ] = useState()
     const [ posts, setPosts ] = useState([])
     const [ loading, setLoading ] = useState(true)
@@ -23,10 +23,10 @@ const usePostManager = (authToken) => {
                     'Authorization': `Bearer ${authToken}`
                 }
             })
-            addNotification(response.data.message)
+            addPopup(response.data.message)
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }   
     }
 
@@ -38,10 +38,10 @@ const usePostManager = (authToken) => {
                 }
             })
 
-            addNotification(response.data.message)
+            addPopup(response.data.message)
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }
     }
 
@@ -54,7 +54,7 @@ const usePostManager = (authToken) => {
             })
         }
         catch (error) {
-            addNotification(error.response.data.message,"error")
+            addPopup(error.response.data.message,"error")
         }
     }
 
@@ -79,7 +79,7 @@ const usePostManager = (authToken) => {
             }
         }   
         catch (error) {
-            addNotification(error.res, "error")
+            addPopup(error.res, "error")
         } finally {
             setLoading(false)
         }
@@ -101,7 +101,7 @@ const usePostManager = (authToken) => {
             setEditedPost(postData)
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         }
 
 
@@ -131,7 +131,7 @@ const usePostManager = (authToken) => {
             }
         }
         catch (error) {
-            addNotification(error.response.data.message, "error")
+            addPopup(error.response.data.message, "error")
         } finally {
             setLoading(false)
         }
@@ -170,10 +170,10 @@ const usePostManager = (authToken) => {
             }))
 
             setEditedPost(data)
-            addNotification(response.data.message)
+            addPopup(response.data.message)
         }
         catch (error) {
-            addNotification(error.response.data.message)
+            addPopup(error.response.data.message)
         }
 
         setLoading(false)
