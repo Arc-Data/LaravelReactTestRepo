@@ -1,11 +1,14 @@
-import { createContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
+import EchoInstance from "../utils/EchoInstance"
+import AuthContext from "./AuthContext"
 
 const SystemPopupsContext = createContext()
 
 export default SystemPopupsContext
 
 export const SystemPopupsProvider = ({ children }) => {
+    const { user } = useContext(AuthContext)
     const [ popups, setPopups ] = useState([])
     const [ timeOutIds, setTimeoutIds ] = useState([])
 
@@ -32,6 +35,20 @@ export const SystemPopupsProvider = ({ children }) => {
 
         setTimeoutIds(prev => ({...prev, [id]: timeoutId}))
     }
+
+
+    useEffect(() => {
+        EchoInstance.private(`App.User.${user.id}`)
+            .notification(notification => {
+                console.log(notification)
+                addPopup("New Notif")
+            })
+
+        return () => {
+            addPopup("When does this happen")
+            EchoInstance.leave(`App.User.${user.id}`)
+        }
+    }, [])
 
     const contextData = {
         popups, 

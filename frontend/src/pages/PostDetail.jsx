@@ -8,7 +8,6 @@ import dayjs from '../utils/dayjs'
 import Spinner from "../components/Spinner"
 import DeleteModal from "../modals/DeleteModal"
 import usePostManager from "../hooks/usePostManager"
-import TestComment from "../components/Comment"
 import Comment from "../components/Comment"
 import InfiniteScroll from "react-infinite-scroll-component"
 import PostEnd from "../components/PostEnd"
@@ -73,7 +72,6 @@ const PostDetail = () => {
 
     const handleRepost = (e) => {
         e.stopPropagation()
-        addNotification("Post reposted")
     }
 
     const handleContentInputChange = (e) => {

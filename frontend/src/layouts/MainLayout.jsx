@@ -2,9 +2,6 @@ import { Link, Outlet } from "react-router-dom"
 import UserNav from "../components/UserNav"
 
 const MainLayout = () => {
-
-    console.log("Might actually be the same for this")
-
     return (
         <> 
             <UserNav />

@@ -119,8 +119,6 @@ const usePostManager = (authToken) => {
                 }
             }) 
 
-            console.log(response.data.data)
-
             setPosts(prevPosts => [...prevPosts, ...response.data.data])
         
             if (response.data.links && response.data.links.next) {

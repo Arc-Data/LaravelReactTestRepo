@@ -20,8 +20,6 @@ const Notifications = () => {
         markNotificationsAsRead()
     }, [])
 
-    console.log(notifications)
-
     if (loading) {
         return (
             <Spinner />
