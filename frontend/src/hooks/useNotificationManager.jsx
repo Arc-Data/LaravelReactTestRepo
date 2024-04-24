@@ -14,7 +14,7 @@ const useNotificationManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
-            setNotifications(response.data.notifications)
+            setNotifications(response.data)
             
         }
         catch(error) {

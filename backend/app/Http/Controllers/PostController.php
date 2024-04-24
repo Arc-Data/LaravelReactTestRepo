@@ -6,6 +6,7 @@ use App\Http\Resources\PostDetailedResource;
 use App\Http\Resources\PostResource;
 use App\Models\Like;
 use App\Models\Post;
+use App\Notifications\PostReply;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -45,6 +46,10 @@ class PostController extends Controller
         $post = new Post($validatedData);
         $post->user()->associate($user);
         $post->save();
+
+        if ($post->user() != $user) {
+            $post->user()->notify(new PostReply($user));
+        }
 
         return response()->json([
             'message' => 'Post created.'

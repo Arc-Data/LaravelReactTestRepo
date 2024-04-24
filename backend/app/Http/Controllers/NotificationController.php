@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostUserResource;
 use App\Models\User;
 use App\Notifications\TestNotification;
 use Illuminate\Http\Request;
@@ -20,30 +21,21 @@ class NotificationController extends Controller
         $notificationData = [];
 
         foreach ($notifications as $notification) {
-            if ($notification->notifiable instanceof User) {
-                $image = $notification->notifiable->profile_image;
-            } else {
-                $image = "";
-            }
+            $sender = User::find($notification->data['sender_id']);
+            $message = $sender->name . " " . $notification->data['message'];
 
             $notificationData[] = [
                 'id' => $notification->id,
                 'type' => $notification->type,
-                'data' => $notification->data,
+                'message' => $message,
+                'sender' => new PostUserResource($sender),
+                'link' => $notification->data['link'],
                 'read_at' => $notification->read_at,
                 'created_at' => $notification->created_at->format('Y-m-d H:i:s'),
-                'user' => [
-                    'id' => $notification->notifiable->id,
-                    'name' => $notification->notifiable->name,
-                    'image' => $image,
-                ],
             ];
         }
 
-        return response()->json([
-            "notifications" => $notificationData,
-            "unread" => $user->unreadNotifications()->count() ? true : false
-        ]);
+        return response()->json($notificationData);
     }
     /**
      * Store a newly created resource in storage.

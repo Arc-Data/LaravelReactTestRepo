@@ -49,7 +49,6 @@ export const PostProvider = ({children}) => {
         }
         if (!comments) return
         addCommentsToGroup(comments)
-        console.log(group)
         return group
     }, [comments])
 

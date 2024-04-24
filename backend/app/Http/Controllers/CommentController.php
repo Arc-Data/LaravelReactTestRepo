@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\PostReply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -41,7 +42,12 @@ class CommentController extends Controller
         $comment->post()->associate($post);
         $comment->user()->associate($user);
         $comment->save();
+
         
+        if ($post->user_id != $user->id) {
+            $post->user->notify(new PostReply($user, $post->id));
+        }
+
         return response()->json([
             "comment" => new CommentResource($comment),
             "message" => "Comment added"

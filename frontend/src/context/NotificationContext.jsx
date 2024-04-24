@@ -16,7 +16,6 @@ export const NotificationProvider = ({ children }) => {
     }, [])
 
     const contextData = {
-        notifications,
         hasUnreadNotifications,
         markNotificationsAsRead,
     }

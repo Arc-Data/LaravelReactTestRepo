@@ -14,9 +14,13 @@ class PostReply extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public $sender;
+    public $post_id;
+
+    public function __construct($sender, $post_id)
     {
-        //
+        $this->sender = $sender;
+        $this->post_id = $post_id;
     }
 
     /**
@@ -45,10 +49,12 @@ class PostReply extends Notification
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toDatabase(object $notifiable): array
     {
         return [
-            //
+            "sender_id" => $this->sender->id,
+            "message" => "replied to your post.",
+            "link" => "/post/" . $this->post_id, 
         ];
     }
 }
