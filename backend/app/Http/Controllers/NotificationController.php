@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PostUserResource;
 use App\Models\User;
 use App\Notifications\TestNotification;
@@ -16,26 +17,8 @@ class NotificationController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $notifications = $user->notifications()->get();    
-
-        $notificationData = [];
-
-        foreach ($notifications as $notification) {
-            $sender = User::find($notification->data['sender_id']);
-            $message = $sender->name . " " . $notification->data['message'];
-
-            $notificationData[] = [
-                'id' => $notification->id,
-                'type' => $notification->type,
-                'message' => $message,
-                'sender' => new PostUserResource($sender),
-                'link' => $notification->data['link'],
-                'read_at' => $notification->read_at,
-                'created_at' => $notification->created_at->format('Y-m-d H:i:s'),
-            ];
-        }
-
-        return response()->json($notificationData);
+        $notifications = $user->notifications()->paginate(10);  
+        return NotificationResource::collection($notifications);
     }
     /**
      * Store a newly created resource in storage.

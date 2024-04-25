@@ -44,7 +44,7 @@ const useCommentManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
-            setComments([...comments, response.data.comment])
+            setComments([...comments, response.data.data])
             addPopup(response.data.message)
         }
     catch (error) {

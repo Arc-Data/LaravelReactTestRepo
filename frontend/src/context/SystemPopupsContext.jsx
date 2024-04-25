@@ -24,11 +24,11 @@ export const SystemPopupsProvider = ({ children }) => {
         })
     } 
 
-    const addPopup = (message, type="success") => {
+    const addPopup = (message, type="success", image) => {
         const id = uuidv4()
         setPopups(prevPopups => ([
             ...prevPopups,
-            { id, message, type: type }
+            { id, message, type: type, image }
         ]))
 
         const timeoutId = setTimeout(() => {
@@ -42,7 +42,8 @@ export const SystemPopupsProvider = ({ children }) => {
     useEffect(() => {
         EchoInstance.private(`App.User.${user.id}`)
             .notification(notification => {
-                addPopup(notification.message)
+                console.log(notification)
+                addPopup(notification.message, "notification", notification.image)
                 hasNewNotification()
             })
 

@@ -37,6 +37,7 @@ class CommentReply extends Notification
     public function toArray($notifiable) 
     {
         return [
+            'image' => $this->sender->profile_image,
             'message' => $this->sender->name . " replied to your comment."
         ];
     }
