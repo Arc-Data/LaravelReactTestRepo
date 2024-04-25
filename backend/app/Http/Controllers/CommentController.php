@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\CommentReply;
 use App\Notifications\PostReply;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -120,7 +121,7 @@ class CommentController extends Controller
     }
 
     public function reply(Comment $comment, Request $request)
-{
+    {
         $user = auth()->user();
         $content = $request->getContent();
         $post = $comment->post;
@@ -131,6 +132,10 @@ class CommentController extends Controller
         $reply->content = $content;
         $reply->parentComment()->associate($comment);
         $reply->save();
+
+        if ($comment->user->id != $user->id) {
+            $comment->user->notify(new CommentReply($user, $post->id));
+        }
 
         return response()->json([
             "message" => "Reply added",

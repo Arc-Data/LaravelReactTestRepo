@@ -47,7 +47,6 @@ export const SystemPopupsProvider = ({ children }) => {
             })
 
         return () => {
-            addPopup("When does this happen")
             EchoInstance.leave(`App.User.${user.id}`)
         }
     }, [])

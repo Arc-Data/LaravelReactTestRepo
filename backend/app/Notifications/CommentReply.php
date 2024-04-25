@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PostReply extends Notification implements ShouldQueue
+class CommentReply extends Notification
 {
     use Queueable;
 
@@ -34,14 +34,14 @@ class PostReply extends Notification implements ShouldQueue
         return ['database', 'broadcast'];
     }
 
-    public function toArray($notifiable)
+    public function toArray($notifiable) 
     {
         return [
-            'message' => $this->sender->name . " replied to your post."
+            'message' => $this->sender->name . " replied to your comment."
         ];
     }
 
-    public function toBroadCast($notifiable)
+    public function toBroadCast($notifiable)  
     {
         return new BroadcastMessage($this->toArray($notifiable));
     }
@@ -51,28 +51,13 @@ class PostReply extends Notification implements ShouldQueue
         return 'notification';
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toDatabase(object $notifiable): array
+    public function toDatabase(object $notifiable)
     {
         return [
             "sender_id" => $this->sender->id,
-            "message" => "replied to your post.",
+            "message" => "replied to your comment.",
             "link" => "/post/" . $this->post_id, 
         ];
     }
+
 }
