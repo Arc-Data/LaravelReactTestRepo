@@ -56,6 +56,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [UserController::class,'index']);
         Route::get('/{username}', [UserController::class,'show']);
         Route::get('/{user}/posts', [UserController::class,'getUserPosts']);
+        Route::get('/{user}/follow', [UserController::class,'follow']);
         Route::post('/', [UserController::class,'update']);
     });
 

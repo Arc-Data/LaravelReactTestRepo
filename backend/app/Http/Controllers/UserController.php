@@ -90,4 +90,19 @@ class UserController extends Controller
         ]);
     }
 
+    public function follow(Request $request, User $user)
+    {   
+        $currentUser = auth()->user();
+
+        if ($currentUser->isFollowing($user)) {
+            $currentUser->unfollow($user);
+            $message = 'Unfollowed successfully.';
+        } else {
+            $currentUser->follow($user);
+            $message = 'Followed successfully.';
+        }
+
+        return response()->json(['message' => $message]);
+    }
+
 }
