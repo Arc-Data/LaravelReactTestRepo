@@ -64,12 +64,12 @@ const Comment = ({ comment }) => {
     return (
         <div className="w-full">
             <div className="flex w-full gap-4">
-                <Link to={`/profile/${comment.user.name}`}>
+                <Link to={`/profile/${comment.user.id}`}>
                     <img src={comment.user.profile_image} className="object-cover w-8 h-8 rounded-full"/>
                 </Link>
                 <div className="flex-1">
                     <div className="flex items-center gap-2">
-                        <Link to={`/profile/${comment.user.name}`} className="text-md text-slate-600 hover:text-text">{comment.user.name}</Link>
+                        <Link to={`/profile/${comment.user.id}`} className="text-md text-slate-600 hover:text-text">{comment.user.name}</Link>
                         <span className="text-slate-800">&middot;</span>
                         <span className="text-sm text-secondary">{dayjs(comment.created_at).fromNow()}</span>
                     </div>

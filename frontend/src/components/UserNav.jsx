@@ -24,7 +24,7 @@ const UserNav = () => {
 						<FontAwesomeIcon icon={faBell} className="text-xl"/>
 						<div className={`${hasUnreadNotifications ? "absolute" : "hidden" } top-0 right-0 z-10 w-4 h-4 rounded-full bg-primary`}></div>
 					</Link>
-					<Link to={`/profile/${user.username}`}>
+					<Link to={`/profile/${user.id}`}>
 						{user.profile_image ? 
 						<img src={user.profile_image} className="object-cover w-10 h-10 border border-gray-800 rounded-full shadow" alt="" />
 						:

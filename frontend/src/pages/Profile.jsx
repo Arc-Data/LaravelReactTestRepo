@@ -15,14 +15,14 @@ import PostEnd from "../components/PostEnd"
 dayjs.extend(RelativeTime)
 
 const Profile = () => {
-    const { name } = useParams()
+    const { id } = useParams()
     const { authToken, user:currentUser} = useContext(AuthContext)
     const { loading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
     const { posts, status:postStatus, getUserPosts, hasMorePosts } = usePostManager(authToken)
 
     useEffect(() => {
         const fetchUser = async (name) => {
-            const tempUser = await getUser(name)
+            const tempUser = await getUser(id)
             getUserPosts(tempUser.id) 
         }
         
@@ -31,7 +31,7 @@ const Profile = () => {
 
     const fetchMorePosts = () => {
         if (hasMorePosts) {
-            getUserPosts(user.id)
+            getUserPosts(id)
         }
     }
     

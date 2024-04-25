@@ -35,7 +35,7 @@ return (
               <Route element={<MainLayout />} >
                 <Route path="/" element={<Home />} />
                 <Route path="/post" element={<CreatePost />} />
-                <Route path="/profile/:name" element={<Profile/>} />
+                <Route path="/profile/:id" element={<Profile/>} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/post/:id" element={
                   <PostProvider>

@@ -35,14 +35,14 @@ const Post = ({ post }) => {
             <div className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
                 <div className='flex items-center gap-2 group/profile' onClick={(e) => {
                     e.stopPropagation()
-                    navigate(`/profile/${post.user.name}`)
+                    navigate(`/profile/${post.user.id}`)
                 }}>
                     <img src={post.user.profile_image} className="object-cover w-8 h-8 rounded-full" alt="" />
                     <span 
                         className='group-hover/profile:text-slate-200' 
                         onClick={(e) => {
                             e.stopPropagation()
-                            navigate(`/profile/${post.user.name}`)
+                            navigate(`/profile/${post.user.id}`)
                         }}>
                         {post.user.name}
                     </span> 

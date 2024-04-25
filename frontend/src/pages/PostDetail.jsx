@@ -111,12 +111,12 @@ const PostDetail = () => {
                 </div>
                 <div className="p-12 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 ">
                     <div className="flex gap-4">
-                        <Link to={`/profile/${post.user.name}`} className=''>
+                        <Link to={`/profile/${post.user.id}`} className=''>
                             <img src={post.user.profile_image} alt="" className="object-cover w-8 h-8 rounded-full"/>
                         </Link>
                         <div className="w-full">
                             <div className="flex justify-between">
-                                <Link to={`/profile/${post.user.name}`} className="text-md hover:text-underline hover:text-primary">{post.user.name}</Link>
+                                <Link to={`/profile/${post.user.id}`} className="text-md hover:text-underline hover:text-primary">{post.user.name}</Link>
                                 <p className='mb-2 text-sm text-slate-600 '>{dayjs(post.created_at).format("MMM D, YYYY h:mm A")}</p>
                             </div>
                             {isEditing ?
