@@ -22,9 +22,8 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function show(Request $request, $username)
+    public function show(Request $request, User $user)
     {
-        $user = User::where("name", $username)->first();
         return UserDetailedResource::make($user);
     }
 
