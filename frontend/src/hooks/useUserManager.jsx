@@ -29,6 +29,21 @@ const useUserManager = (authToken) => {
         setLoading(false)
     }
 
+    const followUser = async (id) => {
+        try {
+            const response = await axios.post(`/api/user/${id}/follow`, null, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            addPopup(response.data.message)
+        }
+        catch (error) {
+            addPopup(error.response.data.message, "error")
+        }
+    }
+
     const editUser = async (data) => {
         const formData = new FormData()
 
@@ -61,6 +76,7 @@ const useUserManager = (authToken) => {
         status,
         getUser,
         editUser,
+        followUser,
     }
 }
 

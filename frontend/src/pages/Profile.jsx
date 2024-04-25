@@ -17,7 +17,7 @@ dayjs.extend(RelativeTime)
 const Profile = () => {
     const { id } = useParams()
     const { authToken, user:currentUser} = useContext(AuthContext)
-    const { loading, status:userStatus, user, getUser, editUser } = useUserManager(authToken)
+    const { loading, status:userStatus, user, getUser, editUser, followUser } = useUserManager(authToken)
     const { posts, status:postStatus, getUserPosts, hasMorePosts } = usePostManager(authToken)
 
     useEffect(() => {
@@ -66,7 +66,7 @@ const Profile = () => {
                     {user.id === currentUser.id ? 
                     <Link to="/settings" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
                     :
-                    <div className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Connect</div>
+                    <div className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black" onClick={() => followUser(id)}>Connect</div>
                     }
                 </div>
                 <div></div>

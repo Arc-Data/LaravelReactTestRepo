@@ -55,7 +55,7 @@ const Settings = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const tempUser = await getUser(user.username)
+            const tempUser = await getUser(user.id)
             setProfile(tempUser)
 
             setImagePreviews({
