@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 class UserDetailedResource extends JsonResource
 {
@@ -14,6 +16,9 @@ class UserDetailedResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $currentUser = auth()->user();
+        $user = User::where("id", $this->id)->first();
+
         return [
             "id"=> $this->id,
             "name"=> $this->name,
@@ -21,6 +26,7 @@ class UserDetailedResource extends JsonResource
             "about"=> $this->about,
             "birthdate"=> $this->birthdate,
             "profile_image" => $this->profile_image,
+            "is_following" => $currentUser->isFollowing($user),
             "banner" => $this->banner,
         ];
     }

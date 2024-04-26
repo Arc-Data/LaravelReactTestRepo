@@ -19,15 +19,22 @@ const Profile = () => {
     const { authToken, user:currentUser} = useContext(AuthContext)
     const { loading, status:userStatus, user, getUser, editUser, followUser } = useUserManager(authToken)
     const { posts, status:postStatus, getUserPosts, hasMorePosts } = usePostManager(authToken)
+    const [ isFollowing, setIsFollowing ] = useState(false)
 
     useEffect(() => {
-        const fetchUser = async (name) => {
+        const fetchUser = async () => {
             const tempUser = await getUser(id)
+            setIsFollowing(tempUser.is_following)
             getUserPosts(tempUser.id) 
         }
         
-        fetchUser(name)
-    }, [name])
+        fetchUser()
+    }, [id])
+
+    const handleFollow = async () => {
+        setIsFollowing(prev => !prev)
+        followUser(id)
+    }
 
     const fetchMorePosts = () => {
         if (hasMorePosts) {
@@ -66,7 +73,7 @@ const Profile = () => {
                     {user.id === currentUser.id ? 
                     <Link to="/settings" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
                     :
-                    <div className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black" onClick={() => followUser(id)}>Connect</div>
+                    <div className={`inline-block px-4 py-2 border bg-opacity-80 ${!isFollowing ? "bg-primary border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</div>
                     }
                 </div>
                 <div></div>

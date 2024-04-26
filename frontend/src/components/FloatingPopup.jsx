@@ -9,7 +9,6 @@ const FloatingPopup = () => {
     return (
         <div className="fixed z-30 p-4 text-white bottom-4 right-4">
             {popups.map((popup, index) => {
-                console.log(popup)
                 return (
                     <div key={index} className={`popup flex items-center gap-4 p-4 transition-transform duration-300 border-l border-blue-500 ease-in-out bg-secondary mb-4 z-30 `}>
                         {

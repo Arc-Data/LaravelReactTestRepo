@@ -21,6 +21,7 @@ const useUserManager = (authToken) => {
             })
             setUser(response.data.data)
             setLoading(false)
+            console.log(response.data.data)
             return response.data.data
         }
         catch(error) {
