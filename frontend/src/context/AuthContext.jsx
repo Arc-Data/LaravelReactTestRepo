@@ -39,7 +39,7 @@ export const AuthProvider = ({children}) => {
 
         localStorage.setItem('authToken', token)
 
-        navigate(`/profile/${tokenData.user.username}`)
+        navigate(`/profile/${tokenData.user.id}`)
     }
 
     const updateToken = async () => {

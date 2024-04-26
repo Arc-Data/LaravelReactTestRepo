@@ -27,6 +27,9 @@ class UserDetailedResource extends JsonResource
             "birthdate"=> $this->birthdate,
             "profile_image" => $this->profile_image,
             "is_following" => $currentUser->isFollowing($user),
+            "followers" => $this->followers()->count(),
+            "followings" => $this->followings()->count(),
+            "posts" => $this->posts()->count(),
             "banner" => $this->banner,
         ];
     }
