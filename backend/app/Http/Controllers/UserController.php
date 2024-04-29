@@ -7,6 +7,7 @@ use App\Http\Resources\PostUserResource;
 use App\Http\Resources\UserDetailedResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Notifications\UserFollow;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -99,6 +100,14 @@ class UserController extends Controller
         } else {
             $currentUser->follow($user);
             $message = 'Followed successfully.';
+            $notificationExists = $user->notifications()
+                ->whereJsonContains('data', [ "sender_id" => $currentUser->id ])
+                ->where('notifiable_id', $user->id)
+                ->exists();
+
+            if (!$notificationExists) {
+                $user->notify(new UserFollow($currentUser));
+            } 
         }
 
         return response()->json(['message' => $message]);
