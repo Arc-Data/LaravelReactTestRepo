@@ -19,8 +19,6 @@ const useNotificationManager = (authToken) => {
             })
             setNotifications(prevNotifications => [...prevNotifications, ...response.data.data])
             
-            console.log(response)
-
             if (response.data.links && response.data.links.next) {
                 setCurrentPage(prev => prev + 1) 
                 setHasMoreNotifications(true)
@@ -52,6 +50,32 @@ const useNotificationManager = (authToken) => {
         setHasUnreadNotifications(true)
     }
 
+    const refreshNotifications = async () => {
+        setCurrentPage(1)
+        setLoading(true)
+        try {
+            const url = `/api/notifications?page=1`;
+            const response = await axios.get(url,  {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+            setNotifications(response.data.data)
+
+            if (response.data.links && response.data.links.next) {
+                setCurrentPage(prev => prev + 1) 
+                setHasMoreNotifications(true)
+            } else {
+                setHasMoreNotifications(false)
+            }
+        }
+        catch(error) {
+            console.log("An error occured: ", error)
+        }
+        setLoading(false)
+
+    }
+
     const getUnreadNotificationsStatus = async () => {
         try {
             const response = await axios.get('/api/notifications/unread', {
@@ -75,6 +99,7 @@ const useNotificationManager = (authToken) => {
         markNotificationsAsRead,
         hasNewNotification,
         hasMoreNotifications,
+        refreshNotifications,
     }
 }
 

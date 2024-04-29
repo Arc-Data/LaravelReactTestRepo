@@ -14,13 +14,20 @@ dayjs.extend(RelativeTime)
 const Notifications = () => {
     
     const { authToken } = useContext(AuthContext)
-    const { notifications, loading, getNotifications, hasMoreNotifications } = useNotificationManager(authToken)
-    const { markNotificationsAsRead } = useContext(NotificationContext)
+    const { notifications, loading, getNotifications, hasMoreNotifications, refreshNotifications } = useNotificationManager(authToken)
+    const { markNotificationsAsRead, hasUnreadNotifications } = useContext(NotificationContext)
 
     useEffect(() => {
         getNotifications()
         markNotificationsAsRead()
     }, [])
+
+    useEffect(() => {
+        if (hasUnreadNotifications) {
+            refreshNotifications()
+        }
+        // getNotifications()
+    }, [hasUnreadNotifications])
 
     const fetchMoreNotifications = () => {
         if (hasMoreNotifications) {

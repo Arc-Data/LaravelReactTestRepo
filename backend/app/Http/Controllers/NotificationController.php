@@ -20,6 +20,7 @@ class NotificationController extends Controller
         $notifications = $user->notifications()->paginate(10);  
         return NotificationResource::collection($notifications);
     }
+    
     /**
      * Store a newly created resource in storage.
      */
