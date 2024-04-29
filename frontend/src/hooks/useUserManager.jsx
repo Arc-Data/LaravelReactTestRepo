@@ -21,12 +21,30 @@ const useUserManager = (authToken) => {
             })
             setUser(response.data.data)
             setLoading(false)
-            console.log(response.data.data)
             return response.data.data
         }
         catch(error) {
             addPopup(error.response.data.message, "error")
         }
+        setLoading(false)
+    }
+
+    const getUserFollowings = async (id) => {
+        setLoading(true)
+        
+        try {
+            const response = await axios.get(`/api/user/${id}/followings`, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            setUsers(response.data.data)
+        }
+        catch(error) {
+            addPopup(error.response.data.messages, "error")
+        }
+
         setLoading(false)
     }
 
@@ -37,8 +55,6 @@ const useUserManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
-
-            addPopup(response.data.message)
         }
         catch (error) {
             addPopup(error.response.data.message, "error")
@@ -78,6 +94,7 @@ const useUserManager = (authToken) => {
         getUser,
         editUser,
         followUser,
+        getUserFollowings,
     }
 }
 

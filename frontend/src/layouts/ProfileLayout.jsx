@@ -26,8 +26,6 @@ const ProfileLayout = () => {
         followUser(id)
     }
 
-
-
     if (loading) {
         return (
             <Spinner />
@@ -65,8 +63,8 @@ const ProfileLayout = () => {
                     <p>{user.about}</p>
                     <div className="flex gap-4 mt-4 text-sm">
                         <p>{user.followers} Followers</p>    
-                        <p>{user.followings} Following</p>    
-                        <p>{user.posts} Posts</p>    
+                        <Link to={`/profile/${id}/following`} >{user.followings} Following</Link>    
+                        <Link to={`/profile/${id}/`}>{user.posts} Posts</Link>    
                     </div>    
                 </div>
             </div>

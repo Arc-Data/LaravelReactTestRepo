@@ -40,11 +40,10 @@ export const PostProvider = ({children}) => {
         const group = {}
 
         const addCommentsToGroup = (comments) => {
-            console.log(comments)
             comments.forEach(comment => {
                 group[comment.parent_comment] ||= []
                 group[comment.parent_comment].push(comment)
-                if (!comment.replies) return
+            if (!comment.replies) return
                 addCommentsToGroup(comment.replies)
             })
         }
