@@ -90,6 +90,16 @@ class UserController extends Controller
         ]);
     }
 
+    public function userFollowings(User $user)
+    {
+        return PostUserResource::collection($user->followings);
+    }
+
+    public function userFollowers(User $user) 
+    {
+        return PostUserResource::collection($user->followers);
+    }
+
     public function follow(Request $request, User $user)
     {   
         $currentUser = auth()->user();
