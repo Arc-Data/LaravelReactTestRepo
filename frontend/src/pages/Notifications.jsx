@@ -26,7 +26,6 @@ const Notifications = () => {
         if (hasUnreadNotifications) {
             refreshNotifications()
         }
-        // getNotifications()
     }, [hasUnreadNotifications])
 
     const fetchMoreNotifications = () => {
