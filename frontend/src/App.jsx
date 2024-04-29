@@ -17,6 +17,7 @@ import { SystemPopupsProvider } from "./context/SystemPopupsContext"
 import FloatingPopup from "./components/FloatingPopup"
 import ProfileLayout from "./layouts/ProfileLayout"
 import Following from "./pages/Following"
+import Followers from "./pages/Followers"
 
 function App() {
 return (
@@ -40,6 +41,7 @@ return (
                 <Route element={<ProfileLayout />}>
                   <Route path="/profile/:id" element={<Profile/>} />
                   <Route path="/profile/:id/following" element={<Following/>} />
+                  <Route path="/profile/:id/followers" element={<Followers/>} />
                 </Route>
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/post/:id" element={

@@ -1,21 +1,21 @@
-import { useParams } from "react-router-dom"
-import useUserManager from "../hooks/useUserManager"
 import { useContext, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
+import useUserManager from "../hooks/useUserManager"
 import UserListItem from "../components/UserListItem"
 
-const Following = () => {
+const Followers = () => {
     const { id } = useParams()
-    const { authToken, user:currentUser } = useContext(AuthContext) 
-    const { users, loading, getUserFollowings } = useUserManager(authToken)
-
+    const { authToken, user:currentUser } = useContext(AuthContext)
+    const { users, loading, getUserFollowers } = useUserManager(authToken)
+    
     useEffect(() => {
-        getUserFollowings(id)
+        getUserFollowers(id)
     }, [id])
 
     return (
         <div>
-            <p className="p-8">This user follows.</p>
+            <p className="p-8">This user is followed by.</p>
             {users.map(user => {
                 console.log(user)
                 return (
@@ -26,5 +26,4 @@ const Following = () => {
     )
 }
 
-
-export default Following
+export default Followers

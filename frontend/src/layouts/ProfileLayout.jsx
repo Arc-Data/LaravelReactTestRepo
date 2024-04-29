@@ -62,7 +62,7 @@ const ProfileLayout = () => {
                 <div className="col-span-2">
                     <p>{user.about}</p>
                     <div className="flex gap-4 mt-4 text-sm">
-                        <p>{user.followers} Followers</p>    
+                        <Link to={`/profile/${id}/followers`}>{user.followers} Followers</Link>    
                         <Link to={`/profile/${id}/following`} >{user.followings} Following</Link>    
                         <Link to={`/profile/${id}/`}>{user.posts} Posts</Link>    
                     </div>    

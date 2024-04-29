@@ -48,6 +48,25 @@ const useUserManager = (authToken) => {
         setLoading(false)
     }
 
+    const getUserFollowers = async (id) => {
+        setLoading(true)
+        
+        try {
+            const response = await axios.get(`/api/user/${id}/followers`, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            setUsers(response.data.data)
+        }
+        catch(error) {
+            addPopup(error.response.data.messages, "error")
+        }
+
+        setLoading(false)
+    }
+
     const followUser = async (id) => {
         try {
             const response = await axios.post(`/api/user/${id}/follow`, null, {
@@ -95,6 +114,7 @@ const useUserManager = (authToken) => {
         editUser,
         followUser,
         getUserFollowings,
+        getUserFollowers,
     }
 }
 
