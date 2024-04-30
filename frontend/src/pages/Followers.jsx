@@ -5,6 +5,7 @@ import useUserManager from "../hooks/useUserManager"
 import UserListItem from "../components/UserListItem"
 import InfiniteScroll from "react-infinite-scroll-component"
 import PostEnd from "../components/PostEnd"
+import Spinner from "../components/Spinner"
 
 const Followers = () => {
     const { id } = useParams()

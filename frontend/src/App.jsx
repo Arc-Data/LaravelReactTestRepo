@@ -18,6 +18,7 @@ import FloatingPopup from "./components/FloatingPopup"
 import ProfileLayout from "./layouts/ProfileLayout"
 import Following from "./pages/Following"
 import Followers from "./pages/Followers"
+import Search from "./pages/Search"
 
 function App() {
 return (
@@ -50,6 +51,7 @@ return (
                   </PostProvider>
                 } />
                 <Route path="/notifications" element={<Notifications />}/>
+                <Route path="/search" element={<Search />}/>
               </Route>
           </Route>
         </Routes>

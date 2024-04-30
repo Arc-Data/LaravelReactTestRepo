@@ -32,7 +32,6 @@ const Following = () => {
                 loader={<Spinner />}
                 endMessage={<PostEnd />}>
                 {users.map(user => {
-                    console.log(user)
                     return (
                         <UserListItem user={user} key={user.id} followDisabled={id == currentUser.id || user.id === currentUser.id}/>    
                     )

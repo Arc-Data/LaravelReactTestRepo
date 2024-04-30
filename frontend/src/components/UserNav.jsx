@@ -1,18 +1,41 @@
 import { useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBell, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faSearch, faUser } from "@fortawesome/free-solid-svg-icons"
 import NotificationContext from "../context/NotificationContext"
 
 const UserNav = () => {
 	const { user, logoutUser } = useContext(AuthContext)
+	const [ searchParams, setSearchParams ] = useSearchParams()
 	const { hasUnreadNotifications } = useContext(NotificationContext)
+	const navigate = useNavigate()
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		const query = e.target.query.value
+		if (!query.trim()) return;
+		const type = searchParams.get("type") ? searchParams.get("type") : "post"
+		
+		navigate(`/search?type=${type}&query=${query.trim()}`)
+	}
 
 	return (
 		<div className="fixed top-0 left-0 z-10 w-full p-4 border-b shadow-xl border-slate-900 bg-background">
-			<nav className="container flex items-center justify-between mx-auto">
+			<nav className="container flex items-center gap-12 mx-auto justify-evenly">
 				<Link to="/" className="text-2xl font-bold text-primary">WriteUps</Link>
+				<form method="GET" className="flex-1 max-w-2xl" onSubmit={handleSubmit}>
+					<div className="relative">
+						<div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
+							<FontAwesomeIcon icon={faSearch} />
+						</div>
+						<input 
+							type="search" 
+							name="query" 
+							placeholder="Search"
+							className="block w-full p-2 bg-transparent border rounded-xl text-text border-slate-800 ps-10"/>
+					</div>
+				</form>
 				{!user ?   
 				<div className="flex gap-8">
 					<Link to="/login">Login</Link>
