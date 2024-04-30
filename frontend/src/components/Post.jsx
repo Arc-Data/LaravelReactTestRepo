@@ -37,14 +37,14 @@ const Post = ({ post }) => {
                     e.stopPropagation()
                     navigate(`/profile/${post.user.id}`)
                 }}>
-                    <img src={post.user.profile_image} className="object-cover w-8 h-8 rounded-full" alt="" />
+                    <img src={post.user?.profile_image} className="object-cover w-8 h-8 rounded-full" alt="" />
                     <span 
                         className='group-hover/profile:text-slate-200' 
                         onClick={(e) => {
                             e.stopPropagation()
                             navigate(`/profile/${post.user.id}`)
                         }}>
-                        {post.user.name}
+                        {post.user?.name}
                     </span> 
                 </div>
                 <span className="text-2xl font-bold">&middot;</span> 

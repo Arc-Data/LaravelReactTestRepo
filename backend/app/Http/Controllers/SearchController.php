@@ -21,7 +21,7 @@ class SearchController extends Controller
         } else {
             $results = Post::where('title', 'like', '%' . $query . '%')
                 ->orWhere('description', 'like', '%' . $query . '%')
-                ->paginate(15);
+                ->paginate(8);
             return PostResource::collection($results);
         }
     }

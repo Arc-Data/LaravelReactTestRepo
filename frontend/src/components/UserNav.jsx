@@ -16,14 +16,20 @@ const UserNav = () => {
 		const query = e.target.query.value
 		if (!query.trim()) return;
 		const type = searchParams.get("type") ? searchParams.get("type") : "post"
-		
 		navigate(`/search?type=${type}&query=${query.trim()}`)
 	}
 
 	return (
 		<div className="fixed top-0 left-0 z-10 w-full p-4 border-b shadow-xl border-slate-900 bg-background">
-			<nav className="container flex items-center gap-12 mx-auto justify-evenly">
+			<nav className="container flex items-center justify-between gap-12 mx-auto">
 				<Link to="/" className="text-2xl font-bold text-primary">WriteUps</Link>
+				{!user ?   
+				<div className="flex gap-8">
+					<Link to="/login">Login</Link>
+					<Link to="/register">Register</Link>
+				</div>
+				:
+				<>
 				<form method="GET" className="flex-1 max-w-2xl" onSubmit={handleSubmit}>
 					<div className="relative">
 						<div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
@@ -36,12 +42,6 @@ const UserNav = () => {
 							className="block w-full p-2 bg-transparent border rounded-xl text-text border-slate-800 ps-10"/>
 					</div>
 				</form>
-				{!user ?   
-				<div className="flex gap-8">
-					<Link to="/login">Login</Link>
-					<Link to="/register">Register</Link>
-				</div>
-				:
 				<div className="flex items-center gap-8">
 					<Link to="/notifications" className="relative flex items-center justify-center w-8 h-8 p-5 rounded-full hover:bg-opacity-20 hover:cursor-pointer hover:bg-primary">
 						<FontAwesomeIcon icon={faBell} className="text-xl"/>
@@ -58,6 +58,7 @@ const UserNav = () => {
 					</Link>
 					<button onClick={logoutUser}>Logout</button>
 				</div>
+				</>
 				}
 			</nav>
 		</div>

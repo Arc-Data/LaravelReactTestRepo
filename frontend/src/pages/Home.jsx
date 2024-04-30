@@ -50,7 +50,7 @@ const Home = () => {
                     loader={<Spinner />}
                     endMessage={<PostEnd />}>
                     <div className='flex flex-col gap-4'>
-                        { posts && posts.map((post, index) => {
+                        { posts.map(post => {
                             return (<Post post={post} key={post.id}/>)
                         })}
                     </div>
