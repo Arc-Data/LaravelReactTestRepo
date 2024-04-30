@@ -9,6 +9,8 @@ const useUserManager = (authToken) => {
     const [ users, setUsers ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()  
+    const [ currentPage, setCurrentPage] = useState(1)
+    const [ hasMoreUsers, setHasMoreUsers ] = useState(true)
     const { updateTokenOnUserUpdate } = useContext(AuthContext)
 
     const getUser = async (name) => {
@@ -31,15 +33,23 @@ const useUserManager = (authToken) => {
 
     const getUserFollowings = async (id) => {
         setLoading(true)
-        
+
         try {
-            const response = await axios.get(`/api/user/${id}/followings`, {
+            const url = `/api/user/${id}/followings?page=${currentPage}`
+            const response = await axios.get(url, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
 
-            setUsers(response.data.data)
+            setUsers(prevUsers => [...prevUsers, ...response.data.data])
+
+            if(response.data.links && response.data.links.next) {
+                setCurrentPage(prev => prev + 1)
+                setHasMoreUsers(true)
+            } else {
+                setHasMoreUsers(false)
+            }
         }
         catch(error) {
             addPopup(error.response.data.messages, "error")
@@ -52,13 +62,21 @@ const useUserManager = (authToken) => {
         setLoading(true)
         
         try {
-            const response = await axios.get(`/api/user/${id}/followers`, {
+            const url = `/api/user/${id}/followers?page=${currentPage}`
+            const response = await axios.get(url, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
 
-            setUsers(response.data.data)
+            setUsers(prevUsers => [...prevUsers, ...response.data.data])
+        
+            if (response.data.links && response.data.links.next) {
+                setCurrentPage(prev => prev + 1)
+                setHasMoreUsers(true)
+            } else {
+                setHasMoreUsers(false)
+            }
         }
         catch(error) {
             addPopup(error.response.data.messages, "error")
@@ -115,6 +133,7 @@ const useUserManager = (authToken) => {
         followUser,
         getUserFollowings,
         getUserFollowers,
+        hasMoreUsers,
     }
 }
 

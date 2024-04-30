@@ -92,12 +92,14 @@ class UserController extends Controller
 
     public function userFollowings(User $user)
     {
-        return PostUserResource::collection($user->followings);
+        $followings = $user->followings()->paginate(20);
+        return PostUserResource::collection($followings);
     }
 
     public function userFollowers(User $user) 
     {
-        return PostUserResource::collection($user->followers);
+        $followers = $user->followers()->paginate(20);
+        return PostUserResource::collection($followers);
     }
 
     public function follow(Request $request, User $user)
