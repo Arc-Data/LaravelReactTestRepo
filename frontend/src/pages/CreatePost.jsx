@@ -29,18 +29,31 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await createPost({
-            'title': e.target.title.value,
-            'description': e.target.description.value,
+
+        const formData = new FormData()
+
+        formData.append('title', e.target.title.value)
+        formData.append('description', e.target.title.value)
+
+        images.forEach(image => {
+            formData.append(`images[]`, image);
         })
+
+        await createPost(formData)
 
         navigate('/')
     }
 
     const handleRemoveImage = (e, image) => {
         e.preventDefault()
-        const updatedImages = previewImages.filter(i => i !== image)
-        setPreviewImages(updatedImages)
+        const imageIndex = previewImages.findIndex(i => i === image)
+        const updatedPreviewImages = [...previewImages]
+        updatedPreviewImages.splice(imageIndex, 1)
+        setPreviewImages(updatedPreviewImages)
+
+        const updatedImages = [...images]
+        updatedImages.splice(imageIndex, 1)
+        setImages(updatedImages)
     }
 
     return (
@@ -93,7 +106,7 @@ const CreatePost = () => {
                             type="file" 
                             className="hidden" 
                             id="dropzone-image" 
-                            name="image" 
+                            name="images[]" 
                             onChange={handleImageChange} 
                             multiple />
                     </div>
