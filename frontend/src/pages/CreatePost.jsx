@@ -4,7 +4,7 @@ import usePostManager from "../hooks/usePostManager";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { faCross, faImage, faX, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 const CreatePost = () => {
     const { user, authToken } = useContext(AuthContext)
@@ -37,6 +37,12 @@ const CreatePost = () => {
         navigate('/')
     }
 
+    const handleRemoveImage = (e, image) => {
+        e.preventDefault()
+        const updatedImages = previewImages.filter(i => i !== image)
+        setPreviewImages(updatedImages)
+    }
+
     return (
         <div className="mt-4">
             <UserNav />
@@ -62,16 +68,20 @@ const CreatePost = () => {
                         className="w-full px-3 py-2 bg-transparent border rounded-md border-slate-400"/>
                 </div>
                 <p>Upload Images</p>
-                <div className="flex gap-4 overflow-x-auto ">
-                    {previewImages.map(image => {
-                        return (
-                            <img src={image} className="object-cover w-36 h-36"/>
-                        )
+                <div className="grid grid-cols-3 gap-2 md:grid-cols-4 ">
+                    {previewImages.map((image, index) => {
+                    return (
+                        <div className="relative group" key={index}>
+                            <img src={image} className="object-cover h-40 rounded-md "/>
+                            {/* <div className="absolute inset-0 hidden w-full h-full bg-gray-800 group-hover:block bg-opacity-20"></div> */}
+                            <button><FontAwesomeIcon icon={faXmarkCircle} className="absolute hidden text-3xl hover:cursor-pointer hover:text-secondary group-hover:block top-2 text-primary right-2" onClick={(e) => handleRemoveImage(e, image)}/></button>
+                        </div>
+                    )
                     })}
-                    <div>
+                    <div className="w-full h-40">
                         <label 
                             htmlFor="dropzone-image" 
-                            className="flex flex-col border border-gray-300 border-dashed w-36 h-36">
+                            className="flex flex-col w-full h-full border border-gray-300 border-dashed">
                             <div className="relative w-full h-full">
                                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 text-text">
                                     <FontAwesomeIcon icon={faImage} className="text-4xl" />
