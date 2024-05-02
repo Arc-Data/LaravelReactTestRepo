@@ -39,6 +39,8 @@ const PostDetail = () => {
 
     const navigate = useNavigate()
 
+    console.log(post)
+
     const toggleEditing = () => {
         setIsEditing(prev => !prev)
     }

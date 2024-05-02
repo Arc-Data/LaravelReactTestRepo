@@ -2,10 +2,11 @@ import RelativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from "dayjs"
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMessage, faRetweet, faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightArrowLeft, faMessage, faRetweet, faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useContext, useState } from 'react'
 import usePostManager from '../hooks/usePostManager'
 import AuthContext from '../context/AuthContext'
+import { Carousel } from 'flowbite-react'
 
 dayjs.extend(RelativeTime)
 
@@ -28,11 +29,15 @@ const Post = ({ post }) => {
         e.stopPropagation()
     }
 
+    console.log(post.images)
+
     return (
         <div 
-            onClick={() => navigate(`/post/${post.id}`)}
+            
             className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:cursor-pointer'>
-            <div className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
+            <div 
+                onClick={() => navigate(`/post/${post.id}`)}
+                className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
                 <div className='flex items-center gap-2 group/profile' onClick={(e) => {
                     e.stopPropagation()
                     navigate(`/profile/${post.user.id}`)
@@ -51,6 +56,14 @@ const Post = ({ post }) => {
                 <span>{dayjs(post.created_at).fromNow()}</span>
             </div>
             <p className='text-2xl font-bold group-hover:text-primary'>{post.title}</p>
+            {/* carousel */}
+            {post.images.length !== 0 && 
+            <div className='h-56 sm:h-64 xl:h-80 2xl:h-96'>
+                <Carousel>
+                    {post.images.map(image => (<img src={image} className="object-cover"/>))}
+                </Carousel>
+            </div>
+            }
             <p className='mt-2' dangerouslySetInnerHTML={{ __html: post.description}} />
             <div className='flex gap-4 mt-2'>
                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>

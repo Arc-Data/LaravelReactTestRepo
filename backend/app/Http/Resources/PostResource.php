@@ -17,13 +17,15 @@ class PostResource extends JsonResource
         $user = auth()->user();
         $isLiked = $user ? $this->likes->contains('user_id', $user->id) : false;
 
+        $images = $this->images->pluck('url')->toArray();
+
         return [
             "id"=> $this->id,  
             "title"=> $this->title,
             'description' => $this->description,
             'user' => new PostUserResource($this->user),
             'replies' => $this->comments()->count(),
-            'images' => $this->images,
+            'images' => $images,
             'likes' => $this->likes()->count(),
             'isLiked' => $isLiked,
             'created_at' => $this->created_at->toIso8601String(),
