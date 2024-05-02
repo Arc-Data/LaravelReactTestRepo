@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostDetailedResource;
 use App\Http\Resources\PostResource;
+use App\Models\Image;
+use Illuminate\Support\Facades\Log;
 use App\Models\Like;
 use App\Models\Post;
 use App\Notifications\PostReply;
@@ -37,18 +39,30 @@ class PostController extends Controller
 
         $validatedData = $request->validate([
             "title" => 'required|string|max:100',
-            'description' => 'required|string'           
+            'description' => 'required|string',     
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg'      
         ]);
 
         $validatedData['title'] = strip_tags($validatedData['title']);
         $validatedData['description'] = strip_tags($validatedData['description']);
-
+        $uploadedImages = $request->file('images');
+    
         $post = new Post($validatedData);
         $post->user()->associate($user);
         $post->save();
+    
+    
+        if ($uploadedImages !== null) {
+            foreach ($uploadedImages as $image) {
+                $imageName = $this->generateUniqueFilename($image->getClientOriginalName());
+                Log::info($imageName);
+                $image->storeAs('public/post/', $imageName);
+                $newImage = new Image([
+                    'url' => asset('storage/post/' . $imageName),
+                ]);
 
-        if ($post->user() != $user) {
-            $post->user()->notify(new PostReply($user));
+                $post->images()->save($newImage);
+            }
         }
 
         return response()->json([
@@ -120,5 +134,14 @@ class PostController extends Controller
         }
 
         return response()->json(['message' => $message]);
+    }
+
+    private function generateUniqueFilename($originalFilename)
+    {
+        $extension = pathinfo($originalFilename, PATHINFO_EXTENSION);
+        $filename = pathinfo($originalFilename, PATHINFO_FILENAME);
+        $timestamp = time();
+        $uniqueFilename = $filename . '_' . $timestamp .'.'. $extension;
+        return $uniqueFilename;
     }
 }

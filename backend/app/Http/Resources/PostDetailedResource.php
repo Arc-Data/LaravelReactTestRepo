@@ -22,6 +22,7 @@ class PostDetailedResource extends JsonResource
             "title" => $this->title,
             "description" => $this->description,
             "likes" => $this->likes()->count(),
+            "images" => $this->images,
             "user" => new PostUserResource($this->user),
             "replies" => $this->comments()->count(),
             "isLiked" => $isLiked,
