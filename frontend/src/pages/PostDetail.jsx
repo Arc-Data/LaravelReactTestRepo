@@ -11,6 +11,7 @@ import usePostManager from "../hooks/usePostManager"
 import Comment from "../components/Comment"
 import InfiniteScroll from "react-infinite-scroll-component"
 import PostEnd from "../components/PostEnd"
+import CustomCarousel from "../components/CustomCarousel"
 
 const PostDetail = () => {
     const { id } = useParams()
@@ -146,9 +147,12 @@ const PostDetail = () => {
                             </form>
                             :
                             <>
-                            <p className="mt-6 text-4xl font-bold">{post.title}</p>
+                            <p className="mt-6 text-2xl font-bold">{post.title}</p>
                             <p className="mt-4" dangerouslySetInnerHTML={{ __html: post.description}} />
                             </>
+                            }
+                            {post.images.length > 1 && 
+                            <CustomCarousel images={post.images}/>
                             }
                             <div className='flex gap-4 mt-2'>
                                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>

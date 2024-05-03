@@ -101,7 +101,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'followed_id');
     }
 
-    public function follow(User $user)
+public function follow(User $user)
     {
         $this->followings()->attach($user);
     }

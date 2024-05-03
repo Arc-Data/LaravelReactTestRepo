@@ -16,7 +16,6 @@ class PostResource extends JsonResource
     {
         $user = auth()->user();
         $isLiked = $user ? $this->likes->contains('user_id', $user->id) : false;
-
         $images = $this->images->pluck('url')->toArray();
 
         return [

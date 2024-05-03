@@ -16,13 +16,14 @@ class PostDetailedResource extends JsonResource
     {
         $user = auth()->user();
         $isLiked = $user ? $this->likes->contains('user_id', $user->id) : false;
+        $images = $this->images()->pluck('url')->toArray();
 
         return [
             "id"=> $this->id,
             "title" => $this->title,
             "description" => $this->description,
             "likes" => $this->likes()->count(),
-            "images" => $this->images,
+            "images" => $images,
             "user" => new PostUserResource($this->user),
             "replies" => $this->comments()->count(),
             "isLiked" => $isLiked,
