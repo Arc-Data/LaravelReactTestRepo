@@ -55,7 +55,7 @@ const Post = ({ post }) => {
                 <p className='mt-2' dangerouslySetInnerHTML={{ __html: post.description}} />
             </div>
             {post.images.length !== 0 && 
-            <CustomCarousel images={post.images}/>
+            <CustomCarousel images={post.images} />
             }
             <div className='flex gap-4 mt-2'>
                 <button className='flex items-center gap-4 px-2 py-2 shadow-md group/likes bg-opacity-10 bg-primary rounded-xl' onClick={handleSubmitLike}>
