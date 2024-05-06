@@ -5,17 +5,18 @@ import useUserManager from "../hooks/useUserManager"
 import Spinner from "../components/Spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
+import UserNotFound from "../error/UserNotFound"
 
 const ProfileLayout = () => {
     const { id } = useParams()
     const { authToken, user:currentUser } = useContext(AuthContext)
-    const { loading, user, getUser, followUser } = useUserManager(authToken)
+    const { loading, user, getUser, followUser, status } = useUserManager(authToken)
     const [ isFollowing, setIsFollowing ] = useState(false)
 
     useEffect(() => {
         const fetchUser = async () => {
             const tempUser = await getUser(id)
-            setIsFollowing(tempUser.is_following)
+            setIsFollowing(tempUser?.is_following)
         }
 
         fetchUser()
@@ -26,11 +27,16 @@ const ProfileLayout = () => {
         followUser(id)
     }
 
+    if (!user && status === "404") {
+        return (<UserNotFound/>)
+    }
+
     if (loading) {
         return (
             <Spinner />
         )
     }
+
 
     return (
         <div>

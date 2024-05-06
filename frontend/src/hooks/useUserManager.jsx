@@ -21,12 +21,15 @@ const useUserManager = (authToken) => {
                     "Authorization": `Bearer ${authToken}`
                 }
             })
+
+            console.log(response)
             setUser(response.data.data)
             setLoading(false)
+            
             return response.data.data
         }
         catch(error) {
-            addPopup(error.response.data.message, "error")
+            setStatus("404")
         }
         setLoading(false)
     }
