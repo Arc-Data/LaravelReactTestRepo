@@ -8,6 +8,8 @@ import Spinner from "../components/Spinner"
 import PostEnd from "../components/PostEnd"
 import UserListItem from "../components/UserListItem"
 import Post from "../components/Post"
+import UserWithNameNotFound from "../error/UserWithNameNotFound"
+import PostWithDescriptionNotFound from "../error/PostWithDescriptionNotFound"
 
 const Search = () => {
     const { authToken } = useContext(AuthContext)
@@ -85,12 +87,19 @@ const Search = () => {
                 endMessage={<PostEnd />}
                 >
                 {
-                    type === "user" ? 
+                    type === "user" && results.length === 0 ? 
+                    <UserWithNameNotFound />
+                    :
+                    type === "user"
+                    ?
                     results.map(user => {
                         return (
                             <UserListItem user={user} key={user.id} followDisabled={false}/>    
                         )
                     })
+                    :
+                    results.length === 0 ? 
+                    <PostWithDescriptionNotFound />
                     :
                     <div className="flex flex-col gap-4">
                         {results.map(post => {

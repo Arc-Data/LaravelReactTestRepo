@@ -60,7 +60,6 @@ const useCommentManager = (authToken) => {
                 }
             })
 
-            console.log(response.data.comment)
             setComments([...comments, response.data.comment])
             addPopup(response.data.message)
         }
