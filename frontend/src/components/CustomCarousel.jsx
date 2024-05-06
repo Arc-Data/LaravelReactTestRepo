@@ -14,17 +14,17 @@ const CustomCarousel = ({ images }) => {
 
     const LeftButton = () => {
         return (
-            <button className={`${images.length === 1 || currentSlide === 0 ? "hidden" : "block"}`}>
+            <div className={`${images.length === 1 || currentSlide === 0 ? "hidden" : "block"}`}>
                 <FontAwesomeIcon icon={faAngleLeft} className="w-4 h-4 p-4 bg-black rounded-full"/>
-            </button>
+            </div>
         )
     }
 
     const RightButton = () => {
         return (
-            <button className={`${images.length === 1 || currentSlide + 1 === images.length ? "hidden" : "block"}`}>
+            <div className={`${images.length === 1 || currentSlide + 1 === images.length ? "hidden" : "block"}`} >
                 <FontAwesomeIcon icon={faAngleRight} className="w-4 h-4 p-4 bg-black rounded-full"/>
-            </button>
+            </div>
         )
     }
 
@@ -34,19 +34,20 @@ const CustomCarousel = ({ images }) => {
         onSlideChange: (index) => setCurrentSlide(index),
         leftControl: <LeftButton />,
         rightControl: <RightButton />,
+        // onClick: toggleShowFullImage,
     };
 
 
     return (
-        <div className='relative h-36 my-4 sm:h-64 xl:h-[400px] 2xl:h-[600px]'>
+        <div className='relative h-36 my-4 sm:h-64 xl:h-[400px] 2xl:h-[600px]'  >
             <div className={`absolute z-10 ${images.length > 1 ? "flex" : "hidden"} items-center gap-2 p-2 bg-black rounded-xl top-2 end-2`}>
                 {currentSlide + 1}/{images.length} 
                 <FontAwesomeIcon icon={faImage} />
             </div>
-            <Carousel {...carouselProps} onClick={toggleShowFullImage} >
+            <Carousel {...carouselProps}>
                 {images.map(image => {
                     return (
-                        <img src={image} className="" key={image}/>
+                        <img src={image} className="" key={image} onClick={toggleShowFullImage}/>
                     )
                 })}
             </Carousel>

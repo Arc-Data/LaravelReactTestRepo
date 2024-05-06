@@ -20,7 +20,7 @@ const UserNav = () => {
 	}
 
 	return (
-		<div className="fixed top-0 left-0 z-10 w-full p-4 border-b shadow-xl border-slate-900 bg-background">
+		<div className="fixed top-0 left-0 z-20 w-full p-4 border-b shadow-xl border-slate-900 bg-background">
 			<nav className="container flex items-center justify-between gap-12 mx-auto">
 				<Link to="/" className="text-2xl font-bold text-primary">WriteUps</Link>
 				{!user ?   
