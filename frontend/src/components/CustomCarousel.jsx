@@ -5,7 +5,7 @@ import { faAngleLeft, faAngleRight, faImage, faLeftLong, faRightFromBracket } fr
 import FullImageCarousel from "../modals/FullImageCarousel"
 
 const CustomCarousel = ({ images }) => {
-    const [currentSlide, setCurrentSlide ] = useState(1)
+    const [currentSlide, setCurrentSlide ] = useState(0)
     const [ showFullImage, setShowFullImage ] = useState(false)
 
     const toggleShowFullImage = () => {
@@ -43,14 +43,14 @@ const CustomCarousel = ({ images }) => {
                 {currentSlide + 1}/{images.length} 
                 <FontAwesomeIcon icon={faImage} />
             </div>
-            <Carousel {...carouselProps} onClick={toggleShowFullImage}>
+            <Carousel {...carouselProps} onClick={toggleShowFullImage} >
                 {images.map(image => {
                     return (
                         <img src={image} className="" key={image}/>
                     )
                 })}
             </Carousel>
-            {showFullImage && <FullImageCarousel images={images} handleClose={toggleShowFullImage}/>}
+            {showFullImage && <FullImageCarousel images={images} handleClose={toggleShowFullImage} slideIndex={currentSlide}/>}
         </div>
     )
 }
