@@ -2,4 +2,4 @@ My last attempt at creating a Social Media Website, made with React and Tailwind
 to learn or at least be at the starting point for learning social media algorithms and develop a much needed understanding of why certain social media websites make certain UI decisions
 and be able to come with a better idea of the kind of direction I want to take this application in.
 
-Site plans / Progress(https://arc-data.notion.site/WriteUp-f947d05e873c4e5ea6d845121ffa4171?pvs=4)
+[Site plans / Progress Tracker](https://arc-data.notion.site/WriteUp-f947d05e873c4e5ea6d845121ffa4171)
