@@ -1,18 +1,18 @@
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from "dayjs"
-import { redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRightArrowLeft, faMessage, faRetweet, faShare, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faMessage, faRetweet, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useContext, useState } from 'react'
 import usePostManager from '../hooks/usePostManager'
 import AuthContext from '../context/AuthContext'
-import Carousel from './CustomCarousel'
 import CustomCarousel from './CustomCarousel'
 
 dayjs.extend(RelativeTime)
 
 const Post = ({ post }) => {
     const navigate = useNavigate()
+    const [ showFullText, setShowFullText ] = useState(false)
     const { authToken } = useContext(AuthContext)
     const { likePost } = usePostManager(authToken)
     const [ likes, setLikes ] = useState(post.likes)
@@ -30,8 +30,13 @@ const Post = ({ post }) => {
         e.stopPropagation()
     }
 
+    const truncateText = (text, maxLength) => {
+        if (text.length <= maxLength) return text
+        return text.slice(0, maxLength) + '...'
+    }
+
     return (
-        <div className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:cursor-pointer'>
+        <div className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 max-w-[900px] hover:cursor-pointer'>
             <div onClick={() => navigate(`/post/${post.id}`)}>
                 <div className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
                     <div className='flex items-center gap-2 group/profile' onClick={(e) => {
@@ -52,9 +57,15 @@ const Post = ({ post }) => {
                     <span>{dayjs(post.created_at).fromNow()}</span>
                 </div>
                 <p className='text-2xl font-bold group-hover:text-primary'>{post.title}</p>
-                <p className='mt-2' dangerouslySetInnerHTML={{ __html: post.description}} />
             </div>
-            {post.images.length !== 0 && 
+            <p className={`mt-2 `}  dangerouslySetInnerHTML={{ __html: showFullText ? post.description : truncateText(post.description, 100)}} />
+            <button className={`${post.description.length < 100 ? "hidden" : "block"} underline text-primary`} onClick={(e) => {
+                e.stopPropagation()
+                setShowFullText(prev => !prev)
+            }}>
+                {showFullText ? 'Read Less' : 'Read More'}
+            </button>
+            {post.images && post.images.length !== 0 && 
             <CustomCarousel images={post.images} />
             }
             <div className='flex gap-4 mt-2'>

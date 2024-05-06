@@ -14,7 +14,7 @@ const Following = () => {
 
     const fetchMoreUsers = () => {
         if (hasMoreUsers) {
-            getUserFollowings()
+            getUserFollowings(id)
         }
     }
 

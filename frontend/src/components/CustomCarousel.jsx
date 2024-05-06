@@ -39,9 +39,9 @@ const CustomCarousel = ({ images }) => {
 
 
     return (
-        <div className='relative h-36 my-4 sm:h-64 xl:h-[400px] 2xl:h-[600px]'  >
-            <div className={`absolute z-10 ${images.length > 1 ? "flex" : "hidden"} items-center gap-2 p-2 bg-black rounded-xl top-2 end-2`}>
-                {currentSlide + 1}/{images.length} 
+        <div className='relative h-36 my-4 sm:h-64 xl:h-[400px] 2xl:h-[600px] select-none'>
+            <div className={`absolute z-10 ${images?.length > 1 ? "flex" : "hidden"} items-center gap-2 p-2 bg-black rounded-xl top-2 end-2`}>
+                {currentSlide + 1}/{images?.length} 
                 <FontAwesomeIcon icon={faImage} />
             </div>
             <Carousel {...carouselProps}>

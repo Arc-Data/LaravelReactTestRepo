@@ -43,24 +43,19 @@ const Search = () => {
         }
         catch (error) {
             addPopup(error.response.data.message, "error")
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     useEffect(() => {
         setLoading(true)
-        setCurrentPage(1)
         setResults([])
-    }, [type])
-
-    useEffect(() => {
-        setLoading(true)
+        setCurrentPage(1)
         fetchData()
     }, [query, type])
 
-
-
-
+    console.log(results)
 
     return (
         <div>
@@ -80,14 +75,14 @@ const Search = () => {
             <Spinner />
             :
             <InfiniteScroll
-                dataLength={results.length}
+                dataLength={results?.length}
                 next={fetchData}
                 hasMore={hasMoreData}
                 loader={<Spinner />}
                 endMessage={<PostEnd />}
                 >
                 {
-                    type === "user" && results.length === 0 ? 
+                    type === "user" && results?.length === 0 ? 
                     <UserWithNameNotFound />
                     :
                     type === "user"
@@ -98,7 +93,7 @@ const Search = () => {
                         )
                     })
                     :
-                    results.length === 0 ? 
+                    results?.length === 0 ? 
                     <PostWithDescriptionNotFound />
                     :
                     <div className="flex flex-col gap-4">
