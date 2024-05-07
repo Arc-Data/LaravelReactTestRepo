@@ -31,6 +31,8 @@ class UserController extends Controller
     public function getUserPosts(Request $request, User $user)
     {
         $posts = $user->posts()
+            ->with('user')
+            ->withCount(['comments', 'likes'])
             ->latest()
             ->paginate(10);
         

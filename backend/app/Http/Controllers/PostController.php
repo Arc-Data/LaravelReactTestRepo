@@ -10,6 +10,7 @@ use App\Models\Like;
 use App\Models\Post;
 use App\Notifications\PostReply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -18,7 +19,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(10);
+        $posts = Post::with('user')->withCount(['comments', 'likes'])->latest()->paginate(10);
         return PostResource::collection($posts);
     }
 

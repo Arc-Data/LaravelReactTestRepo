@@ -22,10 +22,10 @@ class PostResource extends JsonResource
             "id"=> $this->id,  
             "title"=> $this->title,
             'description' => $this->description,
-            'user' => new PostUserResource($this->user),
-            'replies' => $this->comments()->count(),
+            'user' => new PostUserResource($this->whenLoaded('user')),
+            'replies' => $this->comments_count,
+            'likes' => $this->likes_count,
             'images' => $images,
-            'likes' => $this->likes()->count(),
             'isLiked' => $isLiked,
             'created_at' => $this->created_at->toIso8601String(),
         ];
