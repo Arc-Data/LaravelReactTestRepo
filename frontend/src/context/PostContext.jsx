@@ -3,6 +3,7 @@ import usePostManager from "../hooks/usePostManager";
 import { useParams } from "react-router-dom";
 import AuthContext from "./AuthContext";
 import useCommentManager from "../hooks/useCommentManager";
+import Spinner from "../components/Spinner";
 
 const PostContext = createContext()
 
@@ -104,7 +105,7 @@ export const PostProvider = ({children}) => {
 
     return (
         <PostContext.Provider value={contextData}>
-            {loading ? null : children}
+            {loading ? <Spinner /> : children}
         </PostContext.Provider>
     )
 }

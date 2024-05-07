@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PostDetailedResource;
 use App\Http\Resources\PostResource;
 use App\Models\Image;
 use Illuminate\Support\Facades\Log;
@@ -76,7 +75,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostDetailedResource($post);
+        $post->load('user');
+        $post->loadCount(['likes', 'comments']);
+        return new PostResource($post);
     }
 
     /**
