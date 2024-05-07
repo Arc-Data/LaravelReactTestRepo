@@ -28,6 +28,7 @@ const PostDetail = () => {
         hasMoreComments,
         commentsLength,
     } = useContext(PostContext)
+
     const { 
         likePost,
         deletePost, 
@@ -195,7 +196,7 @@ const PostDetail = () => {
                     endMessage={<PostEnd />}>
                     {rootComments && rootComments.map(comment => {
                         return (<Comment key={comment.id} comment={comment} />)
-                    })}
+                    })  }
                 </InfiniteScroll>
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}

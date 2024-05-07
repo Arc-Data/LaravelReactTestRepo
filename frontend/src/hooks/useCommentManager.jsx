@@ -7,7 +7,7 @@ const useCommentManager = (authToken) => {
     const [ comments, setComments ] = useState([])
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()
-    const [ hasMoreComments, setHasMoreComments ] = useState(true)
+    const [ hasMoreComments, setHasMoreComments ] = useState(false)
     const [ currentPage, setCurrentPage ] = useState(1)
 
     const getComments = async (id) => {
