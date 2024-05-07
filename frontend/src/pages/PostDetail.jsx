@@ -12,6 +12,7 @@ import Comment from "../components/Comment"
 import InfiniteScroll from "react-infinite-scroll-component"
 import PostEnd from "../components/PostEnd"
 import CustomCarousel from "../components/CustomCarousel"
+import NoComments from "../error/NoComments"
 
 const PostDetail = () => {
     const { id } = useParams()
@@ -194,9 +195,15 @@ const PostDetail = () => {
                     hasMore={hasMoreComments}
                     loader={<Spinner />}
                     endMessage={<PostEnd />}>
-                    {rootComments && rootComments.map(comment => {
+                    {
+                    rootComments.length > 0
+                    ? 
+                    rootComments.map(comment => {
                         return (<Comment key={comment.id} comment={comment} />)
-                    })  }
+                    }) 
+                    :
+                    <NoComments />
+                    }
                 </InfiniteScroll>
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
