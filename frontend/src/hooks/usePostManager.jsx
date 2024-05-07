@@ -10,7 +10,7 @@ const usePostManager = (authToken) => {
     const [ status, setStatus ] = useState()
 
     const [ currentPage, setCurrentPage ] = useState(1)
-    const [ hasMorePosts, setHasMorePosts ] = useState(true)
+    const [ hasMorePosts, setHasMorePosts ] = useState(false)
     const [ editedPost, setEditedPost ] = useState({
         title: '',
         description: '',
@@ -79,7 +79,7 @@ const usePostManager = (authToken) => {
             }
         }   
         catch (error) {
-            addPopup(error.res, "error")
+            addPopup(error.response.data.message, "error")
         } finally {
             setLoading(false)
         }

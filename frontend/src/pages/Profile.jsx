@@ -15,10 +15,12 @@ const Profile = () => {
     const { id } = useParams()
     const { authToken } = useContext(AuthContext)
     const { posts, getUserPosts, hasMorePosts } = usePostManager(authToken)
+    const [ loading, setLoading ] = useState(true)
     
     useEffect(() => {
         const fetchUser = async () => {
-            getUserPosts(id) 
+            await getUserPosts(id) 
+            setLoading(false)
         }
         
         fetchUser()
@@ -30,21 +32,21 @@ const Profile = () => {
         }
     }
     
-    return (
-        <InfiniteScroll 
+    return loading ? 
+        (<Spinner/>) 
+        : 
+        (<InfiniteScroll 
             dataLength={posts.length}
             next={fetchMorePosts}
             hasMore={hasMorePosts}
             loader={<Spinner />}
-            endMessage={<PostEnd />}
             >
             <div className='flex flex-col gap-4'>
             { posts && posts.map(post => {
                 return (<Post post={post} key={post.id}/>)
             })}
             </div>
-        </InfiniteScroll>
-    )
+        </InfiniteScroll>)
 }
 
 export default Profile

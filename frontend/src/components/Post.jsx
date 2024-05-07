@@ -36,7 +36,7 @@ const Post = ({ post }) => {
     }
 
     return (
-        <div className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 max-w-[900px] hover:cursor-pointer'>
+        <div className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:cursor-pointer'>
             <div onClick={() => navigate(`/post/${post.id}`)}>
                 <div className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
                     <div className='flex items-center gap-2 group/profile' onClick={(e) => {
@@ -58,7 +58,7 @@ const Post = ({ post }) => {
                 </div>
                 <p className='text-2xl font-bold group-hover:text-primary'>{post.title}</p>
             </div>
-            <p className={`mt-2 `}  dangerouslySetInnerHTML={{ __html: showFullText ? post.description : truncateText(post.description, 100)}} />
+            <p className={`mt-2 `}  dangerouslySetInnerHTML={{ __html: showFullText ? post.description : truncateText(post.description, 150)}} />
             <button className={`${post.description.length < 100 ? "hidden" : "block"} underline text-primary`} onClick={(e) => {
                 e.stopPropagation()
                 setShowFullText(prev => !prev)

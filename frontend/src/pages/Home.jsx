@@ -17,10 +17,12 @@ dayjs.extend(relativeTime)
 const Home = () => {
     const { user, authToken } = useContext(AuthContext)
     const { posts, getPosts, hasMorePosts } = usePostManager(authToken)
+    const [ loading, setLoading ] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             await getPosts()
+            setLoading(false)
         }
 
         fetchData()
@@ -31,6 +33,7 @@ const Home = () => {
             getPosts(true)
         }
     }
+
 
     return (
         <div className='flex flex-col gap-8 mt-4 mb-8 md:flex-row'>
@@ -43,18 +46,22 @@ const Home = () => {
                 </div> 
             </div>
             <div className='flex-1'>
+                {loading ? 
+                <Spinner />
+                :
                 <InfiniteScroll
                     dataLength={posts.length}
                     next={fetchMorePosts}
                     hasMore={hasMorePosts}
                     loader={<Spinner />}
-                    endMessage={<PostEnd />}>
+                    >
                     <div className='flex flex-col gap-4'>
                         { posts.map(post => {
                             return (<Post post={post} key={post.id}/>)
                         })}
                     </div>
                 </InfiniteScroll>
+                }
             </div>
         </div>
     )

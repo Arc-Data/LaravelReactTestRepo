@@ -42,8 +42,6 @@ const PostDetail = () => {
 
     const navigate = useNavigate()
 
-    console.log(post)
-
     const toggleEditing = () => {
         setIsEditing(prev => !prev)
     }
@@ -189,6 +187,9 @@ const PostDetail = () => {
                     className="w-full px-4 py-2 bg-transparent border rounded-full border-slate-600" />
             </form>
             <div className="pl-12">
+                {commentsLoading ? 
+                <Spinner />
+                :
                 <InfiniteScroll 
                     dataLength={rootComments.length}
                     next={fetchMoreComments}
@@ -205,6 +206,7 @@ const PostDetail = () => {
                     <NoComments />
                     }
                 </InfiniteScroll>
+                }
             </div>
             {showDeleteModal && <DeleteModal closeModal={toggleDeleteModal} handleDelete={handleDelete}/>}
         </div>
