@@ -13,13 +13,15 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import PostEnd from "../components/PostEnd"
 import CustomCarousel from "../components/CustomCarousel"
 import NoComments from "../error/NoComments"
+import PostNotFound from "../error/PostNotFound"
 
 const PostDetail = () => {
     const { id } = useParams()
     const { user, authToken } = useContext(AuthContext)
     const { 
         post, 
-        commentsLoading, 
+        commentsLoading,
+        status,
         rootComments,
         editPost,
         addLocalComment,
@@ -92,6 +94,10 @@ const PostDetail = () => {
         setLikes(post.likes)
         setIsLiked(post.isLiked)
     }, [post])
+
+    if(status === 404) {
+        return (<PostNotFound/>)
+    }
 
     return (
         <div className="flex flex-col gap-8">

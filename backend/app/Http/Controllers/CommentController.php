@@ -84,7 +84,6 @@ class CommentController extends Controller
         $comment->update($validated_data);
 
         $comment = $comment->fresh();
-        
         return response()->json([
             'comment'=> new CommentResource($comment)
         ]);

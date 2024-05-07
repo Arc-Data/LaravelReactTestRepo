@@ -18,6 +18,7 @@ export const PostProvider = ({children}) => {
         getPost, 
         editedPost, 
         editPost, 
+        status,
         handleEditedPostChange
     } = usePostManager(authToken)
     const { 
@@ -101,6 +102,7 @@ export const PostProvider = ({children}) => {
         hasMoreComments,
         deleteLocalComment,
         editLocalComment,
+        status,
     }
 
     return (

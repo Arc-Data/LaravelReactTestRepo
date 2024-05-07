@@ -101,7 +101,7 @@ const usePostManager = (authToken) => {
             setEditedPost(postData)
         }
         catch (error) {
-            addPopup(error.response.data.message, "error")
+            setStatus(error.response.status)
         }
 
 

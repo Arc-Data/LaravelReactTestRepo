@@ -75,6 +75,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if (!$post) {
+            abort(404, 'Post not found');
+        }
+
         $post->load('user');
         $post->loadCount(['likes', 'comments']);
         return new PostResource($post);
