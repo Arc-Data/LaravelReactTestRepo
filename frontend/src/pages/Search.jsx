@@ -69,6 +69,10 @@ const Search = () => {
                         searchParams.set('type', 'user')
                         setSearchParams(searchParams)
                     }}>User</button>
+                    <button className={`${type === "media" ? "bg-primary" : ""}`} onClick={() => {
+                        searchParams.set('type', 'media')
+                        setSearchParams(searchParams)
+                    }}>Media</button>
                 </div>
             </div>
             {loading ? 
