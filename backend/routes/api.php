@@ -60,6 +60,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{user}/followings', [UserController::class,'userFollowings']);
         Route::get('/{user}/followers', [UserController::class,'userFollowers']);
         Route::post('/{user}/follow', [UserController::class,'follow']);
+        Route::post('/{user}/notify', [UserController::class,'notifyMe']);
         Route::post('/', [UserController::class,'update']);
     });
 

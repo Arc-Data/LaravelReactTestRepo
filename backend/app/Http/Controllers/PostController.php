@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
 use App\Models\Image;
+use App\Notifications\UserPosted;
 use Illuminate\Support\Facades\Log;
 use App\Models\Like;
 use App\Models\Post;
@@ -63,6 +64,14 @@ class PostController extends Controller
 
                 $post->images()->save($newImage);
             }
+        }
+        
+        $post->refresh();
+        Log::info($post->id);
+        foreach($user->followers as $follower) {
+            if ($follower->pivot->notify) {
+                $follower->notify(new UserPosted($user, $post->id));
+            } 
         }
 
         return response()->json([

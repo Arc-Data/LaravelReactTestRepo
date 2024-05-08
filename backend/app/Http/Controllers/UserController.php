@@ -92,6 +92,19 @@ class UserController extends Controller
         ]);
     }
 
+    public function notifyMe(User $user)
+    {
+        $currentUser = auth()->user();
+        $following = $currentUser->followings()->where('followed_id', $user->id)->first();
+        $notify = $following->pivot->notify;
+        $following->pivot->update([
+            'notify' => !$notify
+        ]);
+
+        $message = !$notify ? "You will get notified every time this user posts" : "Notifications for this user has been turned off"; 
+        return response()->json(['message' => $message]);
+    }
+
     public function userFollowings(User $user)
     {
         $followings = $user->followings()->paginate(20);

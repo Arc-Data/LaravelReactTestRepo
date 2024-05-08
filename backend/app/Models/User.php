@@ -91,14 +91,19 @@ class User extends Authenticatable implements JWTSubject
         return $this->followings()->where('followed_id', $user->id)->exists();
     }
 
+    public function isNotified(User $user)
+    {
+        return $this->folowings()->where('followed_id', $user->id)->value('notify');
+    }
+
     public function followers()
     {
-        return $this->belongsToMany(User::class, 'user_follows', 'followed_id', 'follower_id');
+        return $this->belongsToMany(User::class, 'user_follows', 'followed_id', 'follower_id')->withPivot('notify');
     }
 
     public function followings()
     {
-        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'followed_id');
+        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'followed_id')->withPivot('notify');
     }
 
 public function follow(User $user)
