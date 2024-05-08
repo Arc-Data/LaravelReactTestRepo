@@ -56,7 +56,6 @@ class PostController extends Controller
         if ($uploadedImages !== null) {
             foreach ($uploadedImages as $image) {
                 $imageName = $this->generateUniqueFilename($image->getClientOriginalName());
-                Log::info($imageName);
                 $image->storeAs('public/post/', $imageName);
                 $newImage = new Image([
                     'url' => asset('storage/post/' . $imageName),
@@ -65,9 +64,8 @@ class PostController extends Controller
                 $post->images()->save($newImage);
             }
         }
-        
+
         $post->refresh();
-        Log::info($post->id);
         foreach($user->followers as $follower) {
             if ($follower->pivot->notify) {
                 $follower->notify(new UserPosted($user, $post->id));

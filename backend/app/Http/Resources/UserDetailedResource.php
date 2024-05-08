@@ -19,6 +19,14 @@ class UserDetailedResource extends JsonResource
         $currentUser = auth()->user();
         $user = User::where("id", $this->id)->first();
 
+        $isFollowing = $currentUser->isFollowing($user);
+
+        if ($isFollowing) {
+            $notify = $currentUser->isNotified($user);
+        } else {
+            $notify = false;
+        }
+
         return [
             "id"=> $this->id,
             "name"=> $this->name,
@@ -26,7 +34,8 @@ class UserDetailedResource extends JsonResource
             "about"=> $this->about,
             "birthdate"=> $this->birthdate,
             "profile_image" => $this->profile_image,
-            "is_following" => $currentUser->isFollowing($user),
+            "is_following" => $isFollowing,
+            "notify" => $notify,
             "followers" => $this->followers()->count(),
             "followings" => $this->followings()->count(),
             "posts" => $this->posts()->count(),

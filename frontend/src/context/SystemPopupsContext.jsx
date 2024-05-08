@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid"
 import EchoInstance from "../utils/EchoInstance"
 import AuthContext from "./AuthContext"
 import NotificationContext from "./NotificationContext"
+import Spinner from '../components/Spinner'
 
 const SystemPopupsContext = createContext()
 
@@ -40,6 +41,7 @@ export const SystemPopupsProvider = ({ children }) => {
 
 
     useEffect(() => {
+        if (!user) return;
         EchoInstance.private(`App.User.${user.id}`)
             .notification(notification => {
                 console.log(notification)
@@ -57,7 +59,6 @@ export const SystemPopupsProvider = ({ children }) => {
         addPopup,
         removePopup,
     }
-
     return (
         <SystemPopupsContext.Provider value={contextData}>
             { children }

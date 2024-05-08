@@ -93,7 +93,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function isNotified(User $user)
     {
-        return $this->folowings()->where('followed_id', $user->id)->value('notify');
+        return $this->followings()->where('followed_id', $user->id)->value('notify');
     }
 
     public function followers()
@@ -106,7 +106,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'followed_id')->withPivot('notify');
     }
 
-public function follow(User $user)
+    public function follow(User $user)
     {
         $this->followings()->attach($user);
     }
@@ -115,4 +115,5 @@ public function follow(User $user)
     {
         $this->followings()->detach($user);
     }
+
 }

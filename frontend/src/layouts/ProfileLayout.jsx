@@ -4,23 +4,30 @@ import AuthContext from "../context/AuthContext"
 import useUserManager from "../hooks/useUserManager"
 import Spinner from "../components/Spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faUser } from "@fortawesome/free-solid-svg-icons"
 import UserNotFound from "../error/UserNotFound"
 
 const ProfileLayout = () => {
     const { id } = useParams()
     const { authToken, user:currentUser } = useContext(AuthContext)
-    const { loading, user, getUser, followUser, status } = useUserManager(authToken)
+    const { loading, user, getUser, followUser, status, notifyMe } = useUserManager(authToken)
     const [ isFollowing, setIsFollowing ] = useState(false)
+    const [ isNotified, setIsNotified ] = useState(false)
 
     useEffect(() => {
         const fetchUser = async () => {
             const tempUser = await getUser(id)
             setIsFollowing(tempUser?.is_following)
+            setIsNotified(tempUser?.notify)
         }
 
         fetchUser()
     }, [id])
+
+    const handleNotify = async () => {
+        setIsNotified(prev => !prev)
+        notifyMe(id)
+    }
 
     const handleFollow = async () => {
         setIsFollowing(prev => !prev)
@@ -36,7 +43,6 @@ const ProfileLayout = () => {
             <Spinner />
         )
     }
-
 
     return (
         <div>
@@ -58,7 +64,8 @@ const ProfileLayout = () => {
                 <div className="">
                     <p className="text-2xl font-bold">{user.name}</p>
                 </div>
-                <div className="text-right">
+                <div className="flex items-center justify-end gap-4">
+                    {isFollowing && <FontAwesomeIcon icon={faBell}  className={`${isNotified ? "text-primary hover:bg-white " : "hover:bg-secondary"} text-xl p-3 border border-slate-800 rounded-full fa-solid hover:cursor-pointer`} onClick={handleNotify}/>}
                     {user.id === currentUser.id ? 
                     <Link to="/settings" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
                     :

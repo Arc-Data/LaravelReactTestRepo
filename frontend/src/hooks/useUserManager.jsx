@@ -10,7 +10,7 @@ const useUserManager = (authToken) => {
     const [ loading, setLoading ] = useState(true)
     const [ status, setStatus ] = useState()  
     const [ currentPage, setCurrentPage] = useState(1)
-    const [ hasMoreUsers, setHasMoreUsers ] = useState(true)
+    const [ hasMoreUsers, setHasMoreUsers ] = useState(false)
     const { updateTokenOnUserUpdate } = useContext(AuthContext)
 
     const getUser = async (name) => {
@@ -22,7 +22,6 @@ const useUserManager = (authToken) => {
                 }
             })
 
-            console.log(response)
             setUser(response.data.data)
             setLoading(false)
             
@@ -125,6 +124,22 @@ const useUserManager = (authToken) => {
             addPopup(error.response.data.message, "error")
         }
     }
+    
+    const notifyMe = async (id) => {
+        try {
+            const response = await axios.post(`/api/user/${id}/notify`, null, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`,
+                }
+            })
+
+            addPopup(response.data.message)
+            console.log(response)
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
 
     return {
         user, 
@@ -137,6 +152,7 @@ const useUserManager = (authToken) => {
         getUserFollowings,
         getUserFollowers,
         hasMoreUsers,
+        notifyMe,
     }
 }
 

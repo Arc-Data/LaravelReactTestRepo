@@ -5,7 +5,7 @@ const useNotificationManager = (authToken) => {
     const [ notifications, setNotifications ] = useState([]) 
     const [ loading, setLoading ] = useState(true)
     const [ hasUnreadNotifications, setHasUnreadNotifications ] = useState(false)
-    const [ hasMoreNotifications, setHasMoreNotifications ] = useState(true)
+    const [ hasMoreNotifications, setHasMoreNotifications ] = useState(false)
     const [ currentPage, setCurrentPage ] = useState(1)
 
     const getNotifications = async () => {
