@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import axios from "../axios"
 import SystemPopupsContext from "../context/SystemPopupsContext"
+import { useSearchParams } from "react-router-dom"
 
 const usePostManager = (authToken) => {
     const { addPopup } = useContext(SystemPopupsContext)
@@ -15,6 +16,13 @@ const usePostManager = (authToken) => {
         title: '',
         description: '',
     }) 
+
+    const resetPosts = (type) => {
+        setPosts([]);
+        setCurrentPage(1)
+        setHasMorePosts(false)
+        getPosts(type, true)
+    }
 
     const createPost = async (data) => {
         try {
@@ -58,12 +66,11 @@ const usePostManager = (authToken) => {
         }
     }
 
-
-
-    const getPosts = async () => {
+    const getPosts = async (type, reset = false) => {
+        console.log(type)
         setLoading(true)
         try {
-            const url = `/api/posts?page=${currentPage}`;
+            const url = `/api/posts?page=${reset ? 1 : currentPage}&type=${type}`;
             const response = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${authToken}`
@@ -180,6 +187,7 @@ const usePostManager = (authToken) => {
     return {
         post,
         posts,
+        resetPosts,
         loading,
         status,
         createPost,
@@ -193,6 +201,7 @@ const usePostManager = (authToken) => {
         likePost,
         handleEditedPostChange,
         cancelEdit,
+        setCurrentPage,
     }
 }
 

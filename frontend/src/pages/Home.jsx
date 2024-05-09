@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import AuthContext from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
@@ -16,24 +16,16 @@ dayjs.extend(relativeTime)
 
 const Home = () => {
     const { user, authToken } = useContext(AuthContext)
-    const { posts, getPosts, hasMorePosts } = usePostManager(authToken)
+    const { posts, getPosts, hasMorePosts, resetPosts, setCurrentPage } = usePostManager(authToken)
     const [ loading, setLoading ] = useState(true)
+    const [ searchParams, setSearchParams ] = useSearchParams() 
+    const type = searchParams.get('type')
 
     useEffect(() => {
-        const fetchData = async () => {
-            await getPosts()
-            setLoading(false)
-        }
-
-        fetchData()
-    }, [])
-
-    const fetchMorePosts = () => {
-        if (hasMorePosts) {
-            getPosts(true)
-        }
-    }
-
+        setLoading(true)
+        resetPosts(type)
+        setLoading(false)
+    }, [type])
 
     return (
         <div className='flex flex-col gap-8 mt-4 mb-8 md:flex-row'>
@@ -51,7 +43,7 @@ const Home = () => {
                 :
                 <InfiniteScroll
                     dataLength={posts.length}
-                    next={fetchMorePosts}
+                    next={() => getPosts(type)}
                     hasMore={hasMorePosts}
                     loader={<Spinner />}
                     >

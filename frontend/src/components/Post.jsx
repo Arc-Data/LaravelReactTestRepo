@@ -36,7 +36,7 @@ const Post = ({ post }) => {
     }
 
     return (
-        <div className='p-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:cursor-pointer'>
+        <div className='px-8 py-4 bg-gray-700 border border-transparent rounded shadow bg-opacity-20 hover:cursor-pointer'>
             <div onClick={() => navigate(`/post/${post.id}`)}>
                 <div className='flex items-center gap-2 mb-2 text-sm text-slate-600'>
                     <div className='flex items-center gap-2 group/profile' onClick={(e) => {

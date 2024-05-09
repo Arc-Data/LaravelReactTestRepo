@@ -95,7 +95,7 @@ class UserController extends Controller
     public function notifyMe(User $user)
     {
         $currentUser = auth()->user();
-
+        
         if ($currentUser->isFollowing($user)) {
             $notify = $currentUser->isNotified($user);
             $following = $currentUser->followings()->where('followed_id', $user->id)->first();
