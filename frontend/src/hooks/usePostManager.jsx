@@ -67,7 +67,6 @@ const usePostManager = (authToken) => {
     }
 
     const getPosts = async (type, reset = false) => {
-        console.log(type)
         setLoading(true)
         try {
             const url = `/api/posts?page=${reset ? 1 : currentPage}&type=${type}`;

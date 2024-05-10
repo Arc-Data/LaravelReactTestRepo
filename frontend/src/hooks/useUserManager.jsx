@@ -33,6 +33,19 @@ const useUserManager = (authToken) => {
         setLoading(false)
     }
 
+    const blockUser = async (id) => {
+        // if i were to block a user, that might mean that i need to
+        // remove all posts concerning that specific user right on the spot.
+        // should i initiate a page refresh in case that happens?
+
+        try {
+
+        }
+        catch (error) {
+
+        }
+    }
+
     const getUserFollowings = async (id) => {
         setLoading(true)
 
@@ -153,6 +166,7 @@ const useUserManager = (authToken) => {
         getUserFollowers,
         hasMoreUsers,
         notifyMe,
+        blockUser,
     }
 }
 

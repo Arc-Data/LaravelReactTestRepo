@@ -2,11 +2,13 @@ import RelativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from "dayjs"
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMessage, faRetweet, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faBan, faEllipsis, faMessage, faRetweet, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { useContext, useState } from 'react'
 import usePostManager from '../hooks/usePostManager'
 import AuthContext from '../context/AuthContext'
 import CustomCarousel from './CustomCarousel'
+import { Popover } from 'flowbite-react'
+import useUserManager from '../hooks/useUserManager'
 
 dayjs.extend(RelativeTime)
 
@@ -17,6 +19,7 @@ const Post = ({ post }) => {
     const { likePost } = usePostManager(authToken)
     const [ likes, setLikes ] = useState(post.likes)
     const [ isLiked, setIsLiked ] = useState(post.isLiked)
+    const { blockUser } = useUserManager(authToken)
 
     const handleSubmitLike = async (e) => {
         e.stopPropagation()
@@ -33,6 +36,17 @@ const Post = ({ post }) => {
     const truncateText = (text, maxLength) => {
         if (text.length <= maxLength) return text
         return text.slice(0, maxLength) + '...'
+    }
+
+    const Settings = () => {
+        return (
+            <div className='w-64 border rounded-md border-slate-800 bg-background text-text'>
+                <button className='flex items-center gap-4 p-4' onClick={() => blockUser(post.user.id)}>
+                    <FontAwesomeIcon icon={faBan} />
+                    <p>Block {post.user.name}</p>
+                </button>
+            </div>
+        )
     }
 
     return (
@@ -55,6 +69,12 @@ const Post = ({ post }) => {
                     </div>
                     <span className="text-2xl font-bold">&middot;</span> 
                     <span>{dayjs(post.created_at).fromNow()}</span>
+                    <Popover content={<Settings />} onClick={(e) => e.stopPropagation()} placement='bottom' className='z-10' arrow={false}>
+                        <button onClick={(e) => e.stopPropagation()} className='ml-auto'>
+                            <FontAwesomeIcon icon={faEllipsis } className='p-2 border rounded-full hover:bg-slate-800'/>
+                        </button>
+                    </Popover>
+
                 </div>
                 <p className='text-2xl font-bold group-hover:text-primary'>{post.title}</p>
             </div>
