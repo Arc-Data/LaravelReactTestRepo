@@ -71,7 +71,7 @@ const Post = ({ post }) => {
                     <span>{dayjs(post.created_at).fromNow()}</span>
                     <Popover content={<Settings />} onClick={(e) => e.stopPropagation()} placement='bottom' className='z-10' arrow={false}>
                         <button onClick={(e) => e.stopPropagation()} className='ml-auto'>
-                            <FontAwesomeIcon icon={faEllipsis } className='p-2 border rounded-full hover:bg-slate-800'/>
+                            <FontAwesomeIcon icon={faEllipsis } className='p-2 border border-transparent rounded-full hover:bg-slate-800'/>
                         </button>
                     </Popover>
 

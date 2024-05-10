@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEllipsis, faFlag, faMessage, faPencil, faRetweet, faThumbsUp, faTrash } from "@fortawesome/free-solid-svg-icons"
 import useCommentManager from "../hooks/useCommentManager"
 import AuthContext from "../context/AuthContext"
+import { Popover } from "flowbite-react"
 
 const Comment = ({ comment }) => {
     const { user, authToken } = useContext(AuthContext)
@@ -61,6 +62,29 @@ const Comment = ({ comment }) => {
         await replyLocalComment(comment.id, content)
     }
 
+    const Settings = () => {
+        return (
+            <div className={`left-0 top-auto w-40 rounded bg-background   shadow z-10`}>
+                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary">
+                    <FontAwesomeIcon icon={faFlag} />
+                    <p>Report</p>
+                </div>
+                {comment.user.id == user.id && 
+                <>
+                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={toggleEditing}>
+                    <FontAwesomeIcon icon={faPencil} />
+                    <p>Edit</p>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={() => deleteLocalComment(comment.id)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                    <p>Delete</p>
+                </div>
+                </>
+                }
+            </div>
+        )
+    }
+
     return (
         <div className="w-full">
             <div className="flex w-full gap-4">
@@ -104,29 +128,12 @@ const Comment = ({ comment }) => {
                             <FontAwesomeIcon icon={faRetweet}  className='text-text group-hover/likes:text-primary'/>
                             <p className='text-sm'>100</p>
                         </button>
-                        <div className="relative group">
-                            <button className={`${isSettingsVisible && 'bg-primary'} flex items-center gap-4 px-2 py-2 shadow-md group/retweet hover:bg-primary rounded-xl`} onClick={() => setIsSettingsVisible(prev => !prev)}>
+                        <Popover arrow={false} content={<Settings />}>
+                            <button>
                                 <FontAwesomeIcon icon={faEllipsis}  className='text-text group-hover/likes:text-primary'/>
                             </button>
-                            <div className={`absolute ${isSettingsVisible ? 'block' : 'hidden'} left-0 top-auto w-[140px] rounded bg-background border-primary border shadow z-10`}>
-                                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary">
-                                    <FontAwesomeIcon icon={faFlag} />
-                                    <p>Report</p>
-                                </div>
-                                {comment.user.id == user.id && 
-                                <>
-                                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={toggleEditing}>
-                                    <FontAwesomeIcon icon={faPencil} />
-                                    <p>Edit</p>
-                                </div>
-                                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={() => deleteLocalComment(comment.id)}>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                    <p>Delete</p>
-                                </div>
-                                </>
-                                }
-                            </div>
-                        </div>
+                        </Popover>
+                        
                     </div>
                     <div className={`${isReplying ? 'block' : 'hidden'} w-full mt-2 border rounded-lg border-slate-800`}>
                         <div>

@@ -107,10 +107,24 @@ const useCommentManager = (authToken) => {
             })
 
             const updatedComment = response.data.comment
-            const newComments = comments.map(comment => {
-                return comment.id === id ? updatedComment : comment
-            })
-            setComments(newComments)
+            const updateCommentRecursively = (commentsArr) => {
+                return commentsArr.map(comment => {
+                    if (comment.id === id) {
+                        return updatedComment;
+                    }
+                    if (comment.replies) {
+                        const updatedReplies = updateCommentRecursively(comment.replies);
+                        return {
+                            ...comment,
+                            replies: updatedReplies
+                        };
+                    }
+                    return comment;
+                });
+            };
+
+            const updatedComments = updateCommentRecursively(comments);
+            setComments(updatedComments)
         }
         catch (error) {
             addPopup(error.response.data.message, "error")
