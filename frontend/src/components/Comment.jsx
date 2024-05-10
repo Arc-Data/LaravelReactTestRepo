@@ -64,17 +64,18 @@ const Comment = ({ comment }) => {
 
     const Settings = () => {
         return (
-            <div className={`left-0 top-auto w-40 rounded bg-background   shadow z-10`}>
-                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary">
+            <div className="flex flex-col w-40 border rounded-md border-slate-800 bg-background text-text">
+                <button className='flex items-center gap-4 px-4 py-2 hover:cursor-pointer hover:bg-primary'>
                     <FontAwesomeIcon icon={faFlag} />
                     <p>Report</p>
-                </div>
+                </button>
+                
                 {comment.user.id == user.id && 
                 <>
-                <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={toggleEditing}>
+                <button className="flex items-center gap-4 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={toggleEditing}>
                     <FontAwesomeIcon icon={faPencil} />
                     <p>Edit</p>
-                </div>
+                </button>
                 <div className="flex items-center gap-2 px-4 py-2 hover:cursor-pointer hover:bg-primary" onClick={() => deleteLocalComment(comment.id)}>
                     <FontAwesomeIcon icon={faTrash} />
                     <p>Delete</p>
@@ -87,7 +88,7 @@ const Comment = ({ comment }) => {
 
     return (
         <div className="w-full">
-            <div className="flex w-full gap-4">
+            <div className="flex w-full gap-4 py-2">
                 <Link to={`/profile/${comment.user.id}`}>
                     <img src={comment.user.profile_image} className="object-cover w-8 h-8 rounded-full"/>
                 </Link>
