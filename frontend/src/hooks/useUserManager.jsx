@@ -13,10 +13,10 @@ const useUserManager = (authToken) => {
     const [ hasMoreUsers, setHasMoreUsers ] = useState(false)
     const { updateTokenOnUserUpdate } = useContext(AuthContext)
 
-    const getUser = async (name) => {
+    const getUser = async (id) => {
         setLoading(true)
         try {
-            const response = await axios.get(`/api/user/${name}`, {
+            const response = await axios.get(`/api/user/${id}`, {
                 headers: {
                     "Authorization": `Bearer ${authToken}`
                 }
@@ -28,6 +28,7 @@ const useUserManager = (authToken) => {
             return response.data.data
         }
         catch(error) {
+            console.log(error)
             setStatus("404")
         }
         setLoading(false)
@@ -39,10 +40,17 @@ const useUserManager = (authToken) => {
         // should i initiate a page refresh in case that happens?
 
         try {
+            const response = await axios.post(`/api/user/${id}/block`, null, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
 
+            addPopup(response.data.message)
         }
         catch (error) {
-
+            console.log(error)
+            addPopup(error.response.data.message)
         }
     }
 

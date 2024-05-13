@@ -16,7 +16,7 @@ dayjs.extend(relativeTime)
 
 const Home = () => {
     const { user, authToken } = useContext(AuthContext)
-    const { posts, getPosts, hasMorePosts, resetPosts, setCurrentPage } = usePostManager(authToken)
+    const { posts, getPosts, hasMorePosts, resetPosts, setCurrentPage, removeBlockedUserPosts } = usePostManager(authToken)
     const [ loading, setLoading ] = useState(true)
     const [ searchParams, setSearchParams ] = useSearchParams() 
     const type = searchParams.get('type')
@@ -49,7 +49,7 @@ const Home = () => {
                     >
                     <div className='flex flex-col gap-4'>
                         { posts.map(post => {
-                            return (<Post post={post} key={post.id}/>)
+                            return (<Post post={post} removeBlockedUserPosts={removeBlockedUserPosts} key={post.id}/>)
                         })}
                     </div>
                 </InfiniteScroll>

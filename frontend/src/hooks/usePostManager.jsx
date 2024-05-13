@@ -85,6 +85,7 @@ const usePostManager = (authToken) => {
             }
         }   
         catch (error) {
+            console.log(error)
             addPopup(error.response.data.message, "error")
         } finally {
             setLoading(false)
@@ -113,6 +114,12 @@ const usePostManager = (authToken) => {
 
         setLoading(false)
         
+    }
+
+    const removeBlockedUserPosts = (id) => {
+        console.log(posts)
+        const updatedPosts = posts.filter(post => post.user.id !== id)
+        setPosts(updatedPosts)
     }
 
     const getUserPosts = async (id) => {
@@ -199,6 +206,7 @@ const usePostManager = (authToken) => {
         editedPost,
         likePost,
         handleEditedPostChange,
+        removeBlockedUserPosts,
         cancelEdit,
         setCurrentPage,
     }

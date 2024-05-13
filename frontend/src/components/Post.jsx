@@ -12,10 +12,10 @@ import useUserManager from '../hooks/useUserManager'
 
 dayjs.extend(RelativeTime)
 
-const Post = ({ post }) => {
+const Post = ({ post, removeBlockedUserPosts }) => {
     const navigate = useNavigate()
     const [ showFullText, setShowFullText ] = useState(false)
-    const { authToken } = useContext(AuthContext)
+    const { user, authToken } = useContext(AuthContext)
     const { likePost } = usePostManager(authToken)
     const [ likes, setLikes ] = useState(post.likes)
     const [ isLiked, setIsLiked ] = useState(post.isLiked)
@@ -38,10 +38,15 @@ const Post = ({ post }) => {
         return text.slice(0, maxLength) + '...'
     }
 
+    const handleBlockUser = () => {
+        blockUser(post.user.id)
+        removeBlockedUserPosts(post.user.id)
+    }
+
     const Settings = () => {
         return (
             <div className='w-64 border rounded-md border-slate-800 bg-background text-text'>
-                <button className='flex items-center gap-4 p-4' onClick={() => blockUser(post.user.id)}>
+                <button className={`${post.user.id === user.id && "hidden"} flex items-center gap-4 p-4`} onClick={handleBlockUser}>
                     <FontAwesomeIcon icon={faBan} />
                     <p>Block {post.user.name}</p>
                 </button>
