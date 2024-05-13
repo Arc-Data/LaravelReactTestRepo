@@ -145,4 +145,18 @@ class UserController extends Controller
         return response()->json(['message' => $message]);
     }
 
+    public function block(Request $request, User $user) 
+    {
+        $currentUser = auth()->user();
+        if ($currentUser->isFollowing($user)) {
+            $currentUser->unfollow($user);
+        }
+
+        $currentUser->block($user);
+
+        return response()->json([
+            'message' => "You will no longer see posts from " . $user->name
+        ]);
+    }
+
 }

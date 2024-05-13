@@ -116,4 +116,14 @@ class User extends Authenticatable implements JWTSubject
         $this->followings()->detach($user);
     }
 
+    public function blockedUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_blocks', 'blocker_id', 'blocked_id');
+    }
+
+    public function block(User $user)
+    {
+        return $this->blockedUsers()->attach($user);
+    }
+
 }

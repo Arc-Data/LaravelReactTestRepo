@@ -19,16 +19,23 @@ class PostController extends Controller
      */
     public function index(Request  $request)
     {
-        $type = $request->get('type');
+        $currentUser = auth()->user();
 
+        $type = $request->get('type');
+        
         if ($type == "all") {
-            $posts = Post::with('user')->withCount(['comments', 'likes'])->latest()->paginate(10);
+            $blockedUserIds = $currentUser->blockedUsers()->pluck('users.id');
+            $posts = Post::whereNotIn('user_id', $blockedUserIds)
+                ->with('user')
+                ->withCount(['comments', 'likes'])
+                ->latest()
+                ->paginate(10);
             return PostResource::collection($posts);
         } else {
             $user = auth()->user();
             $followedUserIds = $user->followings()->pluck('followed_id');
+            $followedUserIds[] = $user->id;
 
-            // Fetch posts from the followed users
             $posts = Post::whereIn('user_id', $followedUserIds)
                         ->with('user')
                         ->withCount(['comments', 'likes'])
