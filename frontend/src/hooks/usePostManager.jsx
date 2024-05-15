@@ -117,7 +117,6 @@ const usePostManager = (authToken) => {
     }
 
     const removeBlockedUserPosts = (id) => {
-        console.log(posts)
         const updatedPosts = posts.filter(post => post.user.id !== id)
         setPosts(updatedPosts)
     }

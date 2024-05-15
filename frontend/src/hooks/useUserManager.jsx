@@ -35,10 +35,6 @@ const useUserManager = (authToken) => {
     }
 
     const blockUser = async (id) => {
-        // if i were to block a user, that might mean that i need to
-        // remove all posts concerning that specific user right on the spot.
-        // should i initiate a page refresh in case that happens?
-
         try {
             const response = await axios.post(`/api/user/${id}/block`, null, {
                 headers: {

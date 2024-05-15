@@ -2,8 +2,9 @@ import { useContext } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBell, faSearch, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faArrowRightFromBracket, faBell, faGear, faSearch, faUser } from "@fortawesome/free-solid-svg-icons"
 import NotificationContext from "../context/NotificationContext"
+import { Popover } from "flowbite-react"
 
 const UserNav = () => {
 	const { user, logoutUser } = useContext(AuthContext)
@@ -17,6 +18,38 @@ const UserNav = () => {
 		if (!query.trim()) return;
 		const type = searchParams.get("type") ? searchParams.get("type") : "post"
 		navigate(`/search?type=${type}&query=${query.trim()}`)
+	}
+
+	const Profile = () => {
+		return (
+			<div className=" font-bold flex flex-col bg-background w-[240px] p-4">
+				<Link to={`/profile/${user.id}`} className="flex items-center gap-2">
+					{user.profile_image ? 
+					<img src={user.profile_image} className="object-cover w-10 h-10 border border-gray-800 rounded-full shadow" alt="" />
+					:
+					<div className="w-10 h-10 overflow-hidden rounded-full">
+						<FontAwesomeIcon icon={faUser} className="w-10 h-10 border border-gray-800 bg-slate-800"/>
+					</div>
+					}
+					<div>
+						<p className="text-sm font-thin">{user.username}</p>
+						<p className="text-sm font-thin">{user.email}</p>
+					</div>
+				</Link>
+				<div className="px-4 mt-4 border-t border-slate-800">
+					<Link to="/settings" className="py-2.5 flex gap-4 items-center font-medium">
+						<FontAwesomeIcon icon={faGear} />
+						<p>Settings</p>
+					</Link>
+					<button onClick={logoutUser} className="py-2.5 flex gap-4 items-center font-medium">
+						<FontAwesomeIcon icon={faArrowRightFromBracket} />
+						<p>Logout</p>
+					</button>
+				</div>
+
+
+			</div>
+		)
 	}
 
 	return (
@@ -47,16 +80,17 @@ const UserNav = () => {
 						<FontAwesomeIcon icon={faBell} className="text-xl"/>
 						<div className={`${hasUnreadNotifications ? "absolute" : "hidden" } top-0 right-0 z-10 w-4 h-4 rounded-full bg-primary`}></div>
 					</Link>
-					<Link to={`/profile/${user.id}`}>
-						{user.profile_image ? 
-						<img src={user.profile_image} className="object-cover w-10 h-10 border border-gray-800 rounded-full shadow" alt="" />
-						:
-						<div className="w-10 h-10 overflow-hidden rounded-full">
-							<FontAwesomeIcon icon={faUser} className="w-10 h-10 border border-gray-800 bg-slate-800"/>
+					<Popover content={<Profile />} placement="bottom" arrow={false} trigger="hover" className="border border-slate-800">
+						<div className="cursor-pointer">
+							{user.profile_image ? 
+							<img src={user.profile_image} className="object-cover w-10 h-10 border border-gray-800 rounded-full shadow" alt="" />
+							:
+							<div className="w-10 h-10 overflow-hidden rounded-full">
+								<FontAwesomeIcon icon={faUser} className="w-10 h-10 border border-gray-800 bg-slate-800"/>
+							</div>
+							}
 						</div>
-						}
-					</Link>
-					<button onClick={logoutUser}>Logout</button>
+					</Popover>
 				</div>
 				</>
 				}
