@@ -67,7 +67,7 @@ const ProfileLayout = () => {
                 <div className="flex items-center justify-end gap-4">
                     {isFollowing && <FontAwesomeIcon icon={faBell}  className={`${isNotified ? "text-primary hover:bg-white " : "hover:bg-secondary"} text-xl p-3 border border-slate-800 rounded-full fa-solid hover:cursor-pointer`} onClick={handleNotify}/>}
                     {user.id === currentUser.id ? 
-                    <Link to="/settings" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
+                    <Link to="/settings/profile" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
                     :
                     <div className={`inline-block px-4 py-2 border bg-opacity-80 ${!isFollowing ? "bg-primary border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</div>
                     }

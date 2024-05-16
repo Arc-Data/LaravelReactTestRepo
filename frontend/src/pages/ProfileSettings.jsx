@@ -8,7 +8,7 @@ import AuthContext from "../context/AuthContext";
 import useUserManager from "../hooks/useUserManager";
 import Spinner from "../components/Spinner";
 
-const Settings = () => {
+const ProfileSettings = () => {
     const { user, authToken } = useContext(AuthContext)
     const { loading, getUser, editUser } = useUserManager(authToken)
     const [ profile, setProfile ] = useState({
@@ -72,7 +72,7 @@ const Settings = () => {
 
     return (
         <div className="mt-20 md:mt-10">
-            <h1 className="mb-12 text-3xl font-bold">Settings</h1>
+            <h1 className="mb-12 text-3xl font-bold">Profile Settings</h1>
             <form 
                 method="POST" 
                 encType="multipart/form-data"
@@ -172,4 +172,4 @@ const Settings = () => {
     )
 }
 
-export default Settings;
+export default ProfileSettings;

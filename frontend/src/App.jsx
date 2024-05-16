@@ -8,7 +8,6 @@ import PrivateRoutes from "./utils/PrivateRoutes"
 import BaseRoutes from "./utils/BaseRoutes"
 import CreatePost from "./pages/CreatePost"
 import Profile from "./pages/Profile"
-import Settings from "./pages/Settings"
 import { NotificationProvider } from "./context/NotificationContext"
 import { PostProvider } from "./context/PostContext"
 import PostDetail from "./pages/PostDetail"
@@ -19,6 +18,8 @@ import ProfileLayout from "./layouts/ProfileLayout"
 import Following from "./pages/Following"
 import Followers from "./pages/Followers"
 import Search from "./pages/Search"
+import SettingsLayout from "./layouts/SettingsLayout"
+import ProfileSettings from "./pages/ProfileSettings"
 
 function App() {
 return (
@@ -44,7 +45,6 @@ return (
                   <Route path="/profile/:id/following" element={<Following/>} />
                   <Route path="/profile/:id/followers" element={<Followers/>} />
                 </Route>
-                <Route path="/settings" element={<Settings />} />
                 <Route path="/post/:id" element={
                   <PostProvider>
                     <PostDetail />
@@ -52,6 +52,10 @@ return (
                 } />
                 <Route path="/notifications" element={<Notifications />}/>
                 <Route path="/search" element={<Search />}/>
+              </Route>
+              <Route element={<SettingsLayout />}>
+                <Route path="/settings/profile" element={<ProfileSettings />} />
+                <Route path="/settings/blocked" element={<ProfileSettings />} />
               </Route>
           </Route>
         </Routes>

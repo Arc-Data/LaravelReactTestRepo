@@ -37,7 +37,7 @@ const UserNav = () => {
 					</div>
 				</Link>
 				<div className="px-4 mt-4 border-t border-slate-800">
-					<Link to="/settings" className="py-2.5 flex gap-4 items-center font-medium">
+					<Link to="/settings/profile" className="py-2.5 flex gap-4 items-center font-medium">
 						<FontAwesomeIcon icon={faGear} />
 						<p>Settings</p>
 					</Link>
