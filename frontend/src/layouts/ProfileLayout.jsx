@@ -7,22 +7,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBell, faUser } from "@fortawesome/free-solid-svg-icons"
 import UserNotFound from "../error/UserNotFound"
 
+const useHover = () => {
+    const [hovering, setHovering ] = useState(false)
+    const onHoverProps = {
+        onMouseEnter: () => setHovering(true),
+        onMouseLeave: () => setHovering(false)
+    }
+
+    return [hovering, onHoverProps]
+}
+
 const ProfileLayout = () => {
     const { id } = useParams()
     const { authToken, user:currentUser } = useContext(AuthContext)
     const { loading, user, getUser, followUser, status, notifyMe } = useUserManager(authToken)
     const [ isFollowing, setIsFollowing ] = useState(false)
     const [ isNotified, setIsNotified ] = useState(false)
-
+    const [ isBlocked, setIsBlocked] = useState(false)
+    const [ blockButtonIsHovering, blockButtonProps ] = useHover()
+ 
     useEffect(() => {
         const fetchUser = async () => {
             const tempUser = await getUser(id)
             setIsFollowing(tempUser?.is_following)
             setIsNotified(tempUser?.notify)
+            setIsBlocked(tempUser?.blocked)
         }
 
         fetchUser()
     }, [id])
+
+    const toggleBlock = () => {
+        setIsBlocked(prev => !prev)
+    }
 
     const handleNotify = async () => {
         setIsNotified(prev => !prev)
@@ -65,12 +82,22 @@ const ProfileLayout = () => {
                     <p className="text-2xl font-bold">{user.name}</p>
                 </div>
                 <div className="flex items-center justify-end gap-4">
-                    {isFollowing && <FontAwesomeIcon icon={faBell}  className={`${isNotified ? "text-primary hover:bg-white " : "hover:bg-secondary"} text-xl p-3 border border-slate-800 rounded-full fa-solid hover:cursor-pointer`} onClick={handleNotify}/>}
-                    {user.id === currentUser.id ? 
-                    <Link to="/settings/profile" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
-                    :
-                    <div className={`inline-block px-4 py-2 border bg-opacity-80 ${!isFollowing ? "bg-primary border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</div>
-                    }
+                {isBlocked ? 
+                <button 
+                    {...blockButtonProps}
+                    className={`inline-block px-5 py-2.5 border bg-opacity-80 bg-red-800 border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={toggleBlock}>
+                        {blockButtonIsHovering ? "Unblock" : "Block"}
+                    </button>
+                :
+                <>
+                {isFollowing && <FontAwesomeIcon icon={faBell}  className={`${isNotified ? "text-primary hover:bg-white " : "hover:bg-secondary"} text-xl p-3 border border-slate-800 rounded-full fa-solid hover:cursor-pointer`} onClick={handleNotify}/>}
+                {user.id === currentUser.id ? 
+                <Link to="/settings/profile" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
+                :
+                <div className={`inline-block px-4 py-2 border bg-opacity-80 ${!isFollowing ? "bg-primary border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</div>
+                }   
+                </>
+                }
                 </div>
                 <div className="col-span-2">
                     <p>{user.about}</p>
@@ -81,7 +108,14 @@ const ProfileLayout = () => {
                     </div>    
                 </div>
             </div>
+            {isBlocked ? 
+            <div className="text-center">
+                <h1 className="text-xl font-bold">You have blocked this user.</h1>
+                <p className="text-slate-600">You can no longer view posts from this user</p>
+            </div>
+            :
             <Outlet />
+            }
         </div>
     )
 }
