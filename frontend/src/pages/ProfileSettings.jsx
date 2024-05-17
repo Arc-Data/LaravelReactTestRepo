@@ -71,7 +71,7 @@ const ProfileSettings = () => {
     
 
     return (
-        <div className="mt-20 md:mt-10">
+        <div className="mt-10">
             <h1 className="mb-12 text-3xl font-bold">Profile Settings</h1>
             <form 
                 method="POST" 

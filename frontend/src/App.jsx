@@ -20,6 +20,7 @@ import Followers from "./pages/Followers"
 import Search from "./pages/Search"
 import SettingsLayout from "./layouts/SettingsLayout"
 import ProfileSettings from "./pages/ProfileSettings"
+import Blocked from "./pages/Blocked"
 
 function App() {
 return (
@@ -55,7 +56,7 @@ return (
               </Route>
               <Route element={<SettingsLayout />}>
                 <Route path="/settings/profile" element={<ProfileSettings />} />
-                <Route path="/settings/blocked" element={<ProfileSettings />} />
+                <Route path="/settings/blocked" element={<Blocked />} />
               </Route>
           </Route>
         </Routes>

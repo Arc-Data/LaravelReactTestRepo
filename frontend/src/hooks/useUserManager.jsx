@@ -77,6 +77,31 @@ const useUserManager = (authToken) => {
         setLoading(false)
     }
 
+    const getBlockedUsers = async () => {
+        try {
+            const url = `/api/user/blocks?page=${currentPage}`
+            const response = await axios.get(url, {
+                headers: {
+                    "Authorization": `Bearer ${authToken}`
+                }
+            })
+
+            setUsers(prevUsers => [...prevUsers, ...response.data.data])
+
+            if(response.data.links && response.data.links.next) {
+                setCurrentPage(prev => prev + 1)
+                setHasMoreUsers(true)
+            } else {
+                setHasMoreUsers(false)
+            }
+
+        }
+        catch (error) {
+            console.log(error)
+            addPopup(error.response.data.message)
+        }
+    }
+
     const getUserFollowers = async (id) => {
         setLoading(true)
         
@@ -168,6 +193,7 @@ const useUserManager = (authToken) => {
         followUser,
         getUserFollowings,
         getUserFollowers,
+        getBlockedUsers,
         hasMoreUsers,
         notifyMe,
         blockUser,
