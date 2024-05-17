@@ -20,7 +20,7 @@ const useHover = () => {
 const ProfileLayout = () => {
     const { id } = useParams()
     const { authToken, user:currentUser } = useContext(AuthContext)
-    const { loading, user, getUser, followUser, status, notifyMe } = useUserManager(authToken)
+    const { loading, user, getUser, followUser, status, notifyMe, blockUser } = useUserManager(authToken)
     const [ isFollowing, setIsFollowing ] = useState(false)
     const [ isNotified, setIsNotified ] = useState(false)
     const [ isBlocked, setIsBlocked] = useState(false)
@@ -39,6 +39,7 @@ const ProfileLayout = () => {
 
     const toggleBlock = () => {
         setIsBlocked(prev => !prev)
+        blockUser(id)
     }
 
     const handleNotify = async () => {
@@ -109,7 +110,7 @@ const ProfileLayout = () => {
                 </div>
             </div>
             {isBlocked ? 
-            <div className="text-center">
+            <div className="py-10 text-center">
                 <h1 className="text-xl font-bold">You have blocked this user.</h1>
                 <p className="text-slate-600">You can no longer view posts from this user</p>
             </div>

@@ -152,10 +152,16 @@ class UserController extends Controller
             $currentUser->unfollow($user);
         }
 
-        $currentUser->block($user);
+        if ($currentUser->isBlocking($user)) {
+            $currentUser->unblock($user);
+            $message = "Unblocked " . $user->name;
+        } else {
+            $currentUser->block($user);
+            $message = "You will no longer see posts from " . $user->name;
+        }
 
         return response()->json([
-            'message' => "You will no longer see posts from " . $user->name
+            'message' => $message
         ]);
     }
 

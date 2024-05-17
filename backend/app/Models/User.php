@@ -127,8 +127,13 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function block(User $user)
-    {
+    {   
         return $this->blockedUsers()->attach($user);
+    }
+
+    public function unblock(User $user)
+    {
+        return $this->blockedUsers()->detach($user);
     }
 
 }
