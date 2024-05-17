@@ -159,4 +159,11 @@ class UserController extends Controller
         ]);
     }
 
+    public function blocks() 
+    {
+        $user = auth()->user();
+        $blockedUsers = $user->blockedUsers()->paginate(15);
+        return PostUserResource::collection($blockedUsers);
+    }
+
 }

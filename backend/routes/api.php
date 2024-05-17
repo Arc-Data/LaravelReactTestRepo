@@ -55,6 +55,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class,'index']);
+        Route::post('/', [UserController::class,'update']);
+        Route::get('/blocks', [UserController::class, 'blocks']);
         Route::get('/{user}', [UserController::class,'show']);
         Route::get('/{user}/posts', [UserController::class,'getUserPosts']);
         Route::get('/{user}/followings', [UserController::class,'userFollowings']);
@@ -62,7 +64,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{user}/follow', [UserController::class,'follow']);
         Route::post('/{user}/notify', [UserController::class,'notifyMe']);
         Route::post('/{user}/block', [UserController::class, 'block']);
-        Route::post('/', [UserController::class,'update']);
     });
 
     Route::prefix('notifications')->group(function () {
