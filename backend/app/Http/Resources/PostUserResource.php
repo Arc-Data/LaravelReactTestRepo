@@ -24,6 +24,7 @@ class PostUserResource extends JsonResource
             "email" => $this->email,
             "profile_image" => $this->profile_image,
             "is_following" => $currentUser->isFollowing($user),
+            "is_blocked" => $currentUser->isBlocking($user)
         ];
     }
 }

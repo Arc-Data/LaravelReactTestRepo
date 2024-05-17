@@ -2,12 +2,12 @@ import { useContext, useEffect } from "react"
 import useUserManager from "../hooks/useUserManager"
 import AuthContext from "../context/AuthContext"
 import InfiniteScroll from "react-infinite-scroll-component"
-import { Spinner } from "flowbite-react"
 import UserListItem from "../components/UserListItem"
+import Spinner from "../components/Spinner"
 
 const Blocked = () => {
     const { authToken } = useContext(AuthContext)
-    const { users, hasMoreUsers, getBlockedUsers } = useUserManager(authToken)
+    const { users, loading, hasMoreUsers, getBlockedUsers } = useUserManager(authToken)
 
     console.log(users)
 
@@ -15,9 +15,14 @@ const Blocked = () => {
         getBlockedUsers()        
     }, [])
 
+    
+
     return (
         <div className="mt-10">
             <h1 className="mb-12 text-3xl font-bold">Blocked Users</h1>
+            {loading ? 
+            <Spinner />            
+            :
             <InfiniteScroll 
                 dataLength={users.length}
                 next={getBlockedUsers}
@@ -30,6 +35,7 @@ const Blocked = () => {
                     )
                 })}
             </InfiniteScroll>
+            }
         </div>
     )
 }

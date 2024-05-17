@@ -78,6 +78,7 @@ const useUserManager = (authToken) => {
     }
 
     const getBlockedUsers = async () => {
+        setLoading(true)
         try {
             const url = `/api/user/blocks?page=${currentPage}`
             const response = await axios.get(url, {
@@ -100,6 +101,7 @@ const useUserManager = (authToken) => {
             console.log(error)
             addPopup(error.response.data.message)
         }
+        setLoading(false)
     }
 
     const getUserFollowers = async (id) => {

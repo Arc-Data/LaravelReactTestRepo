@@ -34,7 +34,7 @@ const Post = ({ post, removeBlockedUserPosts }) => {
     }
 
     const truncateText = (text, maxLength) => {
-        if (text.length <= maxLength) return text
+        if (!text || text.length <= maxLength) return text
         return text.slice(0, maxLength) + '...'
     }
 
@@ -84,7 +84,7 @@ const Post = ({ post, removeBlockedUserPosts }) => {
                 <p className='text-2xl font-bold group-hover:text-primary'>{post.title}</p>
             </div>
             <p className={`mt-2 `}  dangerouslySetInnerHTML={{ __html: showFullText ? post.description : truncateText(post.description, 150)}} />
-            <button className={`${post.description.length < 100 ? "hidden" : "block"} underline text-primary`} onClick={(e) => {
+            <button className={`${post.description?.length < 100 ? "hidden" : "block"} underline text-primary`} onClick={(e) => {
                 e.stopPropagation()
                 setShowFullText(prev => !prev)
             }}>

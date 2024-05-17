@@ -96,6 +96,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->followings()->where('followed_id', $user->id)->value('notify');
     }
 
+    public function isBlocking(User $user)
+    {
+        return $this->blockedUsers()->where('blocked_id', $user->id)->exists();
+    }
+
     public function followers()
     {
         return $this->belongsToMany(User::class, 'user_follows', 'followed_id', 'follower_id')->withPivot('notify');
