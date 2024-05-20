@@ -58,6 +58,8 @@ const ProfileSettings = () => {
             const tempUser = await getUser(user.id)
             setProfile(tempUser)
 
+            console.log(tempUser)
+
             setImagePreviews({
                 profile_image_preview: tempUser.profile_image ? tempUser.profile_image : '',
                 banner_preview: tempUser.banner ? tempUser.banner : '' 

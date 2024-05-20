@@ -25,7 +25,9 @@ const ProfileLayout = () => {
     const [ isNotified, setIsNotified ] = useState(false)
     const [ isBlocked, setIsBlocked] = useState(false)
     const [ blockButtonIsHovering, blockButtonProps ] = useHover()
- 
+
+    console.log(user)
+
     useEffect(() => {
         const fetchUser = async () => {
             const tempUser = await getUser(id)

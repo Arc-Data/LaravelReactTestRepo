@@ -148,13 +148,21 @@ class UserController extends Controller
     public function block(Request $request, User $user) 
     {
         $currentUser = auth()->user();
-        if ($currentUser->isFollowing($user)) {
-            $currentUser->unfollow($user);
+
+        if ($currentUser instanceof User) {
+            if ($currentUser->isFollowing($user)) {
+                $currentUser->unfollow($user);
+            }
+    
+            if ($user->isFollowing($currentUser)) {
+                $user->unfollow($currentUser);
+            }
         }
 
         if ($currentUser->isBlocking($user)) {
             $currentUser->unblock($user);
             $message = "Unblocked " . $user->name;
+
         } else {
             $currentUser->block($user);
             $message = "You will no longer see posts from " . $user->name;

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -124,6 +125,22 @@ class User extends Authenticatable implements JWTSubject
     public function blockedUsers()
     {
         return $this->belongsToMany(User::class, 'user_blocks', 'blocker_id', 'blocked_id');
+    }
+
+    public function blockedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_blocks', 'blocked_id', 'blocker_id');
+    }
+
+    public function blockingStatus(User $user)
+    {
+        if ($this->isBlocking($user)) {
+            return "blocking";
+        } else if ($user->isBlocking($this)) {
+            return "blocked";
+        } else {
+            return "none";
+        }
     }
 
     public function block(User $user)

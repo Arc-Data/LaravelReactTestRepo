@@ -24,8 +24,12 @@ class PostController extends Controller
         $type = $request->get('type');
         
         if ($type == "all") {
-            $blockedUserIds = $currentUser->blockedUsers()->pluck('users.id');
-            $posts = Post::whereNotIn('user_id', $blockedUserIds)
+            $blockedUserIds = $currentUser->blockedUsers()->pluck('users.id')->toArray();
+            $blockedByUserIds = $currentUser->blockedByUsers()->pluck('users.id')->toArray();
+        
+            $allBlockedUserIds = array_merge($blockedUserIds, $blockedByUserIds);
+            
+            $posts = Post::whereNotIn('user_id', $allBlockedUserIds)
                 ->with('user')
                 ->withCount(['comments', 'likes'])
                 ->latest()
