@@ -23,7 +23,7 @@ const ProfileLayout = () => {
     const { loading, user, getUser, followUser, status, notifyMe, blockUser } = useUserManager(authToken)
     const [ isFollowing, setIsFollowing ] = useState(false)
     const [ isNotified, setIsNotified ] = useState(false)
-    const [ isBlocked, setIsBlocked] = useState(false)
+    const [ isBlocking, setIsBlocking] = useState(false)
     const [ blockButtonIsHovering, blockButtonProps ] = useHover()
 
     console.log(user)
@@ -33,14 +33,14 @@ const ProfileLayout = () => {
             const tempUser = await getUser(id)
             setIsFollowing(tempUser?.is_following)
             setIsNotified(tempUser?.notify)
-            setIsBlocked(tempUser?.blocked)
+            setIsBlocking(tempUser?.blocking)
         }
 
         fetchUser()
     }, [id])
 
     const toggleBlock = () => {
-        setIsBlocked(prev => !prev)
+        setIsBlocking(prev => !prev)
         blockUser(id)
     }
 
@@ -85,22 +85,17 @@ const ProfileLayout = () => {
                     <p className="text-2xl font-bold">{user.name}</p>
                 </div>
                 <div className="flex items-center justify-end gap-4">
-                {isBlocked ? 
                 <button 
                     {...blockButtonProps}
-                    className={`inline-block px-5 py-2.5 border bg-opacity-80 bg-red-800 border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={toggleBlock}>
-                        {blockButtonIsHovering ? "Unblock" : "Block"}
-                    </button>
-                :
-                <>
-                {isFollowing && <FontAwesomeIcon icon={faBell}  className={`${isNotified ? "text-primary hover:bg-white " : "hover:bg-secondary"} text-xl p-3 border border-slate-800 rounded-full fa-solid hover:cursor-pointer`} onClick={handleNotify}/>}
+                    className={`${!isBlocking && "hidden " } inline-block px-5 py-2.5 border bg-opacity-80 bg-red-800 border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={toggleBlock}>
+                        {blockButtonIsHovering ? "Unblock" : "Blocked"}
+                </button>
+                <FontAwesomeIcon icon={faBell}  className={`${!isFollowing && "hidden "} ${isNotified ? "text-primary hover:bg-white " : "hover:bg-secondary"} text-xl p-3 border border-slate-800 rounded-full fa-solid hover:cursor-pointer`} onClick={handleNotify}/>
                 {user.id === currentUser.id ? 
                 <Link to="/settings/profile" className="inline-block px-4 py-2 border rounded-xl hover:cursor-pointer hover:bg-white hover:text-black">Edit Profile</Link>
                 :
-                <div className={`inline-block px-4 py-2 border bg-opacity-80 ${!isFollowing ? "bg-primary border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</div>
+                <div className={`inline-block ${(user.blocked || isBlocking) && "hidden " } px-4 py-2 border bg-opacity-80 ${!isFollowing ? "bg-primary border-transparent hover:bg-opacity-100 hover:text-white" : "hover:bg-secondary"} rounded-xl hover:cursor-pointer`} onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</div>
                 }   
-                </>
-                }
                 </div>
                 <div className="col-span-2">
                     <p>{user.about}</p>
@@ -111,7 +106,14 @@ const ProfileLayout = () => {
                     </div>    
                 </div>
             </div>
-            {isBlocked ? 
+            {user.blocked ? 
+            <div className="py-10 text-center">
+                <h1 className="text-xl font-bold">You have been blocked by this user.</h1>
+                <p className="text-slate-600">You cant interact or see posts from this user.</p>
+            </div>
+            :
+            isBlocking 
+            ? 
             <div className="py-10 text-center">
                 <h1 className="text-xl font-bold">You have blocked this user.</h1>
                 <p className="text-slate-600">You can no longer view posts from this user</p>
