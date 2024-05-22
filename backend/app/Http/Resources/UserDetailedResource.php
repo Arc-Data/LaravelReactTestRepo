@@ -18,10 +18,16 @@ class UserDetailedResource extends JsonResource
     {
         $currentUser = auth()->user();
         $user = User::where("id", $this->id)->first();
+        $blocking = false;
+        $blocked = false;
 
         $isFollowing = $currentUser->isFollowing($user);
         $notify = $isFollowing ? $currentUser->isNotified($user) : false; 
 
+        if ($currentUser instanceof User) {
+            $blocking = $currentUser->isBlocking($user);
+            $blocked = $user->isBlocking($currentUser);
+        }
         $blockingStatus = $currentUser->blockingStatus($user);
 
         return [
@@ -32,7 +38,8 @@ class UserDetailedResource extends JsonResource
             "birthdate"=> $this->birthdate,
             "profile_image" => $this->profile_image,
             "is_following" => $isFollowing,
-            "block_status" => $blockingStatus,
+            "blocking" => $blocking,
+            "blocked" => $blocked,
             "notify" => $notify,
             "followers" => $this->followers()->count(),
             "followings" => $this->followings()->count(),
