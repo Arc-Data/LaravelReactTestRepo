@@ -15,9 +15,22 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Post $post)
+    public function index(Request $request, Post $post)
     {
-        $topLevelComments = $post->comments()->whereNull('parent_comment_id')->paginate(10);
+        Log::info($request);
+        $sort_by = $request->get("sorted_by");
+        $topLevelComments = $post->comments()->whereNull('parent_comment_id');
+ 
+        switch ($sort_by) {
+            case "newest": 
+                $topLevelComments = $topLevelComments->orderBy('created_at', "desc");
+                break;
+            case "oldest":
+                $topLevelComments = $topLevelComments->orderBy('created_at', "asc");
+                break;
+        }
+
+        $topLevelComments = $topLevelComments->paginate(10);
         return CommentResource::collection($topLevelComments);
     }
 
